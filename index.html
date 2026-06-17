@@ -387,6 +387,19 @@ header {
 .amenities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .amenity { display: flex; align-items: center; gap: 9px; font-size: 12px; padding: 10px 12px; background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-light); }
 
+/* ===== CALENDAR MIN NOTICE ===== */
+.cal-min-notice {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 16px; margin-bottom: 10px;
+  background: #fff8e1; border: 1px solid #f4cc52;
+  border-radius: var(--radius-lg);
+  font-size: 13px; line-height: 1.5;
+}
+.cal-min-notice-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.cal-min-notice-text { flex: 1; }
+.cal-min-notice-main { font-weight: 600; color: #7a5a00; font-size: 13px; }
+.cal-min-notice-sub { color: #9a7a20; font-size: 12px; margin-top: 2px; font-weight: 300; }
+
 /* ===== CALENDAR ===== */
 .cal-wrap {
   background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
@@ -677,6 +690,43 @@ header {
 .pf-submit { width: 100%; padding: 15px; background: var(--teal); color: white; border: none; border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; margin-top: 8px; }
 .pf-submit:hover { background: var(--teal-dark); }
 
+/* ===== SYNC BANNER ===== */
+.sync-banner {
+  background: #e8f4f2; border: 1px solid var(--teal); border-radius: var(--radius-lg);
+  padding: 14px 18px; margin-bottom: 20px;
+  display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;
+}
+.sync-banner-icon { font-size: 22px; flex-shrink: 0; }
+.sync-banner-text { flex: 1; min-width: 200px; }
+.sync-banner-title { font-size: 13px; font-weight: 600; color: var(--teal-dark); margin-bottom: 3px; }
+.sync-banner-sub { font-size: 12px; color: var(--teal-dark); font-weight: 300; line-height: 1.5; }
+.sync-banner-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; width: 100%; margin-top: 10px; }
+.sync-export-btn, .sync-import-btn, .sync-code-btn {
+  padding: 8px 14px; border-radius: var(--radius); font-family: 'Jost', sans-serif;
+  font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s; border: none; display: flex; align-items: center; gap: 6px;
+}
+.sync-export-btn { background: var(--teal); color: white; }
+.sync-export-btn:hover { background: var(--teal-dark); }
+.sync-import-btn { background: white; color: var(--teal); border: 1.5px solid var(--teal); }
+.sync-import-btn:hover { background: var(--teal-light); }
+.sync-code-btn { background: var(--sand); color: var(--text); border: 1px solid var(--border); }
+.sync-code-btn:hover { background: var(--sand-dark); }
+#sync-file-input { display: none; }
+
+/* Sync code modal */
+.sync-code-display {
+  font-family: monospace; font-size: 11px; background: #1a1a18; color: #a8e6cf;
+  padding: 14px 16px; border-radius: var(--radius); word-break: break-all;
+  line-height: 1.6; max-height: 120px; overflow-y: auto; margin: 12px 0;
+  border: 1px solid #333;
+}
+.sync-copy-btn {
+  padding: 9px 18px; background: var(--teal); color: white; border: none;
+  border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px;
+  font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+}
+
 /* ===== MODALI ===== */
 .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; justify-content: center; align-items: center; padding: 16px; backdrop-filter: blur(4px); overflow-y: auto; }
 .overlay.open { display: flex; }
@@ -849,6 +899,8 @@ header {
   .lightbox-imgs img { height: 150px; }
   .dm-range-row { grid-template-columns: 1fr; }
   .booking-guests-row { grid-template-columns: 1fr; }
+  .sync-banner-actions { flex-direction: column; }
+  .sync-export-btn, .sync-import-btn, .sync-code-btn { width: 100%; justify-content: center; }
 }
 @media (max-width: 380px) {
   .hero-text h1 { font-size: 26px; }
@@ -991,6 +1043,29 @@ header {
       <div class="section-eyebrow" data-i18n="listings_eyebrow">Le nostre proprietà</div>
       <div class="section-title" data-i18n="listings_title">Gli Appartamenti</div>
     </div>
+    <!-- SYNC BANNER -->
+    <div class="sync-banner" id="sync-banner">
+      <div class="sync-banner-icon">🔄</div>
+      <div class="sync-banner-text">
+        <div class="sync-banner-title" data-i18n="sync_title">Sincronizza tra dispositivi</div>
+        <div class="sync-banner-sub" data-i18n="sync_sub">Esporta i dati per usarli su altri dispositivi o browser. Importa per ripristinarli.</div>
+      </div>
+      <div class="sync-banner-actions">
+        <button class="sync-export-btn" onclick="exportData()">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span data-i18n="sync_export">Esporta Dati</span>
+        </button>
+        <label class="sync-import-btn" style="cursor:pointer">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span data-i18n="sync_import">Importa Dati</span>
+          <input type="file" id="sync-file-input" accept=".json" onchange="importData(event)">
+        </label>
+        <button class="sync-code-btn" onclick="showSyncCode()">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <span data-i18n="sync_code_btn">Codice JSON</span>
+        </button>
+      </div>
+    </div>
     <div class="filter-row">
       <button class="filter-chip active" onclick="setFilter('tutti',this)" data-i18n="filter_all">Tutti</button>
       <button class="filter-chip" onclick="setFilter('villa',this)" data-i18n="filter_villa">Villa</button>
@@ -1059,6 +1134,14 @@ header {
       <div class="section-divider"></div>
       <!-- CALENDARIO -->
       <div class="amenities-title" data-i18n="cal_title">Disponibilità</div>
+      <!-- MIN DAYS NOTICE -->
+      <div class="cal-min-notice" id="cal-min-notice">
+        <div class="cal-min-notice-icon">📅</div>
+        <div class="cal-min-notice-text">
+          <div class="cal-min-notice-main" id="cal-min-notice-main">—</div>
+          <div class="cal-min-notice-sub" id="cal-min-notice-sub">—</div>
+        </div>
+      </div>
       <div style="margin-bottom:8px">
         <div class="cal-wrap" id="cal-wrap">
           <div class="cal-header">
@@ -1337,8 +1420,6 @@ header {
           <button class="dm-tab" onclick="switchDmTab('range', this)">Periodo</button>
           <button class="dm-tab" onclick="switchDmTab('ical', this)">🔗 iCal Booking</button>
         </div>
-
-        <!-- Tab: singola data -->
         <div class="dm-panel active" id="dm-panel-manual">
           <div class="dm-manual-add">
             <input type="date" class="dm-date-input" id="dm-single-date">
@@ -1347,8 +1428,6 @@ header {
           <div style="font-size:11px;color:var(--text-light);margin-bottom:10px">Date bloccate:</div>
           <div class="dm-blocked-list" id="dm-blocked-list"></div>
         </div>
-
-        <!-- Tab: periodo -->
         <div class="dm-panel" id="dm-panel-range">
           <div class="dm-range-row">
             <div class="ef-field" style="margin:0"><label class="ef-label">Dal</label><input type="date" class="dm-date-input" id="dm-range-from"></div>
@@ -1358,8 +1437,6 @@ header {
           <div style="font-size:11px;color:var(--text-light);margin-bottom:10px">Date bloccate:</div>
           <div class="dm-blocked-list" id="dm-blocked-list-2"></div>
         </div>
-
-        <!-- Tab: iCal -->
         <div class="dm-panel" id="dm-panel-ical">
           <div class="ical-field-wrap">
             <div class="ical-hint">
@@ -1487,6 +1564,21 @@ header {
   </div>
 </div>
 
+<!-- SYNC CODE MODAL -->
+<div class="overlay" id="sync-code-overlay" onclick="closeOnBg(event,'sync-code-overlay')">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-title">📋 <span data-i18n="sync_code_title">Codice di Sincronizzazione</span></div>
+      <button class="modal-close" onclick="closeOverlay('sync-code-overlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text-light);margin-bottom:12px;font-weight:300" data-i18n="sync_code_desc">Copia questo testo e incollalo su un altro dispositivo tramite "Importa Dati" → incolla come file .json</p>
+      <div class="sync-code-display" id="sync-code-display">—</div>
+      <button class="sync-copy-btn" onclick="copySyncCode()" data-i18n="sync_copy">Copia negli Appunti</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -1522,6 +1614,13 @@ const TRANSLATIONS = {
     cal_checkin:'Check-in',cal_checkout:'Check-out',
     cal_nights_one:'{n} notte',cal_nights_multi:'{n} notti',
     cal_select_prompt:'Seleziona le date di check-in e check-out',
+    /* ---- NUOVE CHIAVI MIN DAYS ---- */
+    cal_min_sardegna_main:'Minimo 5 giorni per prenotare.',
+    cal_min_sardegna_sub:'Dai 5 giorni in giù, non è possibile prenotare.',
+    cal_min_cogne_main:'Minimo 3 giorni per prenotare.',
+    cal_min_cogne_sub:'Dai 3 giorni in giù, non è possibile prenotare.',
+    cal_too_short:'⚠️ Prenotazione troppo corta. Seleziona almeno {n} giorni per prenotare.',
+    /* ---- FINE NUOVE CHIAVI ---- */
     ical_synced_label:'Calendario sincronizzato con Booking.com',ical_sync_now:'Aggiorna',
     ical_ok:'✓ Collegato! {n} date importate da Booking.',
     ical_err:'✗ Impossibile leggere il calendario. Verifica il link.',
@@ -1544,6 +1643,16 @@ const TRANSLATIONS = {
     form_lastname_ph:'Cognome',form_email_ph:'La tua Email',
     form_subject_ph:'Oggetto',form_message_ph:'Il tuo messaggio...',form_send:'Invia',
     lightbox_title:'Tutte le foto',see_all_photos:'Tutte le foto ({n})',
+    /* ---- SYNC ---- */
+    sync_title:'Sincronizza tra dispositivi',
+    sync_sub:'Esporta i dati per usarli su altri dispositivi o browser. Importa per ripristinarli.',
+    sync_export:'Esporta Dati',sync_import:'Importa Dati',sync_code_btn:'Codice JSON',
+    sync_code_title:'Codice di Sincronizzazione',
+    sync_code_desc:'Copia questo testo e incollalo su un altro dispositivo tramite "Importa Dati".',
+    sync_copy:'Copia negli Appunti',
+    toast_sync_exported:'✓ File esportato!',toast_sync_imported:'✓ Dati importati con successo!',
+    toast_sync_error:'✗ File non valido. Riprova.',toast_sync_copied:'✓ Copiato negli appunti!',
+    /* ---- FINE SYNC ---- */
     footer_nav:'Navigazione',footer_contacts:'Contatti',
     footer_desc:"Proprietà private in location esclusive d'Italia. Sardegna e Cogne ti aspettano.",
     footer_contacts_desc:'Scrivi direttamente tramite i form di contatto per informazioni e disponibilità sulle nostre proprietà.',
@@ -1624,6 +1733,13 @@ const TRANSLATIONS = {
     cal_checkin:'Check-in',cal_checkout:'Check-out',
     cal_nights_one:'{n} night',cal_nights_multi:'{n} nights',
     cal_select_prompt:'Select check-in and check-out dates',
+    /* ---- NEW MIN DAYS KEYS ---- */
+    cal_min_sardegna_main:'Minimum 5 nights required.',
+    cal_min_sardegna_sub:'Bookings shorter than 5 nights are not possible.',
+    cal_min_cogne_main:'Minimum 3 nights required.',
+    cal_min_cogne_sub:'Bookings shorter than 3 nights are not possible.',
+    cal_too_short:'⚠️ Booking too short. Please select at least {n} nights.',
+    /* ---- END NEW KEYS ---- */
     ical_synced_label:'Calendar synced with Booking.com',ical_sync_now:'Refresh',
     ical_ok:'✓ Connected! {n} dates imported from Booking.',
     ical_err:'✗ Cannot read calendar. Check the link.',
@@ -1646,6 +1762,16 @@ const TRANSLATIONS = {
     form_lastname_ph:'Last Name',form_email_ph:'Your Email',
     form_subject_ph:'Subject',form_message_ph:'Your message...',form_send:'Send',
     lightbox_title:'All photos',see_all_photos:'All photos ({n})',
+    /* ---- SYNC ---- */
+    sync_title:'Sync across devices',
+    sync_sub:'Export your data to use on other devices or browsers. Import to restore.',
+    sync_export:'Export Data',sync_import:'Import Data',sync_code_btn:'JSON Code',
+    sync_code_title:'Sync Code',
+    sync_code_desc:'Copy this text and paste it on another device via "Import Data".',
+    sync_copy:'Copy to Clipboard',
+    toast_sync_exported:'✓ File exported!',toast_sync_imported:'✓ Data imported successfully!',
+    toast_sync_error:'✗ Invalid file. Please try again.',toast_sync_copied:'✓ Copied to clipboard!',
+    /* ---- END SYNC ---- */
     footer_nav:'Navigation',footer_contacts:'Contact',
     footer_desc:'Private properties in exclusive Italian locations. Sardinia and Cogne await you.',
     footer_contacts_desc:'Write directly through the contact forms for information and availability on our properties.',
@@ -1699,6 +1825,15 @@ const TRANSLATIONS = {
   }
 };
 
+/* ==================== MIN DAYS CONFIG ==================== */
+const MIN_DAYS_CONFIG = {
+  sardegna: 5,
+  cogne: 3
+};
+function getMinDays(casa) {
+  return MIN_DAYS_CONFIG[casa] || 1;
+}
+
 /* ==================== I18N ==================== */
 let currentLang = localStorage.getItem('draf_lang') || 'it';
 function t(key, vars) {
@@ -1714,6 +1849,8 @@ function applyTranslations() {
   const loaderEl = document.getElementById('loader-text-el');
   if (loaderEl) loaderEl.innerHTML = t('loader_text') + '<span class="loader-dots"><span>.</span><span>.</span><span>.</span></span>';
   updateListingsCount();
+  // Aggiorna il notice del calendario se aperto
+  if (currentProperty) updateCalMinNotice(currentProperty.casa);
 }
 function setLang(lang) {
   currentLang = lang; localStorage.setItem('draf_lang', lang);
@@ -1737,12 +1874,10 @@ let activeFilter = 'tutti';
 let uploadedPhotos = [];
 let editPhotos = [];
 let currentPubblicaCasa = null;
-// Calendar state
 let calYear, calMonth, calCheckIn = null, calCheckOut = null;
-// Edit modal dates state
 let editBlockedDates = [];
 
-/* ==================== STORAGE (con compressione foto) ==================== */
+/* ==================== STORAGE ==================== */
 function loadProperties() {
   try {
     const raw = localStorage.getItem('draf_properties');
@@ -1753,18 +1888,71 @@ function saveProperties() {
   try {
     localStorage.setItem('draf_properties', JSON.stringify(properties));
   } catch(e) {
-    // Se troppo grande, salva senza foto tranne la prima
     try {
-      const slim = properties.map(p => ({
-        ...p,
-        photos: p.photos ? p.photos.slice(0, 1) : []
-      }));
+      const slim = properties.map(p => ({ ...p, photos: p.photos ? p.photos.slice(0, 1) : [] }));
       localStorage.setItem('draf_properties', JSON.stringify(slim));
       showToast('⚠️ Spazio limitato: solo la prima foto salvata per casa.');
     } catch(e2) {
       showToast('⚠️ Impossibile salvare: dati troppo grandi.');
     }
   }
+}
+
+/* ==================== CROSS-DEVICE SYNC (Export/Import) ==================== */
+function exportData() {
+  const data = { version: 1, exportedAt: new Date().toISOString(), properties };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'deRosa_dati_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(t('toast_sync_exported'));
+}
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      let imported = [];
+      if (Array.isArray(data)) imported = data;
+      else if (data.properties && Array.isArray(data.properties)) imported = data.properties;
+      else throw new Error('Invalid format');
+      // Merge: aggiungi solo le case non già presenti (by id), o sostituisci
+      const existingIds = new Set(properties.map(p => p.id));
+      let added = 0, updated = 0;
+      imported.forEach(p => {
+        if (!p.id || !p.name) return;
+        const idx = properties.findIndex(x => x.id === p.id);
+        if (idx === -1) { properties.push(p); added++; }
+        else { properties[idx] = p; updated++; }
+      });
+      saveProperties(); renderListings();
+      showToast(t('toast_sync_imported') + (added || updated ? ` (${added} aggiunte, ${updated} aggiornate)` : ''));
+    } catch(err) {
+      showToast(t('toast_sync_error'));
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+function showSyncCode() {
+  const data = { version: 1, exportedAt: new Date().toISOString(), properties };
+  document.getElementById('sync-code-display').textContent = JSON.stringify(data);
+  openOverlay('sync-code-overlay');
+}
+function copySyncCode() {
+  const text = document.getElementById('sync-code-display').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast(t('toast_sync_copied')))
+    .catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      showToast(t('toast_sync_copied'));
+    });
 }
 
 /* ==================== PROFILE ==================== */
@@ -1986,9 +2174,29 @@ function openServiziDetail(casa) {
 }
 function closeServiziDetail() { showLoader('🏡', () => showOnly('listing-view')); }
 
+/* ==================== CALENDAR MIN NOTICE ==================== */
+function updateCalMinNotice(casa) {
+  const noticeMain = document.getElementById('cal-min-notice-main');
+  const noticeSub = document.getElementById('cal-min-notice-sub');
+  if (!noticeMain || !noticeSub) return;
+  if (casa === 'sardegna') {
+    noticeMain.textContent = t('cal_min_sardegna_main');
+    noticeSub.textContent = t('cal_min_sardegna_sub');
+  } else if (casa === 'cogne') {
+    noticeMain.textContent = t('cal_min_cogne_main');
+    noticeSub.textContent = t('cal_min_cogne_sub');
+  } else {
+    // Casa generica: nasconde il notice
+    const notice = document.getElementById('cal-min-notice');
+    if (notice) notice.style.display = 'none';
+    return;
+  }
+  const notice = document.getElementById('cal-min-notice');
+  if (notice) notice.style.display = 'flex';
+}
+
 /* ==================== CALENDAR ==================== */
 function dateToStr(d) {
-  // Returns YYYY-MM-DD
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 function strToDate(s) {
@@ -2001,17 +2209,13 @@ function renderCalendar() {
   if (!calYear) { calYear = today.getFullYear(); calMonth = today.getMonth(); }
   const months = t('months'); const days = t('days');
   document.getElementById('cal-month-label').textContent = months[calMonth] + ' ' + calYear;
-  // Days header
   document.getElementById('cal-days-header').innerHTML = days.map(d => `<div class="cal-day-label">${d}</div>`).join('');
-  // Grid
   const firstDay = new Date(calYear, calMonth, 1);
-  // Monday=0 offset
   let startOffset = (firstDay.getDay() + 6) % 7;
   const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
   const blocked = new Set(currentProperty.blockedDates || []);
   const todayStr = dateToStr(today);
   let html = '';
-  // Empty cells
   for (let i = 0; i < startOffset; i++) html += '<div class="cal-day empty"></div>';
   for (let day = 1; day <= daysInMonth; day++) {
     const d = new Date(calYear, calMonth, day);
@@ -2024,7 +2228,6 @@ function renderCalendar() {
     else if (isBlocked) cls += ' blocked';
     else cls += ' available';
     if (isToday && !isPast) cls += ' today';
-    // Selection
     if (calCheckIn && calCheckOut) {
       const ci = strToDate(calCheckIn), co = strToDate(calCheckOut);
       if (dStr === calCheckIn) cls += ' check-in';
@@ -2037,11 +2240,9 @@ function renderCalendar() {
     html += `<button class="${cls}" ${clickable?`onclick="calDayClick('${dStr}')"`:''} ${isBlocked?'title="Occupato"':''}>${day}</button>`;
   }
   document.getElementById('cal-grid').innerHTML = html;
-  // iCal banner
   const banner = document.getElementById('ical-sync-banner');
   if (currentProperty.icalUrl) banner.style.display = 'flex';
   else banner.style.display = 'none';
-  // Selection summary
   updateCalSummary();
 }
 function calNav(dir) {
@@ -2050,16 +2251,22 @@ function calNav(dir) {
   if (calMonth < 0) { calMonth = 11; calYear--; }
   renderCalendar();
 }
+
+/* ==================== CAL DAY CLICK CON VALIDAZIONE MIN GIORNI ==================== */
 function calDayClick(dStr) {
+  if (!currentProperty) return;
   const blocked = new Set(currentProperty.blockedDates || []);
+  const minDays = getMinDays(currentProperty.casa);
+
   if (!calCheckIn || (calCheckIn && calCheckOut)) {
-    // Start new selection
+    // Inizia nuova selezione
     calCheckIn = dStr; calCheckOut = null;
   } else {
-    // Second click: set checkout
-    if (dStr <= calCheckIn) { calCheckIn = dStr; calCheckOut = null; }
-    else {
-      // Check no blocked dates in range
+    // Secondo click: imposta checkout
+    if (dStr <= calCheckIn) {
+      calCheckIn = dStr; calCheckOut = null;
+    } else {
+      // Controlla date bloccate nell'intervallo
       const from = strToDate(calCheckIn), to = strToDate(dStr);
       let hasBlocked = false;
       const cur = new Date(from); cur.setDate(cur.getDate()+1);
@@ -2067,12 +2274,26 @@ function calDayClick(dStr) {
         if (blocked.has(dateToStr(cur))) { hasBlocked = true; break; }
         cur.setDate(cur.getDate()+1);
       }
-      if (hasBlocked) { showToast('⚠️ ' + (currentLang==='en'?'Range includes occupied dates':'Il periodo include date occupate')); calCheckIn = dStr; calCheckOut = null; }
-      else calCheckOut = dStr;
+      if (hasBlocked) {
+        showToast('⚠️ ' + (currentLang==='en'?'Range includes occupied dates':'Il periodo include date occupate'));
+        calCheckIn = dStr; calCheckOut = null;
+      } else {
+        // Valida il minimo di giorni
+        const nights = Math.round((strToDate(dStr) - strToDate(calCheckIn)) / 86400000);
+        if (nights < minDays) {
+          showToast(t('cal_too_short', { n: minDays }));
+          // NON imposta calCheckOut — mantieni il check-in e lascia selezionare di nuovo
+          calCheckOut = null;
+          renderCalendar();
+          return;
+        }
+        calCheckOut = dStr;
+      }
     }
   }
   renderCalendar();
 }
+
 function clearCalSelection() {
   calCheckIn = null; calCheckOut = null;
   renderCalendar();
@@ -2106,7 +2327,6 @@ async function syncIcalNow() {
   if (dates === null) { showToast(t('ical_err')); return; }
   const idx = properties.findIndex(p => p.id === currentProperty.id);
   if (idx !== -1) {
-    // Merge: keep manual dates + add iCal dates
     const existing = new Set(properties[idx].blockedDates || []);
     dates.forEach(d => existing.add(d));
     properties[idx].blockedDates = Array.from(existing).sort();
@@ -2116,7 +2336,6 @@ async function syncIcalNow() {
   }
 }
 async function fetchIcalDates(url) {
-  // Use CORS proxy to fetch iCal
   const proxies = [
     `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
     `https://corsproxy.io/?${encodeURIComponent(url)}`
@@ -2133,7 +2352,6 @@ async function fetchIcalDates(url) {
 }
 function parseIcalDates(icsText) {
   const dates = new Set();
-  // Match VEVENT blocks
   const events = icsText.match(/BEGIN:VEVENT[\s\S]*?END:VEVENT/g) || [];
   for (const ev of events) {
     const dtStart = ev.match(/DTSTART(?:;[^:]*)?:(\d{8})/);
@@ -2142,7 +2360,6 @@ function parseIcalDates(icsText) {
     const parseYMD = s => new Date(parseInt(s.slice(0,4)), parseInt(s.slice(4,6))-1, parseInt(s.slice(6,8)));
     const start = parseYMD(dtStart[1]);
     const end = dtEnd ? parseYMD(dtEnd[1]) : new Date(start.getTime() + 86400000);
-    // Add each day in range (exclusive of end for iCal convention)
     const cur = new Date(start);
     while (cur < end) {
       dates.add(dateToStr(cur));
@@ -2161,7 +2378,6 @@ async function testIcalUrl() {
   if (dates === null) {
     statusEl.textContent = t('ical_err'); statusEl.className = 'ical-status err';
   } else {
-    // Merge into editBlockedDates
     const existing = new Set(editBlockedDates);
     dates.forEach(d => existing.add(d));
     editBlockedDates = Array.from(existing).sort();
@@ -2237,12 +2453,10 @@ function openModificaCasa(e) {
   editBlockedDates = [...(p.blockedDates || [])];
   renderEditPhotosGrid();
   renderEditBlockedList();
-  // Reset tabs
   switchDmTab('manual', document.querySelector('.dm-tab'));
   openOverlay('modifica-casa-overlay');
 }
 
-/* Edit modal - date tabs */
 function switchDmTab(tab, el) {
   document.querySelectorAll('.dm-tab').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.dm-panel').forEach(p => p.classList.remove('active'));
@@ -2258,7 +2472,6 @@ function renderEditBlockedList() {
       el.innerHTML = `<div class="dm-empty-dates">${currentLang==='en'?'No blocked dates':'Nessuna data bloccata'}</div>`;
       return;
     }
-    // Group contiguous ranges for display
     el.innerHTML = editBlockedDates.map(d => {
       const [y,m,day] = d.split('-');
       const label = `${day}/${m}/${y}`;
@@ -2295,7 +2508,6 @@ function dmRemoveDate(d) {
   editBlockedDates = editBlockedDates.filter(x => x !== d);
   renderEditBlockedList();
 }
-
 function renderEditPhotosGrid() {
   const grid = document.getElementById('edit-photos-grid');
   const countEl = document.getElementById('edit-photos-count');
@@ -2486,12 +2698,11 @@ function _populateDetailPage(p) {
   const today = new Date();
   calYear = today.getFullYear(); calMonth = today.getMonth();
   calCheckIn = null; calCheckOut = null;
+  // Aggiorna il notice dei giorni minimi per la casa corrente
+  updateCalMinNotice(p.casa);
   renderCalendar();
   renderDetailReviews();
-  // Auto-sync iCal if URL set
-  if (p.icalUrl) {
-    syncIcalNow();
-  }
+  if (p.icalUrl) syncIcalNow();
 }
 function renderDetailReviews() {
   const reviews = currentProperty.reviews || [];
@@ -2518,8 +2729,7 @@ function submitBookingForm() {
     const months = t('months');
     const fmt = s => { const d = strToDate(s); return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear(); };
     const nights = Math.round((strToDate(calCheckOut) - strToDate(calCheckIn)) / 86400000);
-    dateInfo = (currentLang==='en'?'\nCheck-in':'\nCheck-in') + ': ' + fmt(calCheckIn) +
-               (currentLang==='en'?'\nCheck-out':'\nCheck-out') + ': ' + fmt(calCheckOut) +
+    dateInfo = '\nCheck-in: ' + fmt(calCheckIn) + '\nCheck-out: ' + fmt(calCheckOut) +
                '\n' + (nights===1?t('cal_nights_one',{n:nights}):t('cal_nights_multi',{n:nights}));
   }
   const lang = currentLang;
@@ -2615,34 +2825,10 @@ function navigateTo(dest) { if (dest === 'home') { showOnly('listing-view'); win
 function showToast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg; el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 3000);
+  setTimeout(() => el.classList.remove('show'), 3500);
 }
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
-
-/* Slideshow inner page */
-function renderCondSoggiorno() {
-  document.getElementById('inner-title').textContent = t('cond_sog_title');
-  const captions = t('cond_slide_captions');
-  const slides = [
-    { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80', cap: captions[0] },
-    { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=80', cap: captions[1] },
-    { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=80', cap: captions[2] },
-    { url: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=900&q=80', cap: captions[3] },
-    { url: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=80', cap: captions[4] },
-    { url: 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=900&q=80', cap: captions[5] },
-  ];
-  const dotsHtml = slides.map((_,i) => `<button class="slide-dot${i===0?' active':''}" onclick="goSlide(${i})"></button>`).join('');
-  const slidesHtml = slides.map((s,i) => `<div class="slide${i===0?' active':''}"><img src="${s.url}" alt="${s.cap}" loading="${i===0?'eager':'lazy'}"><div class="slide-caption">${s.cap}</div></div>`).join('');
-  const items = t('cond_items');
-  const listHtml = `<ul class="cond-list">${items.map(it=>`<li class="cond-item"><div class="cond-label">${it.label}</div><div class="cond-value">${it.value}</div>${it.sub?`<div class="cond-sub">${it.sub}</div>`:''}</li>`).join('')}</ul>`;
-  document.getElementById('inner-body').innerHTML = `
-    <div class="cond-layout">
-      <div><div class="cond-eyebrow">DRAF · De Rosa Accommodation Facilities</div><h2 class="cond-section-title">${t('cond_sog_title')}</h2>${listHtml}</div>
-      <div><div class="slideshow" id="slideshow-el">${slidesHtml}<div class="slide-dots">${dotsHtml}</div></div></div>
-    </div>`;
-  startSlideshow();
-}
 </script>
 </body>
 </html>
