@@ -14,21 +14,19 @@
   --border: #ddd0bd; --radius: 6px; --radius-lg: 12px;
   --shadow: 0 2px 12px rgba(0,0,0,0.1); --shadow-lg: 0 8px 40px rgba(0,0,0,0.18);
   --header-h: 60px;
-  /* Calendar colours */
-  --cal-blue: #2563EB;
-  --cal-blue-light: #DBEAFE;
-  --cal-blue-mid: #93C5FD;
-  --cal-green: #16a34a;
-  --cal-green-light: #DCFCE7;
-  --cal-green-mid: #86EFAC;
-  --cal-gray: #d1c5b8;
-  --cal-gray-text: #b5a898;
 }
 html { scroll-behavior: smooth; }
 body { font-family: 'Jost', sans-serif; min-height: 100vh; color: var(--text); background: var(--cream); }
 
 /* ===== LOADER ===== */
-#page-loader { position: fixed; inset: 0; z-index: 9999; background: var(--cream); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+#page-loader {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--cream);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+}
 #page-loader.active { opacity: 1; pointer-events: all; }
 .loader-icon { font-size: 56px; animation: loaderBob 0.9s ease-in-out infinite alternate; }
 @keyframes loaderBob { from { transform: translateY(0); } to { transform: translateY(-10px); } }
@@ -39,63 +37,160 @@ body { font-family: 'Jost', sans-serif; min-height: 100vh; color: var(--text); b
 @keyframes dotFade { 0%,80%,100% { opacity:0; } 40% { opacity:1; } }
 
 /* ===== HEADER ===== */
-header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background: rgba(20,20,20,0.78); backdrop-filter: blur(10px); height: var(--header-h); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+header {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(20,20,20,0.78); backdrop-filter: blur(10px);
+  height: var(--header-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px;
+}
 .logo-wrap { display: flex; flex-direction: column; line-height: 1.15; cursor: pointer; }
 .logo-main { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 500; color: white; letter-spacing: 0.3px; }
 .logo-sub { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-.header-center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 2px; }
+
+/* ===== DESKTOP NAV ===== */
+.header-center {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 2px;
+}
 .nav-item { position: relative; }
-.nav-link { font-size: 11px; font-weight: 500; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,0.85); background: none; border: none; cursor: pointer; padding: 8px 13px; border-radius: var(--radius); transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
+.nav-link {
+  font-size: 11px; font-weight: 500; letter-spacing: 1.2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.85); background: none; border: none; cursor: pointer;
+  padding: 8px 13px; border-radius: var(--radius);
+  transition: all 0.2s; display: flex; align-items: center; gap: 5px;
+}
 .nav-link:hover, .nav-item.open .nav-link { color: white; background: rgba(255,255,255,0.12); }
 .nav-arrow { font-size: 8px; opacity: 0.6; transition: transform 0.2s; }
 .nav-item.open .nav-arrow { transform: rotate(180deg); }
-.nav-dropdown { display: none; position: absolute; top: calc(100% + 6px); left: 0; background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); min-width: 250px; padding: 8px; z-index: 400; animation: dropIn 0.18s ease; }
+.nav-dropdown {
+  display: none; position: absolute; top: calc(100% + 6px); left: 0;
+  background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg); min-width: 250px; padding: 8px; z-index: 400;
+  animation: dropIn 0.18s ease;
+}
 .nav-item.open > .nav-dropdown { display: block; }
 @keyframes dropIn { from { opacity:0; transform: translateY(-6px); } to { opacity:1; transform: none; } }
-.nav-drop-item { display: flex; align-items: flex-start; gap: 10px; width: 100%; padding: 10px 13px; font-size: 13px; color: var(--text); background: none; border: none; cursor: pointer; text-align: left; border-radius: var(--radius); transition: background 0.15s; }
+.nav-drop-item {
+  display: flex; align-items: flex-start; gap: 10px; width: 100%;
+  padding: 10px 13px; font-size: 13px; color: var(--text);
+  background: none; border: none; cursor: pointer;
+  text-align: left; border-radius: var(--radius); transition: background 0.15s;
+}
 .nav-drop-item:hover { background: var(--sand); color: var(--teal-dark); }
 .nav-drop-separator { height: 1px; background: var(--border); margin: 4px 0; }
 .di-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
 .di-label { font-size: 13px; font-weight: 500; }
 .di-sub { font-size: 11px; color: var(--text-light); font-weight: 300; margin-top: 1px; }
+
 .nav-posizione-wrap { position: relative; }
-.nav-posizione-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 10px 13px; font-size: 13px; color: var(--text); background: none; border: none; cursor: pointer; text-align: left; border-radius: var(--radius); transition: background 0.15s; gap: 10px; }
+.nav-posizione-trigger {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  padding: 10px 13px; font-size: 13px; color: var(--text);
+  background: none; border: none; cursor: pointer;
+  text-align: left; border-radius: var(--radius); transition: background 0.15s; gap: 10px;
+}
 .nav-posizione-trigger:hover { background: var(--sand); color: var(--teal-dark); }
 .nav-posizione-trigger .left-content { display: flex; align-items: flex-start; gap: 10px; }
 .nav-posizione-arrow { font-size: 9px; color: var(--text-light); transition: transform 0.2s; flex-shrink: 0; }
 .nav-posizione-wrap.sub-open .nav-posizione-arrow { transform: rotate(90deg); }
-.posizione-sub { display: none; position: absolute; left: calc(100% + 4px); top: 0; background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); min-width: 200px; padding: 8px; z-index: 500; animation: dropIn 0.18s ease; }
+.posizione-sub {
+  display: none; position: absolute; left: calc(100% + 4px); top: 0;
+  background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg); min-width: 200px; padding: 8px; z-index: 500;
+  animation: dropIn 0.18s ease;
+}
 .nav-posizione-wrap.sub-open .posizione-sub { display: block; }
+
+/* ===== HEADER RIGHT ===== */
 .header-right { display: flex; align-items: center; gap: 8px; }
-.lang-switcher { display: flex; align-items: center; gap: 3px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); border-radius: 50px; padding: 3px 5px; }
-.lang-btn { font-size: 9px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer; padding: 3px 7px; border-radius: 50px; transition: all 0.2s; }
+.lang-switcher {
+  display: flex; align-items: center; gap: 3px;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50px; padding: 3px 5px;
+}
+.lang-btn {
+  font-size: 9px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer;
+  padding: 3px 7px; border-radius: 50px; transition: all 0.2s;
+}
 .lang-btn.active { background: rgba(255,255,255,0.2); color: white; }
-.avatar { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.25); color: white; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 14px; font-weight: 500; cursor: pointer; position: relative; transition: all 0.2s; flex-shrink: 0; }
+.avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.25);
+  color: white; display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif; font-size: 14px; font-weight: 500;
+  cursor: pointer; position: relative; transition: all 0.2s; flex-shrink: 0;
+}
 .avatar:hover { background: rgba(255,255,255,0.22); }
-.hamburger-btn { display: none; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius); color: white; cursor: pointer; width: 38px; height: 38px; align-items: center; justify-content: center; flex-direction: column; gap: 5px; padding: 8px; flex-shrink: 0; }
-.hamburger-btn span { display: block; width: 18px; height: 1.5px; background: white; transition: all 0.25s; border-radius: 2px; }
+
+/* ===== HAMBURGER ===== */
+.hamburger-btn {
+  display: none;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius); color: white; cursor: pointer;
+  width: 38px; height: 38px; align-items: center; justify-content: center;
+  flex-direction: column; gap: 5px; padding: 8px; flex-shrink: 0;
+}
+.hamburger-btn span {
+  display: block; width: 18px; height: 1.5px; background: white;
+  transition: all 0.25s; border-radius: 2px;
+}
 .hamburger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
 .hamburger-btn.open span:nth-child(2) { opacity: 0; }
 .hamburger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-.mobile-drawer { display: none; position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0; z-index: 190; background: rgba(10,10,10,0.5); backdrop-filter: blur(2px); }
+
+/* ===== MOBILE DRAWER ===== */
+.mobile-drawer {
+  display: none;
+  position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0;
+  z-index: 190;
+  background: rgba(10,10,10,0.5);
+  backdrop-filter: blur(2px);
+}
 .mobile-drawer.open { display: block; }
-.mobile-nav { background: white; max-height: calc(100vh - var(--header-h)); overflow-y: auto; padding-bottom: 32px; }
+.mobile-nav {
+  background: white; max-height: calc(100vh - var(--header-h));
+  overflow-y: auto; padding-bottom: 32px;
+}
 .mobile-nav-section { border-bottom: 1px solid var(--border); }
-.mobile-nav-section-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; background: var(--cream); font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-light); }
+.mobile-nav-section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; cursor: pointer; background: var(--cream);
+  font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-light);
+}
 .mobile-nav-section-header .mns-arrow { font-size: 10px; transition: transform 0.2s; }
 .mobile-nav-section.open .mns-arrow { transform: rotate(180deg); }
 .mobile-nav-section-body { display: none; }
 .mobile-nav-section.open .mobile-nav-section-body { display: block; }
-.mobile-nav-item { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 24px; font-size: 14px; color: var(--text); background: none; border: none; cursor: pointer; text-align: left; border-top: 1px solid var(--border); transition: background 0.15s; }
+.mobile-nav-item {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 14px 24px; font-size: 14px; color: var(--text);
+  background: none; border: none; cursor: pointer; text-align: left;
+  border-top: 1px solid var(--border); transition: background 0.15s;
+}
 .mobile-nav-item:hover, .mobile-nav-item:active { background: var(--sand); }
 .mobile-nav-item .mni-icon { font-size: 20px; flex-shrink: 0; }
 .mobile-nav-item .mni-label { font-size: 14px; font-weight: 500; }
 .mobile-nav-item .mni-sub { font-size: 11px; color: var(--text-light); margin-top: 1px; }
-.mobile-lang-row { display: flex; align-items: center; gap: 8px; padding: 14px 20px; background: var(--cream); border-top: 1px solid var(--border); }
+.mobile-lang-row {
+  display: flex; align-items: center; gap: 8px; padding: 14px 20px;
+  background: var(--cream); border-top: 1px solid var(--border);
+}
 .mobile-lang-row span { font-size: 11px; color: var(--text-light); letter-spacing: 1px; text-transform: uppercase; }
-.mobile-lang-btn { padding: 5px 14px; border-radius: 50px; border: 1.5px solid var(--border); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; background: none; cursor: pointer; color: var(--text-light); transition: all 0.2s; }
+.mobile-lang-btn {
+  padding: 5px 14px; border-radius: 50px; border: 1.5px solid var(--border);
+  font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  background: none; cursor: pointer; color: var(--text-light); transition: all 0.2s;
+}
 .mobile-lang-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
-.profile-menu { position: absolute; top: calc(100% + 8px); right: 0; background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); min-width: 200px; box-shadow: var(--shadow-lg); padding: 8px; z-index: 300; display: none; }
+
+/* ===== PROFILE MENU ===== */
+.profile-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  min-width: 200px; box-shadow: var(--shadow-lg); padding: 8px; z-index: 300; display: none;
+}
 .profile-menu.open { display: block; animation: dropIn 0.2s ease; }
 .pm-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--radius); cursor: pointer; font-size: 13px; color: var(--text); transition: background 0.15s; }
 .pm-item:hover { background: var(--sand); }
@@ -103,23 +198,60 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .pm-divider { height: 1px; background: var(--border); margin: 6px 0; }
 
 /* ===== HERO ===== */
-.hero { position: relative; height: 100svh; min-height: 500px; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; }
-.hero-bg { position: absolute; inset: 0; background-image: url('immagini/casamare.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; animation: cambioSfondo 10s infinite ease-in-out; }
-@keyframes cambioSfondo { 0%, 45% { background-image: url('immagini/casamare.jpg'); } 50%, 95% { background-image: url('immagini/casamontagna.jpg'); } 100% { background-image: url('immagini/casamare.jpg'); } }
-.hero-bg::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 40% at 20% 70%, rgba(80,110,40,0.75) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 70% 30%, rgba(60,100,70,0.55) 0%, transparent 55%), radial-gradient(ellipse 50% 30% at 50% 80%, rgba(100,130,50,0.45) 0%, transparent 50%); }
+.hero {
+  position: relative; height: 100svh; min-height: 500px;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('immagini/casamare.jpg');
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  animation: cambioSfondo 10s infinite ease-in-out;
+}
+@keyframes cambioSfondo {
+  0%, 45% { background-image: url('immagini/casamare.jpg'); }
+  50%, 95% { background-image: url('immagini/casamontagna.jpg'); }
+  100% { background-image: url('immagini/casamare.jpg'); }
+}
+.hero-bg::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 70%, rgba(80,110,40,0.75) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 70% 30%, rgba(60,100,70,0.55) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 30% at 50% 80%, rgba(100,130,50,0.45) 0%, transparent 50%);
+}
 .hero-bg::after { content: ''; position: absolute; inset: 0; background: rgba(10,25,10,0.38); }
-.hero-text { position: relative; z-index: 2; text-align: center; padding: 0 24px; margin-bottom: 32px; }
-.hero-text h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 7vw, 72px); font-weight: 400; color: white; line-height: 1.1; text-shadow: 0 2px 20px rgba(0,0,0,0.4); letter-spacing: 1px; margin-bottom: 12px; }
+.hero-text {
+  position: relative; z-index: 2; text-align: center; padding: 0 24px;
+  margin-bottom: 32px;
+}
+.hero-text h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 7vw, 72px);
+  font-weight: 400; color: white; line-height: 1.1;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.4); letter-spacing: 1px; margin-bottom: 12px;
+}
 .hero-text h1 em { font-style: italic; color: #f0d89a; }
 .hero-tagline { font-size: 11px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.72); }
 .hero-brand-name { font-size: 16px; color: rgba(255,255,255,0.85); margin-top: 16px; font-weight: 300; letter-spacing: 1px; }
 .hero-cta { position: relative; z-index: 2; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; padding: 0 20px; }
-.hero-cta-btn { padding: 13px 22px; border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; border: none; }
+.hero-cta-btn {
+  padding: 13px 22px; border-radius: var(--radius); font-family: 'Jost', sans-serif;
+  font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; border: none;
+}
 .hero-cta-btn.primary { background: var(--teal); color: white; }
 .hero-cta-btn.primary:hover { background: var(--teal-dark); }
 .hero-cta-btn.secondary { background: rgba(255,255,255,0.15); color: white; border: 1.5px solid rgba(255,255,255,0.35); backdrop-filter: blur(6px); }
 .hero-cta-btn.secondary:hover { background: rgba(255,255,255,0.25); }
-.scroll-hint { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,0.5); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; animation: fadeUpDown 2s ease-in-out infinite; }
+
+/* ===== SCROLL INDICATOR ===== */
+.scroll-hint {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: rgba(255,255,255,0.5); font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  animation: fadeUpDown 2s ease-in-out infinite;
+}
 .scroll-hint svg { opacity: 0.5; }
 @keyframes fadeUpDown { 0%,100% { opacity:0.4; transform: translateX(-50%) translateY(0); } 50% { opacity:0.9; transform: translateX(-50%) translateY(6px); } }
 
@@ -128,14 +260,29 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .section-header { margin-bottom: 28px; }
 .section-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 6px; }
 .section-title { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 400; color: var(--text); }
-.filter-row { display: flex; gap: 8px; align-items: center; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; margin-top: 16px; margin-bottom: 20px; scrollbar-width: none; }
+.filter-row {
+  display: flex; gap: 8px; align-items: center;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px; margin-top: 16px; margin-bottom: 20px;
+  scrollbar-width: none;
+}
 .filter-row::-webkit-scrollbar { display: none; }
-.filter-chip { padding: 8px 18px; border: 1px solid var(--border); border-radius: 50px; font-size: 12px; font-weight: 400; background: white; cursor: pointer; color: var(--text-light); transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+.filter-chip {
+  padding: 8px 18px; border: 1px solid var(--border); border-radius: 50px;
+  font-size: 12px; font-weight: 400; background: white; cursor: pointer;
+  color: var(--text-light); transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+}
 .filter-chip:hover { border-color: var(--teal); color: var(--teal); }
 .filter-chip.active { background: var(--teal); color: white; border-color: var(--teal); }
 .listings-count { font-size: 12px; color: var(--text-light); white-space: nowrap; flex-shrink: 0; margin-left: 4px; }
 .listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
-.prop-card { background: white; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); cursor: pointer; transition: transform 0.3s cubic-bezier(.25,.46,.45,.94), box-shadow 0.3s; }
+
+/* ===== PROPERTY CARD ===== */
+.prop-card {
+  background: white; border-radius: var(--radius-lg); overflow: hidden;
+  border: 1px solid var(--border); cursor: pointer;
+  transition: transform 0.3s cubic-bezier(.25,.46,.45,.94), box-shadow 0.3s;
+}
 .prop-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
 .card-photos { position: relative; height: 220px; overflow: hidden; background: var(--sand); }
 .card-photos img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
@@ -156,31 +303,72 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .card-rating .count { font-size: 12px; color: var(--text-light); }
 .card-price { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 500; color: var(--teal); }
 .card-price span { font-family: 'Jost', sans-serif; font-size: 10px; color: var(--text-light); font-weight: 300; }
+
+/* ===== EMPTY STATE ===== */
 .empty-state { grid-column: 1/-1; text-align: center; padding: 80px 24px; }
 .empty-icon { font-size: 44px; margin-bottom: 16px; display: block; opacity: 0.35; }
 .empty-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; margin-bottom: 8px; }
 .empty-sub { font-size: 14px; color: var(--text-light); font-weight: 300; margin-bottom: 24px; }
-.btn-pubblica { display: inline-flex; align-items: center; gap: 8px; background: var(--teal); color: white; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; padding: 13px 26px; border-radius: var(--radius); transition: all 0.2s; }
+.btn-pubblica {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--teal); color: white; border: none; cursor: pointer;
+  font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase; padding: 13px 26px;
+  border-radius: var(--radius); transition: all 0.2s;
+}
 .btn-pubblica:hover { background: var(--teal-dark); }
 
 /* ===== DETAIL PAGE ===== */
 #detail-page { display: none; min-height: 100vh; }
-.detail-header { background: rgba(20,20,20,0.88); padding: 0 16px; height: var(--header-h); display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); }
-.back-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 0; transition: color 0.2s; flex-shrink: 0; }
+.detail-header {
+  background: rgba(20,20,20,0.88); padding: 0 16px;
+  height: var(--header-h); display: flex; align-items: center; gap: 12px;
+  position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px);
+}
+.back-btn {
+  background: none; border: none; cursor: pointer;
+  display: flex; align-items: center; gap: 7px;
+  color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 400;
+  letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 0; transition: color 0.2s;
+  flex-shrink: 0;
+}
 .back-btn:hover { color: white; }
 .back-btn svg { transition: transform 0.2s; }
 .back-btn:hover svg { transform: translateX(-3px); }
-.detail-header-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; color: white; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.detail-header-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400;
+  color: white; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* Photo grid */
 .photo-grid-container { position: relative; }
-.btn-modifica-casa { position: absolute; top: 12px; right: 12px; z-index: 20; background: rgba(250,247,242,0.96); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px; font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow); transition: all 0.2s; }
+.btn-modifica-casa {
+  position: absolute; top: 12px; right: 12px; z-index: 20;
+  background: rgba(250,247,242,0.96); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 8px 14px;
+  font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase; color: var(--text);
+  cursor: pointer; display: flex; align-items: center; gap: 6px;
+  box-shadow: var(--shadow); transition: all 0.2s;
+}
 .btn-modifica-casa:hover { background: var(--teal); color: white; border-color: var(--teal); }
 .photo-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 260px 180px; gap: 3px; cursor: pointer; }
 .photo-main { grid-row: 1 / 3; }
 .photo-grid-item { overflow: hidden; background: var(--sand); position: relative; }
 .photo-grid-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
 .photo-grid-item:hover img { transform: scale(1.04); }
-.see-all-photos { position: absolute; bottom: 12px; right: 12px; background: rgba(250,247,242,0.95); border: 1px solid var(--border); font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; padding: 8px 14px; border-radius: var(--radius); cursor: pointer; }
-.detail-body { max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px; display: grid; grid-template-columns: 1fr 360px; gap: 56px; align-items: start; }
+.see-all-photos {
+  position: absolute; bottom: 12px; right: 12px;
+  background: rgba(250,247,242,0.95); border: 1px solid var(--border);
+  font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+  padding: 8px 14px; border-radius: var(--radius); cursor: pointer;
+}
+
+/* Detail body */
+.detail-body {
+  max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px;
+  display: grid; grid-template-columns: 1fr 360px; gap: 56px; align-items: start;
+}
 .detail-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
 .detail-eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--text-light); }
 .detail-main-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 44px); font-weight: 400; line-height: 1.1; margin-bottom: 12px; }
@@ -198,18 +386,159 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .amenities-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; margin-bottom: 16px; }
 .amenities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .amenity { display: flex; align-items: center; gap: 9px; font-size: 12px; padding: 10px 12px; background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-light); }
-.booking-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-lg); position: sticky; top: 76px; }
+
+/* ===== CALENDAR ===== */
+.cal-wrap {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  overflow: hidden; margin-bottom: 14px;
+}
+.cal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-bottom: 1px solid var(--border);
+  background: var(--cream);
+}
+.cal-month-label {
+  font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500; color: var(--text);
+  text-transform: capitalize;
+}
+.cal-nav-btn {
+  background: none; border: 1px solid var(--border); border-radius: var(--radius);
+  width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--text-light); transition: all 0.15s;
+}
+.cal-nav-btn:hover { background: var(--teal); color: white; border-color: var(--teal); }
+.cal-legend {
+  display: flex; gap: 14px; padding: 10px 16px; border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.cal-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-light); }
+.cal-legend-dot {
+  width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0;
+}
+.cal-legend-dot.available { background: var(--teal-light); border: 1px solid var(--teal); }
+.cal-legend-dot.blocked { background: #f3e8e8; border: 1px solid #e0b0b0; }
+.cal-legend-dot.selected { background: var(--teal); }
+.cal-legend-dot.today { background: var(--cream); border: 2px solid var(--terracotta); }
+.cal-grid-wrap { padding: 12px; }
+.cal-days-header {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+.cal-day-label {
+  text-align: center; font-size: 10px; font-weight: 600; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text-light); padding: 6px 0;
+}
+.cal-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px;
+}
+.cal-day {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; border-radius: 6px; cursor: pointer; transition: all 0.15s;
+  position: relative; font-family: 'Jost', sans-serif; font-weight: 400;
+  color: var(--text); background: transparent; border: none;
+  user-select: none;
+}
+.cal-day.empty { cursor: default; }
+.cal-day.past { color: var(--border); cursor: not-allowed; }
+.cal-day.today { color: var(--terracotta); font-weight: 600; }
+.cal-day.today::after {
+  content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%; background: var(--terracotta);
+}
+.cal-day.blocked {
+  background: #f3e8e8; color: #c0868686; cursor: not-allowed;
+  text-decoration: line-through;
+}
+.cal-day.available:not(.past):not(.blocked):hover {
+  background: var(--teal-light); color: var(--teal-dark);
+}
+.cal-day.check-in {
+  background: var(--teal); color: white; border-radius: 6px 0 0 6px;
+}
+.cal-day.check-out {
+  background: var(--teal); color: white; border-radius: 0 6px 6px 0;
+}
+.cal-day.in-range {
+  background: var(--teal-light); color: var(--teal-dark); border-radius: 0;
+}
+.cal-day.check-in.check-out { border-radius: 6px; }
+
+/* iCal sync banner */
+.ical-sync-banner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; background: var(--teal-light); border-top: 1px solid var(--teal);
+  font-size: 12px; color: var(--teal-dark);
+}
+.ical-sync-btn {
+  margin-left: auto; padding: 5px 12px; background: var(--teal); color: white;
+  border: none; border-radius: var(--radius); font-size: 10px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+  white-space: nowrap;
+}
+.ical-sync-btn:hover { background: var(--teal-dark); }
+.ical-sync-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Selected dates summary */
+.cal-selection-summary {
+  margin: 0 0 14px; padding: 14px 16px;
+  background: var(--teal-light); border: 1px solid var(--teal);
+  border-radius: var(--radius-lg); display: none;
+}
+.cal-selection-summary.show { display: block; }
+.css-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.css-dates { font-size: 14px; font-weight: 500; color: var(--teal-dark); }
+.css-nights { font-size: 12px; color: var(--text-light); margin-top: 3px; }
+.css-clear { background: none; border: none; cursor: pointer; font-size: 11px; color: var(--text-light); text-decoration: underline; }
+
+/* Booking form in card */
+.booking-section-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400;
+  margin: 20px 0 12px; color: var(--text); padding-top: 18px; border-top: 1px solid var(--border);
+}
+.booking-form-field {
+  display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px;
+}
+.booking-form-field label {
+  font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light);
+}
+.booking-form-field input, .booking-form-field textarea, .booking-form-field select {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 10px 12px; font-family: 'Jost', sans-serif; font-size: 13px;
+  font-weight: 300; outline: none; transition: border-color 0.2s;
+  width: 100%; background: white; color: var(--text);
+}
+.booking-form-field input:focus, .booking-form-field textarea:focus, .booking-form-field select:focus {
+  border-color: var(--teal);
+}
+.booking-form-field textarea { height: 70px; resize: vertical; }
+.booking-guests-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+/* Booking card */
+.booking-card {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 28px; box-shadow: var(--shadow-lg); position: sticky; top: 76px;
+}
 .booking-card-label { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--text-light); margin-bottom: 5px; }
 .booking-price { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; color: var(--text); margin-bottom: 4px; }
 .booking-price span { font-family: 'Jost', sans-serif; font-size: 13px; color: var(--text-light); font-weight: 300; }
 .booking-rating { display: flex; align-items: center; gap: 6px; font-size: 13px; margin-bottom: 20px; color: var(--text-light); }
 .booking-rating .stars { color: var(--teal); }
 .booking-rating b { color: var(--text); font-weight: 500; }
-.contact-btn { width: 100%; padding: 15px; background: var(--teal); color: white; border: none; border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.25s; margin-bottom: 10px; }
+.contact-btn {
+  width: 100%; padding: 15px; background: var(--teal); color: white; border: none;
+  border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all 0.25s; margin-bottom: 10px;
+}
 .contact-btn:hover { background: var(--teal-dark); }
-.calendar-btn { width: 100%; padding: 13px; background: transparent; color: var(--teal); border: 1.5px solid var(--teal); border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; margin-bottom: 10px; }
-.calendar-btn:hover { background: var(--teal-light); }
-.whatsapp-btn { width: 100%; padding: 13px; background: transparent; color: #128c3e; border: 1.5px solid #25d366; border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
+.whatsapp-btn {
+  width: 100%; padding: 13px; background: transparent; color: #128c3e;
+  border: 1.5px solid #25d366; border-radius: var(--radius);
+  font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;
+}
 .whatsapp-btn:hover { background: #f0fdf4; }
 .booking-note { text-align: center; font-size: 11px; color: var(--text-light); margin-top: 12px; font-weight: 300; }
 .host-card { display: flex; align-items: center; gap: 12px; padding: 18px 0 0; margin-top: 18px; border-top: 1px solid var(--border); }
@@ -238,15 +567,29 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .star-btn { background: none; border: none; cursor: pointer; font-size: 28px; color: var(--border); transition: color 0.15s, transform 0.1s; padding: 2px; line-height: 1; }
 .star-btn.active { color: var(--teal); }
 .review-inputs { display: flex; flex-direction: column; gap: 10px; }
-.review-inputs input, .review-inputs textarea { border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 300; outline: none; transition: border-color 0.2s; width: 100%; background: white; color: var(--text); }
+.review-inputs input, .review-inputs textarea {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 12px 14px; font-family: 'Jost', sans-serif; font-size: 14px;
+  font-weight: 300; outline: none; transition: border-color 0.2s;
+  width: 100%; background: white; color: var(--text);
+}
 .review-inputs input:focus, .review-inputs textarea:focus { border-color: var(--teal); }
 .review-inputs textarea { height: 90px; resize: vertical; }
-.submit-review { margin-top: 14px; padding: 12px 26px; background: var(--text); color: var(--cream); border: none; border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+.submit-review {
+  margin-top: 14px; padding: 12px 26px;
+  background: var(--text); color: var(--cream); border: none;
+  border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px;
+  font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+}
 .submit-review:hover { background: var(--teal); }
 
-/* ===== INNER / MAP / SERVIZI / EMAIL / PUBBLICA PAGES ===== */
+/* ===== INNER PAGE ===== */
 #inner-page { display: none; min-height: 100vh; }
-.inner-header { background: rgba(20,20,20,0.88); padding: 0 16px; height: var(--header-h); display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); }
+.inner-header {
+  background: rgba(20,20,20,0.88); padding: 0 16px; height: var(--header-h);
+  display: flex; align-items: center; gap: 12px;
+  position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px);
+}
 .inner-header-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; color: white; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .inner-body { max-width: 1100px; margin: 0 auto; padding: 48px 20px 80px; }
 .cond-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
@@ -272,11 +615,15 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .pre-section-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; margin-bottom: 14px; color: var(--text); }
 .pre-text { font-size: 15px; line-height: 1.85; color: var(--text-light); font-weight: 300; }
 .pre-link { color: var(--teal); text-decoration: underline; cursor: pointer; background: none; border: none; font-family: inherit; font-size: inherit; font-weight: 400; }
+
+/* ===== MAP PAGE ===== */
 #map-page { display: none; min-height: 100vh; }
 .map-header { background: rgba(20,20,20,0.88); padding: 0 16px; height: var(--header-h); display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); }
 .map-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; color: white; }
 .map-frame-wrap { height: calc(100vh - var(--header-h)); }
 .map-frame-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+/* ===== SERVIZI ===== */
 #servizi-detail-page { display: none; min-height: 100vh; }
 .servizi-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 32px; }
 .servizi-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px 24px; cursor: pointer; transition: all 0.25s; text-align: center; }
@@ -296,6 +643,8 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .srv-bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex-shrink: 0; margin-top: 7px; }
 .srv-name { font-size: 14px; font-weight: 500; color: var(--text); }
 .srv-desc { font-size: 12px; color: var(--text-light); font-weight: 300; margin-top: 2px; }
+
+/* ===== EMAIL PAGE ===== */
 #email-page { display: none; min-height: 100vh; }
 .email-body { max-width: 560px; margin: 56px auto; padding: 0 24px 80px; text-align: center; }
 .email-icon { font-size: 52px; margin-bottom: 20px; }
@@ -303,6 +652,8 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .email-address { font-size: 20px; color: var(--teal); font-weight: 400; margin-top: 20px; }
 .email-address a { color: var(--teal); text-decoration: none; }
 .email-address a:hover { text-decoration: underline; }
+
+/* ===== PUBBLICA CASA PAGE ===== */
 #pubblica-page { display: none; min-height: 100vh; }
 .pubblica-form { max-width: 620px; margin: 0 auto; }
 .pubblica-title { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 400; margin-bottom: 8px; }
@@ -326,7 +677,7 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .pf-submit { width: 100%; padding: 15px; background: var(--teal); color: white; border: none; border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; margin-top: 8px; }
 .pf-submit:hover { background: var(--teal-dark); }
 
-/* ===== MODALS ===== */
+/* ===== MODALI ===== */
 .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; justify-content: center; align-items: center; padding: 16px; backdrop-filter: blur(4px); overflow-y: auto; }
 .overlay.open { display: flex; }
 .modal { background: var(--cream); border-radius: var(--radius-lg); max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 24px 80px rgba(0,0,0,0.25); animation: modalIn 0.28s cubic-bezier(.25,.46,.45,.94); }
@@ -336,6 +687,8 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .modal-close { background: var(--sand); border: 1px solid var(--border); cursor: pointer; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; color: var(--text-light); flex-shrink: 0; }
 .modal-close:hover { background: var(--sand-dark); }
 .modal-body { padding: 24px 28px 28px; }
+
+/* Edit modal */
 .edit-section-title { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 500; color: var(--text); margin: 22px 0 12px; display: flex; align-items: center; gap: 10px; }
 .edit-section-title:first-child { margin-top: 0; }
 .edit-section-line { flex: 1; height: 1px; background: var(--border); }
@@ -356,12 +709,54 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .edit-add-photo-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .edit-add-photo-btn input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
 .edit-add-photo-btn:disabled input[type=file] { pointer-events: none; }
+
+/* Date management in edit modal */
+.dates-manager { margin-top: 4px; }
+.dates-manager-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.dm-tab {
+  padding: 7px 14px; border: 1.5px solid var(--border); border-radius: 50px;
+  font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  cursor: pointer; background: white; color: var(--text-light); transition: all 0.2s;
+}
+.dm-tab.active { background: var(--teal); color: white; border-color: var(--teal); }
+.dm-panel { display: none; }
+.dm-panel.active { display: block; }
+.dm-manual-add { display: flex; gap: 8px; margin-bottom: 12px; }
+.dm-date-input { flex: 1; border: 1px solid var(--border); border-radius: var(--radius); padding: 9px 12px; font-family: 'Jost', sans-serif; font-size: 13px; outline: none; background: white; color: var(--text); transition: border-color 0.2s; }
+.dm-date-input:focus { border-color: var(--teal); }
+.dm-add-btn { padding: 9px 16px; background: var(--teal); color: white; border: none; border-radius: var(--radius); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.dm-add-btn:hover { background: var(--teal-dark); }
+.dm-blocked-list { display: flex; flex-wrap: wrap; gap: 6px; min-height: 36px; }
+.dm-date-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: #f3e8e8; border: 1px solid #e0b0b0; color: #8b2020;
+  border-radius: 50px; padding: 5px 10px 5px 12px; font-size: 12px; font-weight: 500;
+}
+.dm-date-chip button { background: none; border: none; cursor: pointer; color: #c0392b; font-size: 13px; line-height: 1; padding: 0; }
+.dm-date-chip button:hover { color: #8b0000; }
+.dm-empty-dates { font-size: 12px; color: var(--text-light); font-style: italic; padding: 8px 0; }
+.dm-range-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.dm-range-add-btn { width: 100%; padding: 9px; background: var(--sand); border: 1px solid var(--border); border-radius: var(--radius); font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text); transition: all 0.2s; margin-bottom: 12px; }
+.dm-range-add-btn:hover { background: var(--teal); color: white; border-color: var(--teal); }
+.ical-field-wrap { display: flex; flex-direction: column; gap: 8px; }
+.ical-url-input { border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 13px; font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 300; outline: none; transition: border-color 0.2s; width: 100%; background: white; color: var(--text); }
+.ical-url-input:focus { border-color: var(--teal); }
+.ical-hint { font-size: 11px; color: var(--text-light); line-height: 1.6; background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; }
+.ical-hint strong { color: var(--teal-dark); }
+.ical-test-btn { padding: 9px 16px; background: var(--teal); color: white; border: none; border-radius: var(--radius); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; align-self: flex-start; }
+.ical-test-btn:hover { background: var(--teal-dark); }
+.ical-status { font-size: 12px; padding: 8px 12px; border-radius: var(--radius); display: none; }
+.ical-status.ok { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; display: block; }
+.ical-status.err { background: #fce4e4; color: #c0392b; border: 1px solid #f1a0a0; display: block; }
+
 .edit-actions { display: flex; flex-direction: column; gap: 10px; padding-top: 18px; border-top: 1px solid var(--border); margin-top: 6px; }
 .edit-divider-danger { text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-light); padding: 3px 0; }
 .btn-salva-casa { width: 100%; padding: 13px; background: var(--teal); color: white; border: none; border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
 .btn-salva-casa:hover { background: var(--teal-dark); }
 .btn-rimuovi-casa { width: 100%; padding: 12px; background: transparent; border: 1.5px solid #c0392b; color: #c0392b; border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
 .btn-rimuovi-casa:hover { background: #c0392b; color: white; }
+
+/* Contact form */
 .contact-intro { font-size: 14px; color: var(--text-light); font-weight: 300; margin-bottom: 20px; line-height: 1.65; border-left: 3px solid var(--teal); padding-left: 13px; font-style: italic; }
 .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .cf-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
@@ -378,95 +773,14 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 .cm-sub { font-size: 12px; color: var(--text-light); margin-top: 2px; font-weight: 300; }
 .profilo-form .cf-field { margin-bottom: 16px; }
 .profilo-date-info { background: var(--teal-light); border: 1px solid var(--teal); border-radius: var(--radius); padding: 11px 14px; font-size: 13px; color: var(--teal-dark); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+/* Lightbox */
 #lightbox-overlay .modal { max-width: 88vw; background: #111; }
 #lightbox-overlay .modal-header { background: #111; border-color: #333; }
 #lightbox-overlay .modal-title { color: white; }
 #lightbox-overlay .modal-close { background: #333; color: white; border-color: #444; }
 .lightbox-imgs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; padding: 4px 0 24px; }
 .lightbox-imgs img { width: 100%; height: 190px; object-fit: cover; cursor: pointer; border-radius: 3px; }
-
-/* ===== CALENDAR MODAL ===== */
-#calendar-overlay .modal { max-width: 760px; background: white; }
-#calendar-overlay .modal-header { background: white; }
-.cal-wrapper { padding: 0 0 8px; }
-.cal-legend { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; padding: 14px 16px; background: var(--cream); border-radius: var(--radius-lg); border: 1px solid var(--border); }
-.cal-legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-light); }
-.leg-swatch { width: 22px; height: 22px; border-radius: 4px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.08); }
-.leg-swatch.available { background: white; }
-.leg-swatch.unavailable { background: var(--cal-gray); }
-.leg-swatch.mine { background: var(--cal-blue-light); border-color: var(--cal-blue-mid); position: relative; overflow: hidden; }
-.leg-swatch.mine::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--cal-blue-light) 50%, var(--cal-blue-mid) 50%); }
-.leg-swatch.others { background: var(--cal-green-light); border-color: var(--cal-green-mid); position: relative; overflow: hidden; }
-.leg-swatch.others::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--cal-green-light) 50%, var(--cal-green-mid) 50%); }
-.cal-months { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.cal-month { background: white; }
-.cal-month-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.cal-month-label { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500; color: var(--text); }
-.cal-nav-btn { background: none; border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; color: var(--text-light); transition: all 0.15s; font-size: 13px; }
-.cal-nav-btn:hover { background: var(--sand); color: var(--text); }
-.cal-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; margin-bottom: 4px; }
-.cal-weekday { text-align: center; font-size: 9px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light); padding: 4px 0; }
-.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; }
-.cal-day {
-  position: relative; min-height: 38px; display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 400; color: var(--text); cursor: pointer;
-  border-radius: 4px; transition: background 0.12s, color 0.12s; z-index: 0;
-  user-select: none;
-}
-.cal-day:empty { cursor: default; }
-.cal-day.past { color: var(--cal-gray-text); cursor: not-allowed; }
-.cal-day.unavailable { background: var(--cal-gray) !important; color: var(--cal-gray-text) !important; cursor: not-allowed !important; font-style: italic; text-decoration: line-through; }
-.cal-day.available:hover { background: var(--teal-light); }
-.cal-day.today { font-weight: 600; }
-.cal-day.today::before { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--teal); }
-
-/* Range stripe rendering */
-.cal-day.mine-start, .cal-day.mine-end, .cal-day.mine-mid { cursor: not-allowed; color: var(--cal-blue); font-weight: 600; }
-.cal-day.mine-start::after, .cal-day.mine-end::after, .cal-day.mine-mid::after { content: ''; position: absolute; inset: 2px 0; z-index: -1; background: var(--cal-blue-light); border: 1px solid var(--cal-blue-mid); }
-.cal-day.mine-start::after { border-radius: 4px 0 0 4px; left: 2px; }
-.cal-day.mine-end::after { border-radius: 0 4px 4px 0; right: 2px; }
-.cal-day.mine-mid::after { border-radius: 0; border-left: none; border-right: none; }
-.cal-day.mine-start.mine-end::after { border-radius: 4px; left: 2px; right: 2px; }
-
-.cal-day.others-start, .cal-day.others-end, .cal-day.others-mid { cursor: not-allowed; color: var(--cal-green); font-weight: 600; }
-.cal-day.others-start::after, .cal-day.others-end::after, .cal-day.others-mid::after { content: ''; position: absolute; inset: 2px 0; z-index: -1; background: var(--cal-green-light); border: 1px solid var(--cal-green-mid); }
-.cal-day.others-start::after { border-radius: 4px 0 0 4px; left: 2px; }
-.cal-day.others-end::after { border-radius: 0 4px 4px 0; right: 2px; }
-.cal-day.others-mid::after { border-radius: 0; border-left: none; border-right: none; }
-.cal-day.others-start.others-end::after { border-radius: 4px; left: 2px; right: 2px; }
-
-/* Selection preview (blue, lighter) */
-.cal-day.select-start, .cal-day.select-end, .cal-day.select-mid { color: white !important; }
-.cal-day.select-start::after, .cal-day.select-end::after, .cal-day.select-mid::after { content: ''; position: absolute; inset: 2px 0; z-index: -1; background: var(--cal-blue); border: none; }
-.cal-day.select-start::after { border-radius: 4px 0 0 4px; left: 2px; }
-.cal-day.select-end::after { border-radius: 0 4px 4px 0; right: 2px; }
-.cal-day.select-mid::after { border-radius: 0; }
-.cal-day.select-start.select-end::after { border-radius: 4px; left: 2px; right: 2px; }
-
-.cal-selection-info { margin-top: 20px; padding: 14px 16px; background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.cal-sel-text { font-size: 14px; color: var(--text-light); font-weight: 300; }
-.cal-sel-text strong { color: var(--text); font-weight: 500; }
-.cal-confirm-btn { padding: 10px 22px; background: var(--cal-blue); color: white; border: none; border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-.cal-confirm-btn:hover { background: #1d4ed8; }
-.cal-confirm-btn:disabled { background: var(--border); color: var(--text-light); cursor: not-allowed; }
-.cal-clear-btn { padding: 10px 16px; background: transparent; color: var(--text-light); border: 1px solid var(--border); border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-.cal-clear-btn:hover { background: var(--sand); }
-
-/* Unavailable date range management (in modifica modal) */
-.unavail-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
-.unavail-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: white; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; }
-.unavail-remove { background: none; border: none; cursor: pointer; color: #c0392b; font-size: 14px; padding: 2px 6px; border-radius: 4px; transition: background 0.15s; }
-.unavail-remove:hover { background: #fde8e8; }
-.unavail-add-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.unavail-add-row input { border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px; font-family: 'Jost', sans-serif; font-size: 13px; outline: none; transition: border-color 0.2s; background: white; }
-.unavail-add-row input:focus { border-color: var(--teal); }
-.unavail-add-btn { padding: 8px 16px; background: var(--teal); color: white; border: none; border-radius: var(--radius); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; white-space: nowrap; font-family: 'Jost', sans-serif; transition: background 0.2s; }
-.unavail-add-btn:hover { background: var(--teal-dark); }
-
-/* ===== MOBILE STICKY CONTACT BAR ===== */
-.mobile-contact-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 90; background: white; border-top: 1px solid var(--border); padding: 12px 16px 16px; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); gap: 10px; }
-.mobile-contact-bar .contact-btn, .mobile-contact-bar .whatsapp-btn { margin: 0; flex: 1; }
 
 /* ===== FOOTER ===== */
 .site-footer { background: #1a1a18; color: var(--sand); padding: 48px 24px 32px; }
@@ -483,6 +797,17 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 #toast { position: fixed; bottom: 24px; right: 16px; z-index: 9999; background: #1a1a18; color: var(--sand); padding: 13px 20px; border-radius: var(--radius-lg); font-size: 13px; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transform: translateY(12px); transition: all 0.3s ease; border-left: 3px solid var(--teal); max-width: calc(100vw - 32px); }
 #toast.show { opacity: 1; transform: none; }
 
+/* ===== MOBILE CONTACT BAR ===== */
+.mobile-contact-bar {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
+  background: white; border-top: 1px solid var(--border);
+  padding: 12px 16px 16px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  gap: 10px;
+}
+.mobile-contact-bar .contact-btn, .mobile-contact-bar .whatsapp-btn { margin: 0; flex: 1; }
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   :root { --header-h: 56px; }
@@ -492,22 +817,28 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
   .hero { height: 100svh; }
   .hero-text { margin-bottom: 24px; }
   .hero-text h1 { font-size: clamp(28px, 8vw, 44px); }
+  .hero-tagline { font-size: 10px; letter-spacing: 3px; }
   .hero-cta { flex-direction: column; align-items: center; gap: 10px; }
   .hero-cta-btn { width: 100%; max-width: 280px; justify-content: center; }
   .listings-section { padding: 36px 16px 60px; }
   .section-title { font-size: 26px; }
   .listings-grid { grid-template-columns: 1fr; gap: 16px; }
   .card-photos { height: 200px; }
+  .filter-row { margin-top: 14px; margin-bottom: 16px; }
   .photo-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 140px; }
   .detail-body { grid-template-columns: 1fr; padding: 24px 16px 100px; gap: 28px; }
   .booking-card { order: -1; position: static; }
   .booking-card .contact-btn, .booking-card .whatsapp-btn { display: none; }
   .mobile-contact-bar { display: flex; }
   .amenities-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .amenity { font-size: 11px; }
   .cond-layout { grid-template-columns: 1fr; }
   .slideshow { height: 260px; }
   .inner-body { padding: 32px 16px 60px; }
+  .cond-section-title { font-size: 28px; }
+  .prenotazione-title { font-size: 28px; }
   .servizi-choice { grid-template-columns: 1fr; gap: 14px; }
+  .servizi-main-title { font-size: 28px; }
   .ef-row { grid-template-columns: 1fr; }
   .overlay { align-items: flex-end; padding: 0; }
   .modal { border-radius: var(--radius-lg) var(--radius-lg) 0 0; max-height: 92vh; }
@@ -516,10 +847,8 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
   .edit-photos-grid { grid-template-columns: repeat(3, 1fr); }
   .cf-row { grid-template-columns: 1fr; }
   .lightbox-imgs img { height: 150px; }
-  .cal-months { grid-template-columns: 1fr; }
-  .cal-legend { gap: 10px; }
-  .footer-inner { grid-template-columns: 1fr; gap: 28px; }
-  .footer-bottom { flex-direction: column; text-align: center; }
+  .dm-range-row { grid-template-columns: 1fr; }
+  .booking-guests-row { grid-template-columns: 1fr; }
 }
 @media (max-width: 380px) {
   .hero-text h1 { font-size: 26px; }
@@ -728,6 +1057,41 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
       <div class="amenities-title" data-i18n="amenities_title">Dotazioni incluse</div>
       <div class="amenities-grid" id="d-amenities"></div>
       <div class="section-divider"></div>
+      <!-- CALENDARIO -->
+      <div class="amenities-title" data-i18n="cal_title">Disponibilità</div>
+      <div style="margin-bottom:8px">
+        <div class="cal-wrap" id="cal-wrap">
+          <div class="cal-header">
+            <button class="cal-nav-btn" onclick="calNav(-1)">‹</button>
+            <div class="cal-month-label" id="cal-month-label">—</div>
+            <button class="cal-nav-btn" onclick="calNav(1)">›</button>
+          </div>
+          <div class="cal-legend">
+            <div class="cal-legend-item"><div class="cal-legend-dot available"></div><span data-i18n="cal_legend_avail">Disponibile</span></div>
+            <div class="cal-legend-item"><div class="cal-legend-dot blocked"></div><span data-i18n="cal_legend_blocked">Occupato</span></div>
+            <div class="cal-legend-item"><div class="cal-legend-dot selected"></div><span data-i18n="cal_legend_sel">Selezionato</span></div>
+          </div>
+          <div class="cal-grid-wrap">
+            <div class="cal-days-header" id="cal-days-header"></div>
+            <div class="cal-grid" id="cal-grid"></div>
+          </div>
+          <div class="ical-sync-banner" id="ical-sync-banner" style="display:none">
+            <span>🔗</span>
+            <span data-i18n="ical_synced_label">Calendario sincronizzato con Booking.com</span>
+            <button class="ical-sync-btn" onclick="syncIcalNow()" id="ical-sync-btn" data-i18n="ical_sync_now">Aggiorna</button>
+          </div>
+        </div>
+      </div>
+      <div class="cal-selection-summary" id="cal-selection-summary">
+        <div class="css-row">
+          <div>
+            <div class="css-dates" id="css-dates">—</div>
+            <div class="css-nights" id="css-nights">—</div>
+          </div>
+          <button class="css-clear" onclick="clearCalSelection()" data-i18n="cal_clear">Cancella selezione</button>
+        </div>
+      </div>
+      <div class="section-divider"></div>
       <div class="reviews-header">
         <div class="reviews-title" data-i18n="reviews_title">Recensioni</div>
         <div class="overall-score">
@@ -760,13 +1124,45 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
         <b id="b-score">—</b>
         <span id="b-count">· recensioni</span>
       </div>
-      <button class="calendar-btn" onclick="openCalendar()">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <span data-i18n="cal_btn">Verifica disponibilità</span>
-      </button>
-      <button class="contact-btn" onclick="openContact()">
+      <!-- FORM PRENOTAZIONE -->
+      <div class="booking-section-title" data-i18n="booking_form_title">Richiedi prenotazione</div>
+      <div class="booking-form-field">
+        <label data-i18n="form_name_label">Nome e Cognome *</label>
+        <input type="text" id="bf-nome" data-i18n-placeholder="form_name_ph">
+      </div>
+      <div class="booking-form-field">
+        <label data-i18n="form_email">Email *</label>
+        <input type="email" id="bf-email" data-i18n-placeholder="form_email_ph">
+      </div>
+      <div class="booking-form-field">
+        <label data-i18n="form_phone_label">Telefono</label>
+        <input type="tel" id="bf-tel" placeholder="+39 000 000 0000">
+      </div>
+      <div class="booking-guests-row">
+        <div class="booking-form-field">
+          <label data-i18n="form_adults_label">Adulti</label>
+          <select id="bf-adults">
+            <option value="1">1</option><option value="2" selected>2</option>
+            <option value="3">3</option><option value="4">4</option>
+            <option value="5">5</option><option value="6">6</option>
+          </select>
+        </div>
+        <div class="booking-form-field">
+          <label data-i18n="form_children_label">Bambini</label>
+          <select id="bf-children">
+            <option value="0" selected>0</option><option value="1">1</option>
+            <option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+      </div>
+      <div class="booking-form-field">
+        <label data-i18n="form_message">Note (facoltativo)</label>
+        <textarea id="bf-note" data-i18n-placeholder="form_notes_ph"></textarea>
+      </div>
+      <button class="contact-btn" onclick="submitBookingForm()" style="margin-top:4px">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 4H3a1 1 0 00-1 1v6a1 1 0 001 1h10a1 1 0 001-1V5a1 1 0 00-1-1z" stroke="currentColor" stroke-width="1.5"/><path d="M3 5l5 4 5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <span data-i18n="contact_owner">Contatta il Proprietario</span>
+        <span data-i18n="booking_send">Invia Richiesta</span>
       </button>
       <button class="whatsapp-btn" onclick="openWhatsapp()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.56 4.14 1.534 5.874L0 24l6.254-1.502A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.498-5.17-1.367l-.371-.22-3.713.892.892-3.713-.22-.371A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
@@ -783,9 +1179,9 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
     </div>
   </div>
   <div class="mobile-contact-bar" id="mobile-contact-bar">
-    <button class="contact-btn" onclick="openCalendar()">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <span data-i18n="cal_btn">Disponibilità</span>
+    <button class="contact-btn" onclick="submitBookingForm()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 4H3a1 1 0 00-1 1v6a1 1 0 001 1h10a1 1 0 001-1V5a1 1 0 00-1-1z" stroke="currentColor" stroke-width="1.5"/><path d="M3 5l5 4 5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span data-i18n="booking_send">Richiedi</span>
     </button>
     <button class="whatsapp-btn" onclick="openWhatsapp()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.56 4.14 1.534 5.874L0 24l6.254-1.502A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.498-5.17-1.367l-.371-.22-3.713.892.892-3.713-.22-.371A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
@@ -797,7 +1193,10 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 <!-- ==================== INNER PAGE ==================== -->
 <div id="inner-page">
   <div class="inner-header">
-    <button class="back-btn" onclick="closeInnerPage()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span data-i18n="back_home">Torna alla home</span></button>
+    <button class="back-btn" onclick="closeInnerPage()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span data-i18n="back_home">Torna alla home</span>
+    </button>
     <div class="inner-header-title" id="inner-title">—</div>
   </div>
   <div class="inner-body" id="inner-body"></div>
@@ -806,7 +1205,10 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 <!-- ==================== MAP PAGE ==================== -->
 <div id="map-page">
   <div class="map-header">
-    <button class="back-btn" onclick="closeMapPage()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span data-i18n="back_home">Torna alla home</span></button>
+    <button class="back-btn" onclick="closeMapPage()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span data-i18n="back_home">Torna alla home</span>
+    </button>
     <div class="map-title" id="map-title">Posizione</div>
   </div>
   <div class="map-frame-wrap" id="map-frame-wrap"></div>
@@ -815,16 +1217,24 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 <!-- ==================== SERVIZI DETAIL PAGE ==================== -->
 <div id="servizi-detail-page">
   <div class="inner-header">
-    <button class="back-btn" onclick="closeServiziDetail()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span data-i18n="back_home">Torna alla home</span></button>
+    <button class="back-btn" onclick="closeServiziDetail()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span data-i18n="back_home">Torna alla home</span>
+    </button>
     <div class="inner-header-title" id="servizi-detail-title" data-i18n="nav_servizi">Servizi</div>
   </div>
-  <div class="inner-body"><div class="servizi-body" id="servizi-body"></div></div>
+  <div class="inner-body">
+    <div class="servizi-body" id="servizi-body"></div>
+  </div>
 </div>
 
 <!-- ==================== EMAIL PAGE ==================== -->
 <div id="email-page">
   <div class="inner-header">
-    <button class="back-btn" onclick="closeEmailPage()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span data-i18n="back_btn">Indietro</span></button>
+    <button class="back-btn" onclick="closeEmailPage()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span data-i18n="back_btn">Indietro</span>
+    </button>
     <div class="inner-header-title" data-i18n="email_header">La nostra email</div>
   </div>
   <div class="email-body">
@@ -838,7 +1248,10 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 <!-- ==================== PUBBLICA CASA PAGE ==================== -->
 <div id="pubblica-page">
   <div class="inner-header">
-    <button class="back-btn" onclick="closePubblicaPage()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span data-i18n="back_btn">Indietro</span></button>
+    <button class="back-btn" onclick="closePubblicaPage()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span data-i18n="back_btn">Indietro</span>
+    </button>
     <div class="inner-header-title" id="pubblica-header-title" data-i18n="pubblica_header">Pubblica Casa</div>
   </div>
   <div class="inner-body">
@@ -856,17 +1269,29 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
         </div>
         <div class="photo-preview-grid" id="photo-preview-grid"></div>
       </div>
-      <div class="pf-section"><label class="pf-label" for="pf-nome" data-i18n="pubblica_name_label">🏠 Nome Casa *</label><input class="pf-input" type="text" id="pf-nome" data-i18n-placeholder="pubblica_name_ph"></div>
-      <div class="pf-section"><label class="pf-label" for="pf-desc" data-i18n="pubblica_desc_label">📝 Descrizione</label><textarea class="pf-input pf-textarea" id="pf-desc" data-i18n-placeholder="pubblica_desc_ph"></textarea></div>
-      <div class="pf-section"><label class="pf-label" for="pf-maps" data-i18n="pubblica_maps_label">📍 Luogo (Link Google Maps)</label><input class="pf-input" type="text" id="pf-maps" data-i18n-placeholder="pubblica_maps_ph"></div>
-      <button class="pf-submit" onclick="submitPubblicaCasa()"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg><span data-i18n="pubblica_submit">Pubblica Casa</span></button>
+      <div class="pf-section">
+        <label class="pf-label" for="pf-nome" data-i18n="pubblica_name_label">🏠 Nome Casa *</label>
+        <input class="pf-input" type="text" id="pf-nome" data-i18n-placeholder="pubblica_name_ph">
+      </div>
+      <div class="pf-section">
+        <label class="pf-label" for="pf-desc" data-i18n="pubblica_desc_label">📝 Descrizione</label>
+        <textarea class="pf-input pf-textarea" id="pf-desc" data-i18n-placeholder="pubblica_desc_ph"></textarea>
+      </div>
+      <div class="pf-section">
+        <label class="pf-label" for="pf-maps" data-i18n="pubblica_maps_label">📍 Luogo (Link Google Maps)</label>
+        <input class="pf-input" type="text" id="pf-maps" data-i18n-placeholder="pubblica_maps_ph">
+      </div>
+      <button class="pf-submit" onclick="submitPubblicaCasa()">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        <span data-i18n="pubblica_submit">Pubblica Casa</span>
+      </button>
     </div>
   </div>
 </div>
 
-<!-- ==================== MODIFICA CASA MODAL ==================== -->
+<!-- ==================== MODIFICA PROFILO CASA MODAL ==================== -->
 <div class="overlay" id="modifica-casa-overlay" onclick="closeOnBg(event,'modifica-casa-overlay')">
-  <div class="modal" style="max-width:660px">
+  <div class="modal" style="max-width:680px">
     <div class="modal-header">
       <div class="modal-title">✏️ Modifica Profilo Casa</div>
       <button class="modal-close" onclick="closeOverlay('modifica-casa-overlay')">✕</button>
@@ -877,8 +1302,10 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
       <div class="edit-photos-grid" id="edit-photos-grid"></div>
       <label class="edit-add-photo-btn" id="edit-add-photo-btn">
         <input type="file" id="edit-photo-input" accept="image/*" multiple onchange="editAddPhotos(event)">
-        <span style="font-size:20px">＋</span><span>Aggiungi foto</span>
+        <span style="font-size:20px">＋</span>
+        <span>Aggiungi foto</span>
       </label>
+
       <div class="edit-section-title" style="margin-top:24px"><span>🏠 Informazioni</span><div class="edit-section-line"></div></div>
       <div class="ef-field"><label class="ef-label">Nome Casa *</label><input class="ef-input" type="text" id="ef-nome" placeholder="Nome della casa"></div>
       <div class="ef-field"><label class="ef-label">Descrizione</label><textarea class="ef-input ef-textarea" id="ef-desc" placeholder="Descrizione..."></textarea></div>
@@ -894,26 +1321,63 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
         <div class="ef-field"><label class="ef-label">Superficie (m²)</label><input class="ef-input" type="number" id="ef-sqm" placeholder="es. 80" min="0"></div>
         <div class="ef-field"><label class="ef-label">Link Google Maps</label><input class="ef-input" type="text" id="ef-maps" placeholder="https://maps.google.com/..."></div>
       </div>
+
       <div class="edit-section-title"><span>👤 Proprietario</span><div class="edit-section-line"></div></div>
       <div class="ef-field"><label class="ef-label">Nome Proprietario</label><input class="ef-input" type="text" id="ef-owner" placeholder="Nome e cognome"></div>
       <div class="ef-row">
         <div class="ef-field"><label class="ef-label">Telefono / WhatsApp</label><input class="ef-input" type="text" id="ef-phone" placeholder="+39 000 000 0000"></div>
-        <div class="ef-field"><label class="ef-label">Email</label><input class="ef-input" type="email" id="ef-email" placeholder="email@esempio.it"></div>
+        <div class="ef-field"><label class="ef-label">Email Proprietario</label><input class="ef-input" type="email" id="ef-email" placeholder="email@esempio.it"></div>
       </div>
 
-      <!-- UNAVAILABLE DATE RANGES SECTION -->
-      <div class="edit-section-title"><span>🚫 Periodi non disponibili</span><div class="edit-section-line"></div></div>
-      <p style="font-size:12px;color:var(--text-light);margin-bottom:12px;font-weight:300">Questi giorni appariranno in grigio nel calendario e non saranno selezionabili.</p>
-      <ul class="unavail-list" id="unavail-list"></ul>
-      <div class="unavail-add-row">
-        <input type="date" id="unavail-from" title="Da">
-        <span style="font-size:13px;color:var(--text-light)">→</span>
-        <input type="date" id="unavail-to" title="A">
-        <button class="unavail-add-btn" onclick="addUnavailRange()">+ Aggiungi</button>
+      <!-- DATE OCCUPATE -->
+      <div class="edit-section-title"><span>📅 Date Occupate</span><div class="edit-section-line"></div></div>
+      <div class="dates-manager">
+        <div class="dates-manager-tabs">
+          <button class="dm-tab active" onclick="switchDmTab('manual', this)">Manuale</button>
+          <button class="dm-tab" onclick="switchDmTab('range', this)">Periodo</button>
+          <button class="dm-tab" onclick="switchDmTab('ical', this)">🔗 iCal Booking</button>
+        </div>
+
+        <!-- Tab: singola data -->
+        <div class="dm-panel active" id="dm-panel-manual">
+          <div class="dm-manual-add">
+            <input type="date" class="dm-date-input" id="dm-single-date">
+            <button class="dm-add-btn" onclick="dmAddSingleDate()">+ Aggiungi</button>
+          </div>
+          <div style="font-size:11px;color:var(--text-light);margin-bottom:10px">Date bloccate:</div>
+          <div class="dm-blocked-list" id="dm-blocked-list"></div>
+        </div>
+
+        <!-- Tab: periodo -->
+        <div class="dm-panel" id="dm-panel-range">
+          <div class="dm-range-row">
+            <div class="ef-field" style="margin:0"><label class="ef-label">Dal</label><input type="date" class="dm-date-input" id="dm-range-from"></div>
+            <div class="ef-field" style="margin:0"><label class="ef-label">Al</label><input type="date" class="dm-date-input" id="dm-range-to"></div>
+          </div>
+          <button class="dm-range-add-btn" onclick="dmAddRange()" style="margin-top:10px">+ Blocca Periodo</button>
+          <div style="font-size:11px;color:var(--text-light);margin-bottom:10px">Date bloccate:</div>
+          <div class="dm-blocked-list" id="dm-blocked-list-2"></div>
+        </div>
+
+        <!-- Tab: iCal -->
+        <div class="dm-panel" id="dm-panel-ical">
+          <div class="ical-field-wrap">
+            <div class="ical-hint">
+              <strong>Come ottenere il link iCal da Booking.com:</strong><br>
+              Pannello Booking → <em>Proprietà</em> → <em>Calendario</em> → <em>Sincronizza calendari</em> → copia il link <strong>.ics</strong>
+            </div>
+            <input type="text" class="ical-url-input" id="ef-ical-url" placeholder="https://admin.booking.com/hotel/hoteladmin/ical.ics?...">
+            <button class="ical-test-btn" onclick="testIcalUrl()">🔗 Collega e Sincronizza</button>
+            <div class="ical-status" id="ical-status"></div>
+          </div>
+        </div>
       </div>
 
       <div class="edit-actions">
-        <button class="btn-salva-casa" onclick="salvaCasaModifiche()"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Salva Modifiche</button>
+        <button class="btn-salva-casa" onclick="salvaCasaModifiche()">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Salva Modifiche
+        </button>
         <div class="edit-divider-danger">— zona pericolosa —</div>
         <button class="btn-rimuovi-casa" onclick="rimuoviCasa()">🗑️ Rimuovi Casa</button>
       </div>
@@ -921,70 +1385,77 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
   </div>
 </div>
 
-<!-- ==================== CALENDAR MODAL ==================== -->
-<div class="overlay" id="calendar-overlay" onclick="closeOnBg(event,'calendar-overlay')">
-  <div class="modal" style="max-width:760px;background:white">
-    <div class="modal-header" style="background:white">
-      <div class="modal-title">🗓️ <span id="cal-modal-title">Disponibilità</span></div>
-      <button class="modal-close" onclick="closeOverlay('calendar-overlay')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="cal-wrapper">
-        <div class="cal-legend">
-          <div class="cal-legend-item"><div class="leg-swatch available"></div><span data-i18n="cal_leg_available">Disponibile</span></div>
-          <div class="cal-legend-item"><div class="leg-swatch unavailable"></div><span data-i18n="cal_leg_unavailable">Non disponibile</span></div>
-          <div class="cal-legend-item"><div class="leg-swatch mine"></div><span data-i18n="cal_leg_mine">Prenotato da te</span></div>
-          <div class="cal-legend-item"><div class="leg-swatch others"></div><span data-i18n="cal_leg_others">Prenotato da altri</span></div>
-        </div>
-        <div class="cal-months" id="cal-months"></div>
-        <div class="cal-selection-info" id="cal-sel-info">
-          <div class="cal-sel-text" id="cal-sel-text"><span data-i18n="cal_sel_prompt">Seleziona la data di arrivo</span></div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <button class="cal-clear-btn" onclick="clearCalSelection()" id="cal-clear-btn" style="display:none" data-i18n="cal_clear">Annulla</button>
-            <button class="cal-confirm-btn" onclick="confirmCalSelection()" id="cal-confirm-btn" disabled data-i18n="cal_confirm">Conferma prenotazione</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ==================== CONTACT FORMS ==================== -->
+<!-- CONTACT FORM: SARDEGNA -->
 <div class="overlay" id="contact-sardegna-overlay" onclick="closeOnBg(event,'contact-sardegna-overlay')">
   <div class="modal" style="max-width:540px">
-    <div class="modal-header"><div class="modal-title">🏖️ <span data-i18n="contact_sardegna_label">Contatta: Casa Sardegna</span></div><button class="modal-close" onclick="closeOverlay('contact-sardegna-overlay')">✕</button></div>
+    <div class="modal-header">
+      <div class="modal-title">🏖️ <span data-i18n="contact_sardegna_label">Contatta: Casa Sardegna</span></div>
+      <button class="modal-close" onclick="closeOverlay('contact-sardegna-overlay')">✕</button>
+    </div>
     <div class="modal-body">
       <p class="contact-intro" data-i18n="contact_intro">Per qualsiasi cosa, informazione o disponibilità di oggetti, chiamate!</p>
-      <div class="cf-row"><div class="cf-field"><label data-i18n="form_firstname">Primo Nome *</label><input type="text" id="cs-firstname" data-i18n-placeholder="form_firstname_ph"></div><div class="cf-field"><label data-i18n="form_middlename">Secondo Nome</label><input type="text" id="cs-middlename" data-i18n-placeholder="form_middlename_ph"></div></div>
-      <div class="cf-row"><div class="cf-field"><label data-i18n="form_lastname">Cognome *</label><input type="text" id="cs-lastname" data-i18n-placeholder="form_lastname_ph"></div><div class="cf-field"><label data-i18n="form_email">Email *</label><input type="email" id="cs-email" data-i18n-placeholder="form_email_ph"></div></div>
+      <div class="cf-row">
+        <div class="cf-field"><label data-i18n="form_firstname">Primo Nome *</label><input type="text" id="cs-firstname" data-i18n-placeholder="form_firstname_ph"></div>
+        <div class="cf-field"><label data-i18n="form_middlename">Secondo Nome</label><input type="text" id="cs-middlename" data-i18n-placeholder="form_middlename_ph"></div>
+      </div>
+      <div class="cf-row">
+        <div class="cf-field"><label data-i18n="form_lastname">Cognome *</label><input type="text" id="cs-lastname" data-i18n-placeholder="form_lastname_ph"></div>
+        <div class="cf-field"><label data-i18n="form_email">Email *</label><input type="email" id="cs-email" data-i18n-placeholder="form_email_ph"></div>
+      </div>
       <div class="cf-field"><label data-i18n="form_subject">Oggetto *</label><input type="text" id="cs-subject" data-i18n-placeholder="form_subject_ph"></div>
       <div class="cf-field"><label data-i18n="form_message">Il tuo messaggio *</label><textarea id="cs-message" data-i18n-placeholder="form_message_ph"></textarea></div>
-      <button class="cf-submit" onclick="submitContactForm('sardegna')"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg><span data-i18n="form_send">Invia</span></button>
-    </div>
-  </div>
-</div>
-<div class="overlay" id="contact-cogne-overlay" onclick="closeOnBg(event,'contact-cogne-overlay')">
-  <div class="modal" style="max-width:540px">
-    <div class="modal-header"><div class="modal-title">🏔️ <span data-i18n="contact_cogne_label">Contatta: Casa Cogne</span></div><button class="modal-close" onclick="closeOverlay('contact-cogne-overlay')">✕</button></div>
-    <div class="modal-body">
-      <p class="contact-intro" data-i18n="contact_intro">Per qualsiasi cosa, informazione o disponibilità di oggetti, chiamate!</p>
-      <div class="cf-row"><div class="cf-field"><label data-i18n="form_firstname">Primo Nome *</label><input type="text" id="cc-firstname" data-i18n-placeholder="form_firstname_ph"></div><div class="cf-field"><label data-i18n="form_middlename">Secondo Nome</label><input type="text" id="cc-middlename" data-i18n-placeholder="form_middlename_ph"></div></div>
-      <div class="cf-row"><div class="cf-field"><label data-i18n="form_lastname">Cognome *</label><input type="text" id="cc-lastname" data-i18n-placeholder="form_lastname_ph"></div><div class="cf-field"><label data-i18n="form_email">Email *</label><input type="email" id="cc-email" data-i18n-placeholder="form_email_ph"></div></div>
-      <div class="cf-field"><label data-i18n="form_subject">Oggetto *</label><input type="text" id="cc-subject" data-i18n-placeholder="form_subject_ph"></div>
-      <div class="cf-field"><label data-i18n="form_message">Il tuo messaggio *</label><textarea id="cc-message" data-i18n-placeholder="form_message_ph"></textarea></div>
-      <button class="cf-submit" onclick="submitContactForm('cogne')"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg><span data-i18n="form_send">Invia</span></button>
+      <button class="cf-submit" onclick="submitContactForm('sardegna')">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        <span data-i18n="form_send">Invia</span>
+      </button>
     </div>
   </div>
 </div>
 
-<!-- CONTACT OWNER MODAL -->
+<!-- CONTACT FORM: COGNE -->
+<div class="overlay" id="contact-cogne-overlay" onclick="closeOnBg(event,'contact-cogne-overlay')">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-header">
+      <div class="modal-title">🏔️ <span data-i18n="contact_cogne_label">Contatta: Casa Cogne</span></div>
+      <button class="modal-close" onclick="closeOverlay('contact-cogne-overlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="contact-intro" data-i18n="contact_intro">Per qualsiasi cosa, informazione o disponibilità di oggetti, chiamate!</p>
+      <div class="cf-row">
+        <div class="cf-field"><label data-i18n="form_firstname">Primo Nome *</label><input type="text" id="cc-firstname" data-i18n-placeholder="form_firstname_ph"></div>
+        <div class="cf-field"><label data-i18n="form_middlename">Secondo Nome</label><input type="text" id="cc-middlename" data-i18n-placeholder="form_middlename_ph"></div>
+      </div>
+      <div class="cf-row">
+        <div class="cf-field"><label data-i18n="form_lastname">Cognome *</label><input type="text" id="cc-lastname" data-i18n-placeholder="form_lastname_ph"></div>
+        <div class="cf-field"><label data-i18n="form_email">Email *</label><input type="email" id="cc-email" data-i18n-placeholder="form_email_ph"></div>
+      </div>
+      <div class="cf-field"><label data-i18n="form_subject">Oggetto *</label><input type="text" id="cc-subject" data-i18n-placeholder="form_subject_ph"></div>
+      <div class="cf-field"><label data-i18n="form_message">Il tuo messaggio *</label><textarea id="cc-message" data-i18n-placeholder="form_message_ph"></textarea></div>
+      <button class="cf-submit" onclick="submitContactForm('cogne')">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        <span data-i18n="form_send">Invia</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT MODAL (dal dettaglio) -->
 <div class="overlay" id="contact-overlay" onclick="closeOnBg(event,'contact-overlay')">
   <div class="modal" style="max-width:400px">
-    <div class="modal-header"><div class="modal-title" data-i18n="contact_owner_title">Contatta il proprietario</div><button class="modal-close" onclick="closeOverlay('contact-overlay')">✕</button></div>
+    <div class="modal-header">
+      <div class="modal-title" data-i18n="contact_owner_title">Contatta il proprietario</div>
+      <button class="modal-close" onclick="closeOverlay('contact-overlay')">✕</button>
+    </div>
     <div class="modal-body">
       <p style="font-size:14px;color:var(--text-light);margin-bottom:20px;font-weight:300" data-i18n="contact_owner_desc">Scegli come vuoi contattare il proprietario.</p>
-      <div class="contact-method" onclick="openWhatsapp()"><div class="cm-icon">💬</div><div><div class="cm-label">WhatsApp</div><div class="cm-sub" id="cm-phone">—</div></div></div>
-      <div class="contact-method"><div class="cm-icon">📧</div><div><div class="cm-label">Email</div><div class="cm-sub" id="cm-email">—</div></div></div>
+      <div class="contact-method" onclick="openWhatsapp()">
+        <div class="cm-icon">💬</div>
+        <div><div class="cm-label">WhatsApp</div><div class="cm-sub" id="cm-phone">—</div></div>
+      </div>
+      <div class="contact-method">
+        <div class="cm-icon">📧</div>
+        <div><div class="cm-label">Email</div><div class="cm-sub" id="cm-email">—</div></div>
+      </div>
     </div>
   </div>
 </div>
@@ -992,7 +1463,10 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 <!-- GESTIONE PROFILO -->
 <div class="overlay" id="profilo-overlay" onclick="closeOnBg(event,'profilo-overlay')">
   <div class="modal" style="max-width:460px">
-    <div class="modal-header"><div class="modal-title">👤 <span data-i18n="profile_manage">Gestione Profilo</span></div><button class="modal-close" onclick="closeOverlay('profilo-overlay')">✕</button></div>
+    <div class="modal-header">
+      <div class="modal-title">👤 <span data-i18n="profile_manage">Gestione Profilo</span></div>
+      <button class="modal-close" onclick="closeOverlay('profilo-overlay')">✕</button>
+    </div>
     <div class="modal-body profilo-form">
       <div class="profilo-date-info">🗓️ <span data-i18n="profile_created">Account creato il</span> <strong id="profilo-data-creazione">—</strong></div>
       <div class="cf-field"><label data-i18n="profile_name">Nome e Cognome</label><input type="text" id="profilo-nome" data-i18n-placeholder="profile_name_ph"></div>
@@ -1005,7 +1479,10 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 <!-- LIGHTBOX -->
 <div class="overlay" id="lightbox-overlay" onclick="closeOnBg(event,'lightbox-overlay')">
   <div class="modal" style="max-width:780px">
-    <div class="modal-header"><div class="modal-title" data-i18n="lightbox_title">Tutte le foto</div><button class="modal-close" onclick="closeOverlay('lightbox-overlay')">✕</button></div>
+    <div class="modal-header">
+      <div class="modal-title" data-i18n="lightbox_title">Tutte le foto</div>
+      <button class="modal-close" onclick="closeOverlay('lightbox-overlay')">✕</button>
+    </div>
     <div class="lightbox-imgs" id="lightbox-imgs"></div>
   </div>
 </div>
@@ -1016,194 +1493,209 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 200; background
 /* ==================== TRANSLATIONS ==================== */
 const TRANSLATIONS = {
   it: {
-    page_title: 'De Rosa', logo_sub: 'Accomodation Facilities', change_lang: 'Lingua:',
-    nav_scopri: 'Scopri DRAF', nav_posizione: 'La posizione', nav_struttura: 'La struttura',
-    nav_cond_soggiorno: 'Condizioni di soggiorno', nav_cond_prenotazione: 'Condizioni di prenotazione',
-    nav_servizi: 'Servizi', nav_appartamenti: 'Gli Appartamenti', nav_contatti: 'Contatti',
-    loc_sardegna: 'In Sardegna', loc_cogne: "Valle d'Aosta",
-    sub_sardegna: 'Al mare, in Sardegna', sub_cogne: "In montagna, Valle d'Aosta",
-    contact_sardegna_label: 'Contatta: Casa Sardegna', contact_cogne_label: 'Contatta: Casa Cogne',
-    contact_sub: 'Informazioni e disponibilità',
-    profile_manage: 'Gestione Profilo', profile_logout: 'Logout',
-    profile_created: 'Account creato il', profile_name: 'Nome e Cognome',
-    profile_name_ph: 'Nome e Cognome', profile_save: 'Salva Profilo',
-    hero_title: 'Scegli la tua<br><em>vacanza preferita</em>', hero_tagline: 'Proprietà private · Italia',
-    listings_eyebrow: 'Le nostre proprietà', listings_title: 'Gli Appartamenti',
-    filter_all: 'Tutti', filter_villa: 'Villa', filter_apt: 'Appartamento', filter_casa: 'Casa',
-    props_count: '{n} proprietà',
-    card_badge_new: 'Nuovo', card_badge_available: 'Disponibile',
-    card_per_night: '/ notte', card_on_request: 'Su richiesta',
-    empty_title: 'Nessuna casa trovata', empty_sub: 'Non ci sono proprietà pubblicate per {casa}.',
-    empty_title_all: 'Nessuna casa pubblicata', empty_sub_all: 'Contattaci per informazioni sulle disponibilità',
-    btn_pubblica: 'Pubblica Casa',
-    back_properties: 'Torna alle proprietà', back_home: 'Torna alla home', back_btn: 'Indietro',
-    amenities_title: 'Dotazioni incluse', amenities_none: 'Nessuna dotazione specificata',
-    reviews_title: 'Recensioni', reviews_none: 'Ancora nessuna recensione.',
-    write_review_title: 'Scrivi una recensione', review_name_ph: 'Il tuo nome',
-    review_text_ph: 'Racconta la tua esperienza...', review_submit: 'Pubblica Recensione',
-    booking_label: 'Prezzo per notte', contact_owner: 'Contatta il Proprietario',
-    cal_btn: 'Verifica disponibilità',
-    whatsapp_btn: 'Scrivi su WhatsApp', booking_note: 'Il proprietario risponderà direttamente',
-    host_label: 'Proprietario', rev_label: 'recensioni', rec_label: 'rec.',
-    contact_intro: 'Per qualsiasi cosa, informazione o disponibilità di oggetti, chiamate!',
-    contact_owner_title: 'Contatta il proprietario', contact_owner_desc: 'Scegli come vuoi contattare il proprietario.',
-    form_firstname: 'Primo Nome *', form_middlename: 'Secondo Nome',
-    form_lastname: 'Cognome *', form_email: 'Email *', form_subject: 'Oggetto *', form_message: 'Il tuo messaggio *',
-    form_firstname_ph: 'Primo Nome', form_middlename_ph: 'Secondo Nome (facoltativo)',
-    form_lastname_ph: 'Cognome', form_email_ph: 'La tua Email',
-    form_subject_ph: 'Oggetto', form_message_ph: 'Il tuo messaggio...', form_send: 'Invia',
-    lightbox_title: 'Tutte le foto', see_all_photos: 'Tutte le foto ({n})',
-    footer_nav: 'Navigazione', footer_contacts: 'Contatti',
-    footer_desc: "Proprietà private in location esclusive d'Italia. Sardegna e Cogne ti aspettano.",
-    footer_contacts_desc: 'Scrivi direttamente tramite i form di contatto per informazioni e disponibilità sulle nostre proprietà.',
-    footer_copyright: '© 2026 De Rosa Accommodation Facilities · Tutti i diritti riservati',
-    footer_made: 'Fatto con ♥ in Italia',
-    cond_sog_title: 'Condizioni di Soggiorno', cond_pre_title: 'Condizioni di Prenotazione',
-    struttura_title: 'La Struttura', before_booking: 'Prima di Prenotare',
-    payment_title: 'Pagamento', cancel_title: 'Cancellazione',
-    email_header: 'La nostra email', email_title: 'Scrivici',
-    email_desc: 'Puoi contattarci per qualsiasi informazione sulle nostre proprietà o per prenotare il tuo soggiorno.',
-    pubblica_header: 'Pubblica Casa', pubblica_title: 'Pubblica la tua casa',
-    pubblica_desc: 'Inserisci le informazioni principali della proprietà.',
-    pubblica_photos: '📷 Carica Foto (max 10)', pubblica_upload_text: 'Clicca o trascina le foto qui',
-    pubblica_upload_sub: 'JPG, PNG, WEBP · Max 10 foto', pubblica_name_label: '🏠 Nome Casa *',
-    pubblica_name_ph: 'Inserisci nome casa', pubblica_desc_label: '📝 Descrizione',
-    pubblica_desc_ph: 'Inserisci la descrizione...', pubblica_maps_label: '📍 Luogo (Link Google Maps)',
-    pubblica_maps_ph: 'Inserisci il link di maps', pubblica_submit: 'Pubblica Casa',
-    toast_logout: '👋 Logout effettuato', toast_profile_saved: '✓ Profilo salvato!',
-    toast_review_pub: '✓ Recensione pubblicata!', toast_review_missing: 'Inserisci nome e testo della recensione',
-    toast_review_stars: 'Seleziona una valutazione a stelle', toast_form_missing: 'Compila tutti i campi obbligatori (*)',
-    toast_email_opened: '📧 Email aperta per {casa}!', toast_whatsapp_missing: 'Numero WhatsApp non disponibile',
-    toast_casa_published: '✓ Casa pubblicata!', toast_photos_limit: 'Massimo 10 foto. Ignorate {n} foto extra.',
-    toast_name_required: 'Inserisci il nome della casa',
-    toast_casa_saved: '✓ Modifiche salvate!', toast_casa_removed: '🗑️ Casa rimossa.',
-    cal_leg_available: 'Disponibile', cal_leg_unavailable: 'Non disponibile',
-    cal_leg_mine: 'Prenotato da te', cal_leg_others: 'Prenotato da altri',
-    cal_sel_prompt: 'Seleziona la data di arrivo',
-    cal_sel_start: 'Arrivo: {d} — seleziona la partenza',
-    cal_sel_range: 'Arrivo {s} → Partenza {e} · {n} notti',
-    cal_clear: 'Annulla', cal_confirm: 'Conferma prenotazione',
-    cal_booked_toast: '✓ Prenotazione salvata! {s} → {e}',
-    cal_overlap_toast: '⚠️ Le date selezionate si sovrappongono con una prenotazione esistente.',
-    months: ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'],
-    days: ['Lu','Ma','Me','Gi','Ve','Sa','Do'],
-    cond_items: [
-      { label: 'Orario Check-In', value: 'Dalle 16:00 alle 19:30', sub: 'Orario flessibile da concordare' },
-      { label: 'Orario Check-Out', value: 'Entro le ore 10:00', sub: 'Puntualità gradita' },
-      { label: 'Soggiorno Minimo', value: '3 notti', sub: 'Da ottobre al 10 dicembre' },
-      { label: 'Bambini fino a X anni', value: 'Gratis', sub: 'Da definire con il proprietario' },
-      { label: 'Animali', value: 'Ammessi', sub: 'Contattare per info' },
+    page_title:'De Rosa',change_lang:'Lingua:',
+    nav_scopri:'Scopri DRAF',nav_posizione:'La posizione',nav_struttura:'La struttura',
+    nav_cond_soggiorno:'Condizioni di soggiorno',nav_cond_prenotazione:'Condizioni di prenotazione',
+    nav_servizi:'Servizi',nav_appartamenti:'Gli Appartamenti',nav_contatti:'Contatti',
+    loc_sardegna:'In Sardegna',loc_cogne:"Valle d'Aosta",
+    sub_sardegna:'Al mare, in Sardegna',sub_cogne:"In montagna, Valle d'Aosta",
+    contact_sardegna_label:'Contatta: Casa Sardegna',contact_cogne_label:'Contatta: Casa Cogne',
+    contact_sub:'Informazioni e disponibilità',
+    profile_manage:'Gestione Profilo',profile_logout:'Logout',
+    profile_created:'Account creato il',profile_name:'Nome e Cognome',
+    profile_name_ph:'Nome e Cognome',profile_save:'Salva Profilo',
+    hero_title:'Scegli la tua<br><em>vacanza preferita</em>',
+    hero_tagline:'Proprietà private · Italia',
+    listings_eyebrow:'Le nostre proprietà',listings_title:'Gli Appartamenti',
+    filter_all:'Tutti',filter_villa:'Villa',filter_apt:'Appartamento',filter_casa:'Casa',
+    props_count:'{n} proprietà',
+    card_badge_new:'Nuovo',card_badge_available:'Disponibile',
+    card_per_night:'/ notte',card_on_request:'Su richiesta',
+    empty_title:'Nessuna casa trovata',empty_sub:'Non ci sono proprietà pubblicate per {casa}.',
+    empty_title_all:'Nessuna casa pubblicata',empty_sub_all:'Contattaci per informazioni sulle disponibilità',
+    btn_pubblica:'Pubblica Casa',
+    back_properties:'Torna alle proprietà',back_home:'Torna alla home',back_btn:'Indietro',
+    amenities_title:'Dotazioni incluse',amenities_none:'Nessuna dotazione specificata',
+    cal_title:'Disponibilità',
+    cal_legend_avail:'Disponibile',cal_legend_blocked:'Occupato',cal_legend_sel:'Selezionato',
+    cal_clear:'Cancella selezione',
+    cal_checkin:'Check-in',cal_checkout:'Check-out',
+    cal_nights_one:'{n} notte',cal_nights_multi:'{n} notti',
+    cal_select_prompt:'Seleziona le date di check-in e check-out',
+    ical_synced_label:'Calendario sincronizzato con Booking.com',ical_sync_now:'Aggiorna',
+    ical_ok:'✓ Collegato! {n} date importate da Booking.',
+    ical_err:'✗ Impossibile leggere il calendario. Verifica il link.',
+    reviews_title:'Recensioni',reviews_none:'Ancora nessuna recensione.',
+    write_review_title:'Scrivi una recensione',review_name_ph:'Il tuo nome',
+    review_text_ph:'Racconta la tua esperienza...',review_submit:'Pubblica Recensione',
+    booking_label:'Prezzo per notte',booking_form_title:'Richiedi prenotazione',
+    booking_send:'Invia Richiesta',
+    form_name_label:'Nome e Cognome *',form_name_ph:'Mario Rossi',
+    form_phone_label:'Telefono',form_adults_label:'Adulti',form_children_label:'Bambini',
+    form_notes_ph:'Eventuali note o richieste...',
+    contact_owner:'Contatta il Proprietario',
+    whatsapp_btn:'Scrivi su WhatsApp',booking_note:'Il proprietario risponderà direttamente',
+    host_label:'Proprietario',rev_label:'recensioni',rec_label:'rec.',
+    contact_intro:'Per qualsiasi cosa, informazione o disponibilità di oggetti, chiamate!',
+    contact_owner_title:'Contatta il proprietario',contact_owner_desc:'Scegli come vuoi contattare il proprietario.',
+    form_firstname:'Primo Nome *',form_middlename:'Secondo Nome',
+    form_lastname:'Cognome *',form_email:'Email *',form_subject:'Oggetto *',form_message:'Il tuo messaggio *',
+    form_firstname_ph:'Primo Nome',form_middlename_ph:'Secondo Nome (facoltativo)',
+    form_lastname_ph:'Cognome',form_email_ph:'La tua Email',
+    form_subject_ph:'Oggetto',form_message_ph:'Il tuo messaggio...',form_send:'Invia',
+    lightbox_title:'Tutte le foto',see_all_photos:'Tutte le foto ({n})',
+    footer_nav:'Navigazione',footer_contacts:'Contatti',
+    footer_desc:"Proprietà private in location esclusive d'Italia. Sardegna e Cogne ti aspettano.",
+    footer_contacts_desc:'Scrivi direttamente tramite i form di contatto per informazioni e disponibilità sulle nostre proprietà.',
+    footer_copyright:'© 2026 De Rosa Accommodation Facilities · Tutti i diritti riservati',
+    footer_made:'Fatto con ♥ in Italia',
+    cond_sog_title:'Condizioni di Soggiorno',cond_pre_title:'Condizioni di Prenotazione',
+    struttura_title:'La Struttura',before_booking:'Prima di Prenotare',
+    payment_title:'Pagamento',cancel_title:'Cancellazione',
+    email_header:'La nostra email',email_title:'Scrivici',
+    email_desc:'Puoi contattarci per qualsiasi informazione sulle nostre proprietà o per prenotare il tuo soggiorno.',
+    pubblica_header:'Pubblica Casa',pubblica_title:'Pubblica la tua casa',
+    pubblica_desc:'Inserisci le informazioni principali della proprietà.',
+    pubblica_photos:'📷 Carica Foto (max 10)',pubblica_upload_text:'Clicca o trascina le foto qui',
+    pubblica_upload_sub:'JPG, PNG, WEBP · Max 10 foto',pubblica_name_label:'🏠 Nome Casa *',
+    pubblica_name_ph:'Inserisci nome casa',pubblica_desc_label:'📝 Descrizione',
+    pubblica_desc_ph:'Inserisci la descrizione...',pubblica_maps_label:'📍 Luogo (Link Google Maps)',
+    pubblica_maps_ph:'Inserisci il link di maps',pubblica_submit:'Pubblica Casa',
+    toast_logout:'👋 Logout effettuato',toast_profile_saved:'✓ Profilo salvato!',
+    toast_review_pub:'✓ Recensione pubblicata!',toast_review_missing:'Inserisci nome e testo della recensione',
+    toast_review_stars:'Seleziona una valutazione a stelle',toast_form_missing:'Compila tutti i campi obbligatori (*)',
+    toast_email_opened:'📧 Email aperta per {casa}!',toast_whatsapp_missing:'Numero WhatsApp non disponibile',
+    toast_casa_published:'✓ Casa pubblicata!',toast_photos_limit:'Massimo 10 foto. Ignorate {n} foto extra.',
+    toast_name_required:'Inserisci il nome della casa',
+    toast_casa_saved:'✓ Modifiche salvate!',toast_casa_removed:'🗑️ Casa rimossa.',
+    toast_booking_sent:'📧 Richiesta di prenotazione inviata!',
+    toast_booking_missing:'Compila nome ed email per inviare la richiesta',
+    months:['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'],
+    days:['Lu','Ma','Me','Gi','Ve','Sa','Do'],
+    cond_items:[
+      {label:'Orario Check-In',value:'Dalle 16:00 alle 19:30',sub:'Orario flessibile da concordare'},
+      {label:'Orario Check-Out',value:'Entro le ore 10:00',sub:'Puntualità gradita'},
+      {label:'Soggiorno Minimo',value:'3 notti',sub:'Da ottobre al 10 dicembre'},
+      {label:'Bambini fino a X anni',value:'Gratis',sub:'Da definire con il proprietario'},
+      {label:'Animali',value:'Ammessi',sub:'Contattare per info'},
     ],
-    cond_slide_captions: ['Le montagne di Cogne','Il mare di Sardegna','Le montagne di Cogne','Il mare di Sardegna','Le montagne di Cogne','Il mare di Sardegna'],
-    pre_before_text: 'Per richiedere informazioni e per prenotare puoi contattarci via',
-    pre_email_link: 'email', pre_or_phone: 'o al numero',
-    pre_payment_placeholder: '✏️ <em>Inserisci qui le condizioni di pagamento.</em>',
-    pre_cancel_placeholder: '✏️ <em>Inserisci qui la policy di cancellazione.</em>',
-    struttura_placeholder: '✏️ <em>Inserisci qui la descrizione della struttura.</em>',
-    servizi_choice_title: 'Servizi', servizi_choice_desc: 'Seleziona la casa per vedere i servizi disponibili.',
-    servizi_categories: [
-      { title: 'Casa', items: [{ name: 'Wi-Fi', desc: '' },{ name: 'TV', desc: '' },{ name: 'Divano', desc: '' },{ name: 'Cassaforte', desc: '' },{ name: 'Aria condizionata', desc: '' }]},
-      { title: 'Cucina', items: [{ name: 'Forno elettrico', desc: '' },{ name: 'Forno a microonde', desc: '' },{ name: 'Frigo e freezer', desc: '' },{ name: 'Piano cottura a induzione', desc: '' },{ name: 'Macchina caffè', desc: '' }]},
-      { title: 'Bagno', items: [{ name: 'Doccia, lavandino, WC, bidet', desc: '' },{ name: 'Asciugamani e teli doccia', desc: '' },{ name: 'Asciugacapelli', desc: '' }]},
-      { title: 'Pulizia & Stiro', items: [{ name: 'Lavatrice', desc: '' },{ name: 'Asse e ferro da stiro', desc: '' }]},
+    cond_slide_captions:['Le montagne di Cogne','Il mare di Sardegna','Le montagne di Cogne','Il mare di Sardegna','Le montagne di Cogne','Il mare di Sardegna'],
+    pre_before_text:'Per richiedere informazioni e per prenotare puoi contattarci via',
+    pre_email_link:'email',pre_or_phone:'o al numero',
+    pre_payment_placeholder:'✏️ <em>Inserisci qui le condizioni di pagamento.</em>',
+    pre_cancel_placeholder:'✏️ <em>Inserisci qui la policy di cancellazione.</em>',
+    struttura_placeholder:'✏️ <em>Inserisci qui la descrizione della struttura.</em>',
+    servizi_choice_title:'Servizi',servizi_choice_desc:'Seleziona la casa per vedere i servizi disponibili.',
+    servizi_categories:[
+      {title:'Casa',items:[{name:'Wi-Fi'},{name:'TV'},{name:'Divano'},{name:'Cassaforte'},{name:'Aria condizionata'}]},
+      {title:'Cucina',items:[{name:'Forno elettrico'},{name:'Forno a microonde'},{name:'Frigo e freezer'},{name:'Piano cottura a induzione'},{name:'Macchina caffè'}]},
+      {title:'Bagno',items:[{name:'Doccia, lavandino, WC, bidet'},{name:'Asciugamani e teli doccia'},{name:'Asciugacapelli'}]},
+      {title:'Pulizia & Stiro',items:[{name:'Lavatrice'},{name:'Asse e ferro da stiro'}]},
     ],
-    spec_rooms: 'Locali', spec_sqm: 'm²', spec_baths: 'Bagni', spec_rating: 'Voto',
-    loader_text: 'Caricamento',
+    spec_rooms:'Locali',spec_sqm:'m²',spec_baths:'Bagni',spec_rating:'Voto',
+    loader_text:'Caricamento',
   },
   en: {
-    page_title: 'De Rosa', logo_sub: 'Accommodation Facilities', change_lang: 'Language:',
-    nav_scopri: 'Discover DRAF', nav_posizione: 'Location', nav_struttura: 'The property',
-    nav_cond_soggiorno: 'Stay conditions', nav_cond_prenotazione: 'Booking conditions',
-    nav_servizi: 'Services', nav_appartamenti: 'The Apartments', nav_contatti: 'Contact',
-    loc_sardegna: 'In Sardinia', loc_cogne: "Valle d'Aosta",
-    sub_sardegna: 'By the sea, Sardinia', sub_cogne: "In the mountains, Valle d'Aosta",
-    contact_sardegna_label: 'Contact: Casa Sardegna', contact_cogne_label: 'Contact: Casa Cogne',
-    contact_sub: 'Information & availability',
-    profile_manage: 'Manage Profile', profile_logout: 'Logout',
-    profile_created: 'Account created on', profile_name: 'Full Name',
-    profile_name_ph: 'Full Name', profile_save: 'Save Profile',
-    hero_title: 'Choose your<br><em>perfect holiday</em>', hero_tagline: 'Private properties · Italy',
-    listings_eyebrow: 'Our properties', listings_title: 'The Apartments',
-    filter_all: 'All', filter_villa: 'Villa', filter_apt: 'Apartment', filter_casa: 'House',
-    props_count: '{n} properties',
-    card_badge_new: 'New', card_badge_available: 'Available',
-    card_per_night: '/ night', card_on_request: 'On request',
-    empty_title: 'No properties found', empty_sub: 'No listings published for {casa}.',
-    empty_title_all: 'No properties published', empty_sub_all: 'Contact us for availability information',
-    btn_pubblica: 'Publish Property',
-    back_properties: 'Back to properties', back_home: 'Back to home', back_btn: 'Back',
-    amenities_title: 'Included amenities', amenities_none: 'No amenities specified',
-    reviews_title: 'Reviews', reviews_none: 'No reviews yet.',
-    write_review_title: 'Write a review', review_name_ph: 'Your name',
-    review_text_ph: 'Share your experience...', review_submit: 'Publish Review',
-    booking_label: 'Price per night', contact_owner: 'Contact the Owner',
-    cal_btn: 'Check availability',
-    whatsapp_btn: 'Message on WhatsApp', booking_note: 'The owner will reply directly',
-    host_label: 'Owner', rev_label: 'reviews', rec_label: 'rev.',
-    contact_intro: 'For any information or availability, feel free to get in touch!',
-    contact_owner_title: 'Contact the owner', contact_owner_desc: 'Choose how to contact the owner.',
-    form_firstname: 'First Name *', form_middlename: 'Middle Name',
-    form_lastname: 'Last Name *', form_email: 'Email *', form_subject: 'Subject *', form_message: 'Your message *',
-    form_firstname_ph: 'First Name', form_middlename_ph: 'Middle Name (optional)',
-    form_lastname_ph: 'Last Name', form_email_ph: 'Your Email',
-    form_subject_ph: 'Subject', form_message_ph: 'Your message...', form_send: 'Send',
-    lightbox_title: 'All photos', see_all_photos: 'All photos ({n})',
-    footer_nav: 'Navigation', footer_contacts: 'Contact',
-    footer_desc: 'Private properties in exclusive Italian locations. Sardinia and Cogne await you.',
-    footer_contacts_desc: 'Write directly through the contact forms for information and availability on our properties.',
-    footer_copyright: '© 2026 De Rosa Accommodation Facilities · All rights reserved',
-    footer_made: 'Made with ♥ in Italy',
-    cond_sog_title: 'Stay Conditions', cond_pre_title: 'Booking Conditions',
-    struttura_title: 'The Property', before_booking: 'Before Booking',
-    payment_title: 'Payment', cancel_title: 'Cancellation',
-    email_header: 'Our email', email_title: 'Write to us',
-    email_desc: 'You can contact us for any information about our properties or to book your stay.',
-    pubblica_header: 'Publish Property', pubblica_title: 'Publish your property',
-    pubblica_desc: 'Enter the main information about the property.',
-    pubblica_photos: '📷 Upload Photos (max 10)', pubblica_upload_text: 'Click or drag photos here',
-    pubblica_upload_sub: 'JPG, PNG, WEBP · Max 10 photos', pubblica_name_label: '🏠 Property Name *',
-    pubblica_name_ph: 'Enter property name', pubblica_desc_label: '📝 Description',
-    pubblica_desc_ph: 'Enter description...', pubblica_maps_label: '📍 Location (Google Maps link)',
-    pubblica_maps_ph: 'Enter maps link', pubblica_submit: 'Publish Property',
-    toast_logout: '👋 Logged out', toast_profile_saved: '✓ Profile saved!',
-    toast_review_pub: '✓ Review published!', toast_review_missing: 'Please enter name and review text',
-    toast_review_stars: 'Please select a star rating', toast_form_missing: 'Please fill in all required fields (*)',
-    toast_email_opened: '📧 Email opened for {casa}!', toast_whatsapp_missing: 'WhatsApp number not available',
-    toast_casa_published: '✓ Property published!', toast_photos_limit: 'Maximum 10 photos. {n} extra photos ignored.',
-    toast_name_required: 'Please enter the property name',
-    toast_casa_saved: '✓ Changes saved!', toast_casa_removed: '🗑️ Property removed.',
-    cal_leg_available: 'Available', cal_leg_unavailable: 'Unavailable',
-    cal_leg_mine: 'Booked by you', cal_leg_others: 'Booked by others',
-    cal_sel_prompt: 'Select your check-in date',
-    cal_sel_start: 'Check-in: {d} — now select check-out',
-    cal_sel_range: 'Check-in {s} → Check-out {e} · {n} nights',
-    cal_clear: 'Cancel', cal_confirm: 'Confirm booking',
-    cal_booked_toast: '✓ Booking saved! {s} → {e}',
-    cal_overlap_toast: '⚠️ Selected dates overlap with an existing booking.',
-    months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-    days: ['Mo','Tu','We','Th','Fr','Sa','Su'],
-    cond_items: [
-      { label: 'Check-In Time', value: 'From 4:00 PM to 7:30 PM', sub: 'Flexible time to be agreed' },
-      { label: 'Check-Out Time', value: 'By 10:00 AM', sub: 'Punctuality appreciated' },
-      { label: 'Minimum Stay', value: '3 nights', sub: 'From October to December 10' },
-      { label: 'Children up to X years', value: 'Free', sub: 'To be agreed with the owner' },
-      { label: 'Pets', value: 'Allowed', sub: 'Contact for info' },
+    page_title:'De Rosa',change_lang:'Language:',
+    nav_scopri:'Discover DRAF',nav_posizione:'Location',nav_struttura:'The property',
+    nav_cond_soggiorno:'Stay conditions',nav_cond_prenotazione:'Booking conditions',
+    nav_servizi:'Services',nav_appartamenti:'The Apartments',nav_contatti:'Contact',
+    loc_sardegna:'In Sardinia',loc_cogne:"Valle d'Aosta",
+    sub_sardegna:'By the sea, Sardinia',sub_cogne:"In the mountains, Valle d'Aosta",
+    contact_sardegna_label:'Contact: Casa Sardegna',contact_cogne_label:'Contact: Casa Cogne',
+    contact_sub:'Information & availability',
+    profile_manage:'Manage Profile',profile_logout:'Logout',
+    profile_created:'Account created on',profile_name:'Full Name',
+    profile_name_ph:'Full Name',profile_save:'Save Profile',
+    hero_title:'Choose your<br><em>perfect holiday</em>',hero_tagline:'Private properties · Italy',
+    listings_eyebrow:'Our properties',listings_title:'The Apartments',
+    filter_all:'All',filter_villa:'Villa',filter_apt:'Apartment',filter_casa:'House',
+    props_count:'{n} properties',
+    card_badge_new:'New',card_badge_available:'Available',
+    card_per_night:'/ night',card_on_request:'On request',
+    empty_title:'No properties found',empty_sub:'No listings published for {casa}.',
+    empty_title_all:'No properties published',empty_sub_all:'Contact us for availability information',
+    btn_pubblica:'Publish Property',
+    back_properties:'Back to properties',back_home:'Back to home',back_btn:'Back',
+    amenities_title:'Included amenities',amenities_none:'No amenities specified',
+    cal_title:'Availability',
+    cal_legend_avail:'Available',cal_legend_blocked:'Occupied',cal_legend_sel:'Selected',
+    cal_clear:'Clear selection',
+    cal_checkin:'Check-in',cal_checkout:'Check-out',
+    cal_nights_one:'{n} night',cal_nights_multi:'{n} nights',
+    cal_select_prompt:'Select check-in and check-out dates',
+    ical_synced_label:'Calendar synced with Booking.com',ical_sync_now:'Refresh',
+    ical_ok:'✓ Connected! {n} dates imported from Booking.',
+    ical_err:'✗ Cannot read calendar. Check the link.',
+    reviews_title:'Reviews',reviews_none:'No reviews yet.',
+    write_review_title:'Write a review',review_name_ph:'Your name',
+    review_text_ph:'Share your experience...',review_submit:'Publish Review',
+    booking_label:'Price per night',booking_form_title:'Request booking',
+    booking_send:'Send Request',
+    form_name_label:'Full Name *',form_name_ph:'John Smith',
+    form_phone_label:'Phone',form_adults_label:'Adults',form_children_label:'Children',
+    form_notes_ph:'Any notes or special requests...',
+    contact_owner:'Contact the Owner',
+    whatsapp_btn:'Message on WhatsApp',booking_note:'The owner will reply directly',
+    host_label:'Owner',rev_label:'reviews',rec_label:'rev.',
+    contact_intro:'For any information or availability, feel free to get in touch!',
+    contact_owner_title:'Contact the owner',contact_owner_desc:'Choose how to contact the owner.',
+    form_firstname:'First Name *',form_middlename:'Middle Name',
+    form_lastname:'Last Name *',form_email:'Email *',form_subject:'Subject *',form_message:'Your message *',
+    form_firstname_ph:'First Name',form_middlename_ph:'Middle Name (optional)',
+    form_lastname_ph:'Last Name',form_email_ph:'Your Email',
+    form_subject_ph:'Subject',form_message_ph:'Your message...',form_send:'Send',
+    lightbox_title:'All photos',see_all_photos:'All photos ({n})',
+    footer_nav:'Navigation',footer_contacts:'Contact',
+    footer_desc:'Private properties in exclusive Italian locations. Sardinia and Cogne await you.',
+    footer_contacts_desc:'Write directly through the contact forms for information and availability on our properties.',
+    footer_copyright:'© 2026 De Rosa Accommodation Facilities · All rights reserved',
+    footer_made:'Made with ♥ in Italy',
+    cond_sog_title:'Stay Conditions',cond_pre_title:'Booking Conditions',
+    struttura_title:'The Property',before_booking:'Before Booking',
+    payment_title:'Payment',cancel_title:'Cancellation',
+    email_header:'Our email',email_title:'Write to us',
+    email_desc:'You can contact us for any information about our properties or to book your stay.',
+    pubblica_header:'Publish Property',pubblica_title:'Publish your property',
+    pubblica_desc:'Enter the main information about the property.',
+    pubblica_photos:'📷 Upload Photos (max 10)',pubblica_upload_text:'Click or drag photos here',
+    pubblica_upload_sub:'JPG, PNG, WEBP · Max 10 photos',pubblica_name_label:'🏠 Property Name *',
+    pubblica_name_ph:'Enter property name',pubblica_desc_label:'📝 Description',
+    pubblica_desc_ph:'Enter description...',pubblica_maps_label:'📍 Location (Google Maps link)',
+    pubblica_maps_ph:'Enter maps link',pubblica_submit:'Publish Property',
+    toast_logout:'👋 Logged out',toast_profile_saved:'✓ Profile saved!',
+    toast_review_pub:'✓ Review published!',toast_review_missing:'Please enter name and review text',
+    toast_review_stars:'Please select a star rating',toast_form_missing:'Please fill in all required fields (*)',
+    toast_email_opened:'📧 Email opened for {casa}!',toast_whatsapp_missing:'WhatsApp number not available',
+    toast_casa_published:'✓ Property published!',toast_photos_limit:'Maximum 10 photos. {n} extra photos ignored.',
+    toast_name_required:'Please enter the property name',
+    toast_casa_saved:'✓ Changes saved!',toast_casa_removed:'🗑️ Property removed.',
+    toast_booking_sent:'📧 Booking request sent!',
+    toast_booking_missing:'Please enter your name and email',
+    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    days:['Mo','Tu','We','Th','Fr','Sa','Su'],
+    cond_items:[
+      {label:'Check-In Time',value:'From 4:00 PM to 7:30 PM',sub:'Flexible time to be agreed'},
+      {label:'Check-Out Time',value:'By 10:00 AM',sub:'Punctuality appreciated'},
+      {label:'Minimum Stay',value:'3 nights',sub:'From October to December 10'},
+      {label:'Children up to X years',value:'Free',sub:'To be agreed with the owner'},
+      {label:'Pets',value:'Allowed',sub:'Contact for info'},
     ],
-    cond_slide_captions: ['The mountains of Cogne','The sea of Sardinia','The mountains of Cogne','The sea of Sardinia','The mountains of Cogne','The sea of Sardinia'],
-    pre_before_text: 'For information and to book you can contact us via',
-    pre_email_link: 'email', pre_or_phone: 'or by phone',
-    pre_payment_placeholder: '✏️ <em>Insert payment conditions here.</em>',
-    pre_cancel_placeholder: '✏️ <em>Insert cancellation policy here.</em>',
-    struttura_placeholder: '✏️ <em>Insert property description here.</em>',
-    servizi_choice_title: 'Services', servizi_choice_desc: 'Select a property to see available services.',
-    servizi_categories: [
-      { title: 'Living', items: [{ name: 'Wi-Fi', desc: '' },{ name: 'TV', desc: '' },{ name: 'Sofa', desc: '' },{ name: 'Safe', desc: '' },{ name: 'Air conditioning', desc: '' }]},
-      { title: 'Kitchen', items: [{ name: 'Electric oven', desc: '' },{ name: 'Microwave', desc: '' },{ name: 'Fridge & freezer', desc: '' },{ name: 'Induction hob', desc: '' },{ name: 'Coffee machine', desc: '' }]},
-      { title: 'Bathroom', items: [{ name: 'Shower, sink, WC, bidet', desc: '' },{ name: 'Towels & bath towels', desc: '' },{ name: 'Hairdryer', desc: '' }]},
-      { title: 'Cleaning & Laundry', items: [{ name: 'Washing machine', desc: '' },{ name: 'Ironing board & iron', desc: '' }]},
+    cond_slide_captions:['The mountains of Cogne','The sea of Sardinia','The mountains of Cogne','The sea of Sardinia','The mountains of Cogne','The sea of Sardinia'],
+    pre_before_text:'For information and to book you can contact us via',
+    pre_email_link:'email',pre_or_phone:'or by phone',
+    pre_payment_placeholder:'✏️ <em>Insert payment conditions here.</em>',
+    pre_cancel_placeholder:'✏️ <em>Insert cancellation policy here.</em>',
+    struttura_placeholder:'✏️ <em>Insert property description here.</em>',
+    servizi_choice_title:'Services',servizi_choice_desc:'Select a property to see available services.',
+    servizi_categories:[
+      {title:'Living',items:[{name:'Wi-Fi'},{name:'TV'},{name:'Sofa'},{name:'Safe'},{name:'Air conditioning'}]},
+      {title:'Kitchen',items:[{name:'Electric oven'},{name:'Microwave'},{name:'Fridge & freezer'},{name:'Induction hob'},{name:'Coffee machine'}]},
+      {title:'Bathroom',items:[{name:'Shower, sink, WC, bidet'},{name:'Towels & bath towels'},{name:'Hairdryer'}]},
+      {title:'Cleaning & Laundry',items:[{name:'Washing machine'},{name:'Ironing board & iron'}]},
     ],
-    spec_rooms: 'Rooms', spec_sqm: 'm²', spec_baths: 'Baths', spec_rating: 'Rating',
-    loader_text: 'Loading',
+    spec_rooms:'Rooms',spec_sqm:'m²',spec_baths:'Baths',spec_rating:'Rating',
+    loader_text:'Loading',
   }
 };
 
@@ -1225,10 +1717,10 @@ function applyTranslations() {
 }
 function setLang(lang) {
   currentLang = lang; localStorage.setItem('draf_lang', lang);
-  document.getElementById('lang-it').classList.toggle('active', lang === 'it');
-  document.getElementById('lang-en').classList.toggle('active', lang === 'en');
-  document.getElementById('mlang-it').classList.toggle('active', lang === 'it');
-  document.getElementById('mlang-en').classList.toggle('active', lang === 'en');
+  ['it','en'].forEach(l => {
+    document.getElementById('lang-'+l).classList.toggle('active', lang===l);
+    document.getElementById('mlang-'+l).classList.toggle('active', lang===l);
+  });
   document.documentElement.lang = lang; document.title = t('page_title');
   applyTranslations(); renderListings();
 }
@@ -1238,252 +1730,41 @@ function updateListingsCount() {
 }
 
 /* ==================== STATE ==================== */
-let properties = JSON.parse(localStorage.getItem('draf_properties') || '[]');
+let properties = [];
 let currentProperty = null;
 let reviewStars = 0;
 let activeFilter = 'tutti';
 let uploadedPhotos = [];
 let editPhotos = [];
 let currentPubblicaCasa = null;
+// Calendar state
+let calYear, calMonth, calCheckIn = null, calCheckOut = null;
+// Edit modal dates state
+let editBlockedDates = [];
 
-/* ==================== DATE UTILITIES ==================== */
-function dateStr(y, m, d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
-function parseDate(s) { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
-function daysBetween(a, b) { return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
-function addDays(s, n) { const d = parseDate(s); d.setDate(d.getDate() + n); return d.toISOString().slice(0,10); }
-function formatDateDisplay(s) {
-  const d = parseDate(s);
-  const months = t('months');
-  return `${d.getDate()} ${months[d.getMonth()]}`;
+/* ==================== STORAGE (con compressione foto) ==================== */
+function loadProperties() {
+  try {
+    const raw = localStorage.getItem('draf_properties');
+    if (raw) properties = JSON.parse(raw);
+  } catch(e) { properties = []; }
 }
-function isInRange(dateS, startS, endS) {
-  return dateS >= startS && dateS <= endS;
-}
-
-/* ==================== CALENDAR STATE ==================== */
-let calViewYear = 0, calViewMonth = 0;
-let calSelStart = null, calSelEnd = null, calHover = null;
-
-function openCalendar() {
-  if (!currentProperty) return;
-  const now = new Date();
-  calViewYear = now.getFullYear(); calViewMonth = now.getMonth();
-  calSelStart = null; calSelEnd = null; calHover = null;
-  document.getElementById('cal-modal-title').textContent = t('cal_btn') + ' · ' + currentProperty.name;
-  updateCalSelInfo();
-  renderCalendar();
-  openOverlay('calendar-overlay');
-}
-
-function renderCalendar() {
-  const container = document.getElementById('cal-months');
-  // Build two consecutive months
-  const months = [
-    { year: calViewYear, month: calViewMonth },
-    { year: calViewMonth === 11 ? calViewYear+1 : calViewYear, month: (calViewMonth+1) % 12 }
-  ];
-  container.innerHTML = months.map((m, mi) => buildMonthHtml(m.year, m.month, mi)).join('');
-
-  // Nav buttons only on first month header (left nav) and second (right nav)
-  const navPrev = document.getElementById('cal-nav-prev');
-  const navNext = document.getElementById('cal-nav-next');
-  if (navPrev) navPrev.onclick = () => { calViewMonth--; if (calViewMonth < 0) { calViewMonth = 11; calViewYear--; } renderCalendar(); };
-  if (navNext) navNext.onclick = () => { calViewMonth++; if (calViewMonth > 11) { calViewMonth = 0; calViewYear++; } renderCalendar(); };
-
-  // Disable prev if we'd go before today's month
-  const now = new Date();
-  if (navPrev) navPrev.disabled = (calViewYear < now.getFullYear() || (calViewYear === now.getFullYear() && calViewMonth <= now.getMonth()));
-
-  attachCalDayListeners();
-}
-
-function buildMonthHtml(year, month, monthIndex) {
-  const monthNames = t('months');
-  const dayNames = t('days');
-  const label = monthNames[month] + ' ' + year;
-  const today = new Date(); today.setHours(0,0,0,0);
-  const todayStr = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
-
-  // First weekday of month (Monday-based)
-  const firstDay = new Date(year, month, 1);
-  let startOffset = firstDay.getDay() - 1; if (startOffset < 0) startOffset = 6;
-  const daysInMonth = new Date(year, month+1, 0).getDate();
-
-  // Build day status map
-  const p = currentProperty;
-  const bookings = p.bookings || [];
-  const myBookings = p.myBookings || [];
-  const unavailable = p.unavailable || [];
-
-  let grid = '';
-  for (let i = 0; i < startOffset; i++) grid += '<div class="cal-day"></div>';
-
-  for (let d = 1; d <= daysInMonth; d++) {
-    const ds = dateStr(year, month, d);
-    const isPast = ds < todayStr;
-    const isToday = ds === todayStr;
-
-    let cls = 'cal-day';
-    let blocked = false;
-
-    // Check unavailable
-    if (isPast) { cls += ' past'; blocked = true; }
-    for (const r of unavailable) { if (isInRange(ds, r.start, r.end)) { cls += ' unavailable'; blocked = true; break; } }
-
-    if (!blocked) {
-      // Check others bookings (green)
-      let othersRole = null;
-      for (const r of bookings) {
-        if (ds === r.start && ds === r.end) othersRole = 'others-start others-end';
-        else if (ds === r.start) othersRole = 'others-start';
-        else if (ds === r.end) othersRole = 'others-end';
-        else if (isInRange(ds, r.start, r.end)) othersRole = 'others-mid';
-        if (othersRole) break;
-      }
-      // Check my bookings (blue)
-      let myRole = null;
-      for (const r of myBookings) {
-        if (ds === r.start && ds === r.end) myRole = 'mine-start mine-end';
-        else if (ds === r.start) myRole = 'mine-start';
-        else if (ds === r.end) myRole = 'mine-end';
-        else if (isInRange(ds, r.start, r.end)) myRole = 'mine-mid';
-        if (myRole) break;
-      }
-
-      if (othersRole || myRole) {
-        cls += ' ' + (myRole || othersRole);
-        blocked = true;
-      } else {
-        cls += ' available';
-      }
-    }
-
-    if (isToday) cls += ' today';
-
-    // Apply selection classes
-    if (!blocked && (calSelStart || calSelEnd)) {
-      const selEnd = calSelEnd || calHover;
-      if (calSelStart && selEnd) {
-        const s = calSelStart < selEnd ? calSelStart : selEnd;
-        const e = calSelStart < selEnd ? selEnd : calSelStart;
-        if (ds === s && ds === e) cls += ' select-start select-end';
-        else if (ds === s) cls += ' select-start';
-        else if (ds === e) cls += ' select-end';
-        else if (isInRange(ds, s, e)) cls += ' select-mid';
-      } else if (calSelStart && ds === calSelStart) {
-        cls += ' select-start select-end';
-      }
-    }
-
-    const dataAttr = blocked ? '' : ` data-date="${ds}"`;
-    grid += `<div class="${cls}"${dataAttr}>${d}</div>`;
-  }
-
-  const isFirst = monthIndex === 0;
-  const isSecond = monthIndex === 1;
-
-  return `<div class="cal-month">
-    <div class="cal-month-header">
-      ${isFirst ? `<button class="cal-nav-btn" id="cal-nav-prev" title="Mese precedente">‹</button>` : '<div style="width:30px"></div>'}
-      <div class="cal-month-label">${label}</div>
-      ${isSecond ? `<button class="cal-nav-btn" id="cal-nav-next" title="Mese successivo">›</button>` : '<div style="width:30px"></div>'}
-    </div>
-    <div class="cal-weekdays">${dayNames.map(d => `<div class="cal-weekday">${d}</div>`).join('')}</div>
-    <div class="cal-grid">${grid}</div>
-  </div>`;
-}
-
-function attachCalDayListeners() {
-  document.querySelectorAll('.cal-day.available').forEach(cell => {
-    const ds = cell.getAttribute('data-date');
-    if (!ds) return;
-    cell.addEventListener('click', () => calDayClick(ds));
-    cell.addEventListener('mouseenter', () => { calHover = ds; renderCalendar(); });
-    cell.addEventListener('mouseleave', () => { calHover = null; renderCalendar(); });
-  });
-}
-
-function calDayClick(ds) {
-  if (!calSelStart) {
-    calSelStart = ds; calSelEnd = null;
-  } else if (!calSelEnd) {
-    if (ds === calSelStart) { calSelStart = null; }
-    else if (ds < calSelStart) { calSelEnd = calSelStart; calSelStart = ds; }
-    else { calSelEnd = ds; }
-  } else {
-    calSelStart = ds; calSelEnd = null;
-  }
-  updateCalSelInfo(); renderCalendar();
-}
-
-function updateCalSelInfo() {
-  const textEl = document.getElementById('cal-sel-text');
-  const confirmBtn = document.getElementById('cal-confirm-btn');
-  const clearBtn = document.getElementById('cal-clear-btn');
-  if (!calSelStart && !calSelEnd) {
-    textEl.innerHTML = `<span>${t('cal_sel_prompt')}</span>`;
-    confirmBtn.disabled = true;
-    clearBtn.style.display = 'none';
-  } else if (calSelStart && !calSelEnd) {
-    textEl.innerHTML = `<strong>${t('cal_sel_start', { d: formatDateDisplay(calSelStart) })}</strong>`;
-    confirmBtn.disabled = true;
-    clearBtn.style.display = '';
-  } else {
-    const nights = daysBetween(calSelStart, calSelEnd);
-    textEl.innerHTML = `<strong>${t('cal_sel_range', { s: formatDateDisplay(calSelStart), e: formatDateDisplay(calSelEnd), n: nights })}</strong>`;
-    confirmBtn.disabled = false;
-    clearBtn.style.display = '';
-  }
-}
-
-function clearCalSelection() {
-  calSelStart = null; calSelEnd = null; calHover = null;
-  updateCalSelInfo(); renderCalendar();
-}
-
-function confirmCalSelection() {
-  if (!calSelStart || !calSelEnd) return;
-  const p = currentProperty;
-  // Check overlap with existing bookings and unavailable
-  const allBooked = [...(p.bookings || []), ...(p.myBookings || []), ...(p.unavailable || [])];
-  for (const r of allBooked) {
-    if (!(calSelEnd < r.start || calSelStart > r.end)) {
-      showToast(t('cal_overlap_toast')); return;
+function saveProperties() {
+  try {
+    localStorage.setItem('draf_properties', JSON.stringify(properties));
+  } catch(e) {
+    // Se troppo grande, salva senza foto tranne la prima
+    try {
+      const slim = properties.map(p => ({
+        ...p,
+        photos: p.photos ? p.photos.slice(0, 1) : []
+      }));
+      localStorage.setItem('draf_properties', JSON.stringify(slim));
+      showToast('⚠️ Spazio limitato: solo la prima foto salvata per casa.');
+    } catch(e2) {
+      showToast('⚠️ Impossibile salvare: dati troppo grandi.');
     }
   }
-  if (!p.myBookings) p.myBookings = [];
-  p.myBookings.push({ start: calSelStart, end: calSelEnd });
-  const idx = properties.findIndex(pr => pr.id === p.id);
-  if (idx !== -1) { properties[idx] = p; saveProperties(); }
-  showToast(t('cal_booked_toast', { s: formatDateDisplay(calSelStart), e: formatDateDisplay(calSelEnd) }));
-  clearCalSelection();
-  renderCalendar();
-}
-
-/* ==================== UNAVAILABLE RANGES (admin) ==================== */
-function renderUnavailList() {
-  const p = currentProperty;
-  const ranges = p && p.unavailable ? p.unavailable : [];
-  const list = document.getElementById('unavail-list');
-  list.innerHTML = ranges.map((r, i) => `
-    <li class="unavail-item">
-      <span>🚫 ${formatDateDisplay(r.start)} → ${formatDateDisplay(r.end)}</span>
-      <button class="unavail-remove" onclick="removeUnavailRange(${i})">✕</button>
-    </li>`).join('') || `<li style="color:var(--text-light);font-size:13px;padding:6px 0">Nessun periodo bloccato</li>`;
-}
-function addUnavailRange() {
-  const from = document.getElementById('unavail-from').value;
-  const to = document.getElementById('unavail-to').value;
-  if (!from || !to || from > to) { showToast('Inserisci date valide (da → a)'); return; }
-  if (!currentProperty.unavailable) currentProperty.unavailable = [];
-  currentProperty.unavailable.push({ start: from, end: to });
-  renderUnavailList();
-  document.getElementById('unavail-from').value = '';
-  document.getElementById('unavail-to').value = '';
-}
-function removeUnavailRange(i) {
-  currentProperty.unavailable.splice(i, 1);
-  renderUnavailList();
 }
 
 /* ==================== PROFILE ==================== */
@@ -1500,18 +1781,18 @@ function doLogout(e) {
   showToast(t('toast_logout')); setTimeout(() => location.reload(), 800);
 }
 document.addEventListener('DOMContentLoaded', () => {
+  loadProperties();
   localStorage.setItem('draf_logged_in', 'true');
   const profile = getProfile(); updateAvatarDisplay(profile);
-  document.getElementById('lang-it').classList.toggle('active', currentLang === 'it');
-  document.getElementById('lang-en').classList.toggle('active', currentLang === 'en');
-  document.getElementById('mlang-it').classList.toggle('active', currentLang === 'it');
-  document.getElementById('mlang-en').classList.toggle('active', currentLang === 'en');
+  ['it','en'].forEach(l => {
+    document.getElementById('lang-'+l).classList.toggle('active', currentLang===l);
+    document.getElementById('mlang-'+l).classList.toggle('active', currentLang===l);
+  });
   document.documentElement.lang = currentLang;
   applyTranslations(); renderListings(); startSlideshow();
 });
 function updateAvatarDisplay(profile) {
-  const initial = profile.nome ? profile.nome.charAt(0).toUpperCase() : 'U';
-  document.getElementById('avatar-initial').textContent = initial;
+  document.getElementById('avatar-initial').textContent = profile.nome ? profile.nome.charAt(0).toUpperCase() : 'U';
 }
 function openGestioneProfilo(e) {
   if (e) e.stopPropagation(); closeProfileMenu();
@@ -1547,15 +1828,33 @@ function showOnly(id) {
 }
 
 /* ==================== MOBILE DRAWER ==================== */
-function toggleDrawer(e) { e.stopPropagation(); document.getElementById('hamburger-btn').classList.toggle('open'); document.getElementById('mobile-drawer').classList.toggle('open'); }
-function closeDrawer() { document.getElementById('hamburger-btn').classList.remove('open'); document.getElementById('mobile-drawer').classList.remove('open'); }
+function toggleDrawer(e) {
+  e.stopPropagation();
+  document.getElementById('hamburger-btn').classList.toggle('open');
+  document.getElementById('mobile-drawer').classList.toggle('open');
+}
+function closeDrawer() {
+  document.getElementById('hamburger-btn').classList.remove('open');
+  document.getElementById('mobile-drawer').classList.remove('open');
+}
 function closeDrawerOnBg(e) { if (e.target === document.getElementById('mobile-drawer')) closeDrawer(); }
 function toggleMobileSection(id) { document.getElementById(id).classList.toggle('open'); }
 
 /* ==================== DESKTOP NAV ==================== */
-function toggleNav(id, e) { e.stopPropagation(); const item = document.getElementById(id); const isOpen = item.classList.contains('open'); closeAllNav(); if (!isOpen) item.classList.add('open'); }
-function closeAllNav() { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('open')); document.querySelectorAll('.nav-posizione-wrap').forEach(n => n.classList.remove('sub-open')); }
-function togglePosizioneSubnav(e) { e.stopPropagation(); document.getElementById('nav-posizione-wrap').classList.toggle('sub-open'); }
+function toggleNav(id, e) {
+  e.stopPropagation();
+  const item = document.getElementById(id);
+  const isOpen = item.classList.contains('open');
+  closeAllNav(); if (!isOpen) item.classList.add('open');
+}
+function closeAllNav() {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('open'));
+  document.querySelectorAll('.nav-posizione-wrap').forEach(n => n.classList.remove('sub-open'));
+}
+function togglePosizioneSubnav(e) {
+  e.stopPropagation();
+  document.getElementById('nav-posizione-wrap').classList.toggle('sub-open');
+}
 document.addEventListener('click', () => { closeAllNav(); closeProfileMenu(); closeDrawer(); });
 
 /* ==================== NAV ACTIONS ==================== */
@@ -1587,11 +1886,13 @@ function renderCondSoggiorno() {
     { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=80', cap: captions[1] },
     { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=80', cap: captions[2] },
     { url: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=900&q=80', cap: captions[3] },
+    { url: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=80', cap: captions[4] },
+    { url: 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=900&q=80', cap: captions[5] },
   ];
   const dotsHtml = slides.map((_,i) => `<button class="slide-dot${i===0?' active':''}" onclick="goSlide(${i})"></button>`).join('');
   const slidesHtml = slides.map((s,i) => `<div class="slide${i===0?' active':''}"><img src="${s.url}" alt="${s.cap}" loading="${i===0?'eager':'lazy'}"><div class="slide-caption">${s.cap}</div></div>`).join('');
   const items = t('cond_items');
-  const listHtml = `<ul class="cond-list">${items.map(it => `<li class="cond-item"><div class="cond-label">${it.label}</div><div class="cond-value">${it.value}</div>${it.sub ? `<div class="cond-sub">${it.sub}</div>` : ''}</li>`).join('')}</ul>`;
+  const listHtml = `<ul class="cond-list">${items.map(it=>`<li class="cond-item"><div class="cond-label">${it.label}</div><div class="cond-value">${it.value}</div>${it.sub?`<div class="cond-sub">${it.sub}</div>`:''}</li>`).join('')}</ul>`;
   document.getElementById('inner-body').innerHTML = `
     <div class="cond-layout">
       <div><div class="cond-eyebrow">DRAF · De Rosa Accommodation Facilities</div><h2 class="cond-section-title">${t('cond_sog_title')}</h2>${listHtml}</div>
@@ -1637,7 +1938,13 @@ function renderCondPrenotazione() {
 }
 function renderStruttura() {
   document.getElementById('inner-title').textContent = t('struttura_title');
-  document.getElementById('inner-body').innerHTML = `<div class="prenotazione-body"><div class="cond-eyebrow">DRAF · De Rosa Accommodation Facilities</div><h2 class="prenotazione-title">${t('struttura_title')}</h2><hr class="prenotazione-hr"><p class="pre-text" style="color:var(--text-light);font-weight:300">${t('struttura_placeholder')}</p></div>`;
+  document.getElementById('inner-body').innerHTML = `
+    <div class="prenotazione-body">
+      <div class="cond-eyebrow">DRAF · De Rosa Accommodation Facilities</div>
+      <h2 class="prenotazione-title">${t('struttura_title')}</h2>
+      <hr class="prenotazione-hr">
+      <p class="pre-text" style="color:var(--text-light);font-weight:300">${t('struttura_placeholder')}</p>
+    </div>`;
 }
 function openPosizioneMap(casa) {
   closeAllNav(); closeDrawer();
@@ -1671,13 +1978,197 @@ function openServiziDetail(casa) {
     const catHtml = categories.map(cat => `
       <div class="servizi-category">
         <div class="servizi-cat-header"><div class="servizi-cat-line"></div><div class="servizi-cat-title">${cat.title}</div><div class="servizi-cat-line"></div></div>
-        <ul class="servizi-list">${cat.items.map(item => `<li class="servizi-list-item"><div class="srv-bullet"></div><div><div class="srv-name">${item.name}</div>${item.desc ? `<div class="srv-desc">${item.desc}</div>` : ''}</div></li>`).join('')}</ul>
+        <ul class="servizi-list">${cat.items.map(item=>`<li class="servizi-list-item"><div class="srv-bullet"></div><div><div class="srv-name">${item.name}</div>${item.desc?`<div class="srv-desc">${item.desc}</div>`:''}</div></li>`).join('')}</ul>
       </div>`).join('');
     document.getElementById('servizi-body').innerHTML = `<div class="cond-eyebrow">DRAF · ${casaName}</div><h2 class="servizi-main-title">${t('nav_servizi')} – ${casaName}</h2>${catHtml}`;
     showOnly('servizi-detail-page');
   });
 }
 function closeServiziDetail() { showLoader('🏡', () => showOnly('listing-view')); }
+
+/* ==================== CALENDAR ==================== */
+function dateToStr(d) {
+  // Returns YYYY-MM-DD
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function strToDate(s) {
+  const [y,m,d] = s.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+function renderCalendar() {
+  if (!currentProperty) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+  if (!calYear) { calYear = today.getFullYear(); calMonth = today.getMonth(); }
+  const months = t('months'); const days = t('days');
+  document.getElementById('cal-month-label').textContent = months[calMonth] + ' ' + calYear;
+  // Days header
+  document.getElementById('cal-days-header').innerHTML = days.map(d => `<div class="cal-day-label">${d}</div>`).join('');
+  // Grid
+  const firstDay = new Date(calYear, calMonth, 1);
+  // Monday=0 offset
+  let startOffset = (firstDay.getDay() + 6) % 7;
+  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+  const blocked = new Set(currentProperty.blockedDates || []);
+  const todayStr = dateToStr(today);
+  let html = '';
+  // Empty cells
+  for (let i = 0; i < startOffset; i++) html += '<div class="cal-day empty"></div>';
+  for (let day = 1; day <= daysInMonth; day++) {
+    const d = new Date(calYear, calMonth, day);
+    const dStr = dateToStr(d);
+    const isPast = d < today;
+    const isBlocked = blocked.has(dStr);
+    const isToday = dStr === todayStr;
+    let cls = 'cal-day';
+    if (isPast) cls += ' past';
+    else if (isBlocked) cls += ' blocked';
+    else cls += ' available';
+    if (isToday && !isPast) cls += ' today';
+    // Selection
+    if (calCheckIn && calCheckOut) {
+      const ci = strToDate(calCheckIn), co = strToDate(calCheckOut);
+      if (dStr === calCheckIn) cls += ' check-in';
+      else if (dStr === calCheckOut) cls += ' check-out';
+      else if (d > ci && d < co) cls += ' in-range';
+    } else if (calCheckIn && dStr === calCheckIn) {
+      cls += ' check-in check-out';
+    }
+    const clickable = !isPast && !isBlocked;
+    html += `<button class="${cls}" ${clickable?`onclick="calDayClick('${dStr}')"`:''} ${isBlocked?'title="Occupato"':''}>${day}</button>`;
+  }
+  document.getElementById('cal-grid').innerHTML = html;
+  // iCal banner
+  const banner = document.getElementById('ical-sync-banner');
+  if (currentProperty.icalUrl) banner.style.display = 'flex';
+  else banner.style.display = 'none';
+  // Selection summary
+  updateCalSummary();
+}
+function calNav(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+function calDayClick(dStr) {
+  const blocked = new Set(currentProperty.blockedDates || []);
+  if (!calCheckIn || (calCheckIn && calCheckOut)) {
+    // Start new selection
+    calCheckIn = dStr; calCheckOut = null;
+  } else {
+    // Second click: set checkout
+    if (dStr <= calCheckIn) { calCheckIn = dStr; calCheckOut = null; }
+    else {
+      // Check no blocked dates in range
+      const from = strToDate(calCheckIn), to = strToDate(dStr);
+      let hasBlocked = false;
+      const cur = new Date(from); cur.setDate(cur.getDate()+1);
+      while (cur < to) {
+        if (blocked.has(dateToStr(cur))) { hasBlocked = true; break; }
+        cur.setDate(cur.getDate()+1);
+      }
+      if (hasBlocked) { showToast('⚠️ ' + (currentLang==='en'?'Range includes occupied dates':'Il periodo include date occupate')); calCheckIn = dStr; calCheckOut = null; }
+      else calCheckOut = dStr;
+    }
+  }
+  renderCalendar();
+}
+function clearCalSelection() {
+  calCheckIn = null; calCheckOut = null;
+  renderCalendar();
+}
+function updateCalSummary() {
+  const el = document.getElementById('cal-selection-summary');
+  if (!calCheckIn) { el.classList.remove('show'); return; }
+  el.classList.add('show');
+  const months = t('months');
+  const fmt = s => { const d = strToDate(s); return d.getDate() + ' ' + months[d.getMonth()]; };
+  let datesText, nightsText;
+  if (calCheckIn && calCheckOut) {
+    const nights = Math.round((strToDate(calCheckOut) - strToDate(calCheckIn)) / 86400000);
+    datesText = fmt(calCheckIn) + ' → ' + fmt(calCheckOut);
+    nightsText = nights === 1 ? t('cal_nights_one',{n:nights}) : t('cal_nights_multi',{n:nights});
+  } else {
+    datesText = t('cal_checkin') + ': ' + fmt(calCheckIn);
+    nightsText = t('cal_select_prompt') + ' (check-out)';
+  }
+  document.getElementById('css-dates').textContent = datesText;
+  document.getElementById('css-nights').textContent = nightsText;
+}
+
+/* ==================== iCal SYNC ==================== */
+async function syncIcalNow() {
+  if (!currentProperty || !currentProperty.icalUrl) return;
+  const btn = document.getElementById('ical-sync-btn');
+  if (btn) { btn.textContent = '⏳'; btn.disabled = true; }
+  const dates = await fetchIcalDates(currentProperty.icalUrl);
+  if (btn) { btn.textContent = t('ical_sync_now'); btn.disabled = false; }
+  if (dates === null) { showToast(t('ical_err')); return; }
+  const idx = properties.findIndex(p => p.id === currentProperty.id);
+  if (idx !== -1) {
+    // Merge: keep manual dates + add iCal dates
+    const existing = new Set(properties[idx].blockedDates || []);
+    dates.forEach(d => existing.add(d));
+    properties[idx].blockedDates = Array.from(existing).sort();
+    currentProperty = properties[idx];
+    saveProperties(); renderCalendar();
+    showToast(t('ical_ok', { n: dates.length }));
+  }
+}
+async function fetchIcalDates(url) {
+  // Use CORS proxy to fetch iCal
+  const proxies = [
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    `https://corsproxy.io/?${encodeURIComponent(url)}`
+  ];
+  for (const proxy of proxies) {
+    try {
+      const res = await fetch(proxy, { signal: AbortSignal.timeout(8000) });
+      if (!res.ok) continue;
+      const text = await res.text();
+      return parseIcalDates(text);
+    } catch(e) { continue; }
+  }
+  return null;
+}
+function parseIcalDates(icsText) {
+  const dates = new Set();
+  // Match VEVENT blocks
+  const events = icsText.match(/BEGIN:VEVENT[\s\S]*?END:VEVENT/g) || [];
+  for (const ev of events) {
+    const dtStart = ev.match(/DTSTART(?:;[^:]*)?:(\d{8})/);
+    const dtEnd = ev.match(/DTEND(?:;[^:]*)?:(\d{8})/);
+    if (!dtStart) continue;
+    const parseYMD = s => new Date(parseInt(s.slice(0,4)), parseInt(s.slice(4,6))-1, parseInt(s.slice(6,8)));
+    const start = parseYMD(dtStart[1]);
+    const end = dtEnd ? parseYMD(dtEnd[1]) : new Date(start.getTime() + 86400000);
+    // Add each day in range (exclusive of end for iCal convention)
+    const cur = new Date(start);
+    while (cur < end) {
+      dates.add(dateToStr(cur));
+      cur.setDate(cur.getDate()+1);
+    }
+  }
+  return Array.from(dates).sort();
+}
+async function testIcalUrl() {
+  const url = document.getElementById('ef-ical-url').value.trim();
+  const statusEl = document.getElementById('ical-status');
+  if (!url) { statusEl.textContent = t('ical_err'); statusEl.className = 'ical-status err'; return; }
+  statusEl.textContent = currentLang==='en'?'Connecting...':'Connessione in corso...';
+  statusEl.className = 'ical-status ok';
+  const dates = await fetchIcalDates(url);
+  if (dates === null) {
+    statusEl.textContent = t('ical_err'); statusEl.className = 'ical-status err';
+  } else {
+    // Merge into editBlockedDates
+    const existing = new Set(editBlockedDates);
+    dates.forEach(d => existing.add(d));
+    editBlockedDates = Array.from(existing).sort();
+    renderEditBlockedList();
+    statusEl.textContent = t('ical_ok', { n: dates.length }); statusEl.className = 'ical-status ok';
+  }
+}
 
 /* ==================== PUBBLICA CASA ==================== */
 function openPubblicaPage(casa) {
@@ -1703,7 +2194,8 @@ function handlePhotoUpload(e) {
   if (files.length > remaining) showToast(t('toast_photos_limit', { n: files.length - remaining }));
 }
 function renderPhotoPreviews() {
-  document.getElementById('photo-preview-grid').innerHTML = uploadedPhotos.map((src, i) => `<div class="photo-preview-item"><img src="${src}" alt="Photo ${i+1}"><button class="photo-preview-remove" onclick="removePhoto(${i})">✕</button></div>`).join('');
+  document.getElementById('photo-preview-grid').innerHTML = uploadedPhotos.map((src, i) =>
+    `<div class="photo-preview-item"><img src="${src}" alt="Photo ${i+1}"><button class="photo-preview-remove" onclick="removePhoto(${i})">✕</button></div>`).join('');
 }
 function removePhoto(idx) { uploadedPhotos.splice(idx, 1); renderPhotoPreviews(); }
 function submitPubblicaCasa() {
@@ -1713,7 +2205,12 @@ function submitPubblicaCasa() {
   if (!nome) { showToast(t('toast_name_required')); return; }
   const casa = currentPubblicaCasa;
   const location = casa === 'sardegna' ? 'Sardegna' : "Valle d'Aosta";
-  const newProp = { id: Date.now(), name: nome, desc: desc || 'Proprietà De Rosa.', location, type: 'casa', casa, mapsLink: maps, photos: [...uploadedPhotos], amenities: [], reviews: [], bookings: [], myBookings: [], unavailable: [], price: '', ownerName: 'De Rosa', ownerPhone: '', ownerEmail: '', createdAt: Date.now() };
+  const newProp = {
+    id: Date.now(), name: nome, desc: desc || 'Proprietà De Rosa.', location, type: 'casa', casa,
+    mapsLink: maps, photos: [...uploadedPhotos], amenities: [], reviews: [],
+    price: '', ownerName: 'De Rosa', ownerPhone: '', ownerEmail: '',
+    blockedDates: [], icalUrl: '', createdAt: Date.now()
+  };
   properties.push(newProp); saveProperties();
   showLoader(casa === 'sardegna' ? '🏖️' : '🏔️', () => { renderListings(); showOnly('listing-view'); scrollToListings(); showToast(t('toast_casa_published')); });
 }
@@ -1734,11 +2231,71 @@ function openModificaCasa(e) {
   document.getElementById('ef-owner').value = p.ownerName || '';
   document.getElementById('ef-phone').value = p.ownerPhone || '';
   document.getElementById('ef-email').value = p.ownerEmail || '';
+  document.getElementById('ef-ical-url').value = p.icalUrl || '';
+  document.getElementById('ical-status').className = 'ical-status';
   editPhotos = [...(p.photos || [])];
+  editBlockedDates = [...(p.blockedDates || [])];
   renderEditPhotosGrid();
-  renderUnavailList();
+  renderEditBlockedList();
+  // Reset tabs
+  switchDmTab('manual', document.querySelector('.dm-tab'));
   openOverlay('modifica-casa-overlay');
 }
+
+/* Edit modal - date tabs */
+function switchDmTab(tab, el) {
+  document.querySelectorAll('.dm-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.dm-panel').forEach(p => p.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('dm-panel-'+tab).classList.add('active');
+}
+function renderEditBlockedList() {
+  const lists = ['dm-blocked-list', 'dm-blocked-list-2'];
+  lists.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (!editBlockedDates.length) {
+      el.innerHTML = `<div class="dm-empty-dates">${currentLang==='en'?'No blocked dates':'Nessuna data bloccata'}</div>`;
+      return;
+    }
+    // Group contiguous ranges for display
+    el.innerHTML = editBlockedDates.map(d => {
+      const [y,m,day] = d.split('-');
+      const label = `${day}/${m}/${y}`;
+      return `<div class="dm-date-chip"><span>${label}</span><button onclick="dmRemoveDate('${d}')">✕</button></div>`;
+    }).join('');
+  });
+}
+function dmAddSingleDate() {
+  const val = document.getElementById('dm-single-date').value;
+  if (!val) return;
+  if (!editBlockedDates.includes(val)) {
+    editBlockedDates.push(val);
+    editBlockedDates.sort();
+  }
+  document.getElementById('dm-single-date').value = '';
+  renderEditBlockedList();
+}
+function dmAddRange() {
+  const from = document.getElementById('dm-range-from').value;
+  const to = document.getElementById('dm-range-to').value;
+  if (!from || !to || from > to) { showToast(currentLang==='en'?'Select a valid date range':'Seleziona un periodo valido'); return; }
+  const cur = strToDate(from), end = strToDate(to);
+  while (cur <= end) {
+    const s = dateToStr(cur);
+    if (!editBlockedDates.includes(s)) editBlockedDates.push(s);
+    cur.setDate(cur.getDate()+1);
+  }
+  editBlockedDates.sort();
+  document.getElementById('dm-range-from').value = '';
+  document.getElementById('dm-range-to').value = '';
+  renderEditBlockedList();
+}
+function dmRemoveDate(d) {
+  editBlockedDates = editBlockedDates.filter(x => x !== d);
+  renderEditBlockedList();
+}
+
 function renderEditPhotosGrid() {
   const grid = document.getElementById('edit-photos-grid');
   const countEl = document.getElementById('edit-photos-count');
@@ -1748,7 +2305,8 @@ function renderEditPhotosGrid() {
   addBtn.disabled = count >= 10;
   const fileInput = document.getElementById('edit-photo-input');
   if (fileInput) fileInput.disabled = count >= 10;
-  grid.innerHTML = editPhotos.map((src, i) => `<div class="edit-photo-item"><img src="${src}" alt="Foto ${i+1}"><button class="edit-photo-remove" onclick="editRemovePhoto(${i})">✕</button></div>`).join('');
+  grid.innerHTML = editPhotos.map((src, i) =>
+    `<div class="edit-photo-item"><img src="${src}" alt="Foto ${i+1}"><button class="edit-photo-remove" onclick="editRemovePhoto(${i})">✕</button></div>`).join('');
 }
 function editRemovePhoto(idx) { editPhotos.splice(idx, 1); renderEditPhotosGrid(); }
 function editAddPhotos(e) {
@@ -1767,25 +2325,29 @@ function salvaCasaModifiche() {
   if (!nome) { showToast(t('toast_name_required')); return; }
   const idx = properties.findIndex(p => p.id === currentProperty.id);
   if (idx === -1) return;
-  properties[idx].name = nome;
-  properties[idx].desc = document.getElementById('ef-desc').value.trim();
-  properties[idx].price = document.getElementById('ef-price').value.trim();
-  properties[idx].type = document.getElementById('ef-type').value;
-  properties[idx].rooms = document.getElementById('ef-rooms').value.trim() || undefined;
-  properties[idx].baths = document.getElementById('ef-baths').value.trim() || undefined;
-  properties[idx].sqm = document.getElementById('ef-sqm').value.trim() || undefined;
-  properties[idx].mapsLink = document.getElementById('ef-maps').value.trim();
-  properties[idx].ownerName = document.getElementById('ef-owner').value.trim();
-  properties[idx].ownerPhone = document.getElementById('ef-phone').value.trim();
-  properties[idx].ownerEmail = document.getElementById('ef-email').value.trim();
-  properties[idx].photos = [...editPhotos];
-  properties[idx].unavailable = currentProperty.unavailable || [];
+  properties[idx] = {
+    ...properties[idx],
+    name: nome,
+    desc: document.getElementById('ef-desc').value.trim(),
+    price: document.getElementById('ef-price').value.trim(),
+    type: document.getElementById('ef-type').value,
+    rooms: document.getElementById('ef-rooms').value.trim() || undefined,
+    baths: document.getElementById('ef-baths').value.trim() || undefined,
+    sqm: document.getElementById('ef-sqm').value.trim() || undefined,
+    mapsLink: document.getElementById('ef-maps').value.trim(),
+    ownerName: document.getElementById('ef-owner').value.trim(),
+    ownerPhone: document.getElementById('ef-phone').value.trim(),
+    ownerEmail: document.getElementById('ef-email').value.trim(),
+    photos: [...editPhotos],
+    blockedDates: [...editBlockedDates],
+    icalUrl: document.getElementById('ef-ical-url').value.trim(),
+  };
   currentProperty = properties[idx];
   saveProperties();
   closeOverlay('modifica-casa-overlay');
   showToast(t('toast_casa_saved'));
   const icon = currentProperty.location.toLowerCase().includes('sardegna') ? '🏖️' : '🏔️';
-  showLoader(icon, () => { openDetailDirect(currentProperty.id); });
+  showLoader(icon, () => openDetailDirect(currentProperty.id));
 }
 function rimuoviCasa() {
   if (!currentProperty) return;
@@ -1910,11 +2472,26 @@ function _populateDetailPage(p) {
     photoGrid.style.display = 'grid';
     photoGrid.innerHTML = `<div class="photo-grid-item photo-main" style="grid-column:1/-1;grid-row:1/-1"><img src="${photos[0]}" alt="Photo 1"></div>`;
   } else photoGrid.style.display = 'none';
+  // Reset review form
   reviewStars = 0;
   document.getElementById('rev-name').value = '';
   document.getElementById('rev-text').value = '';
   document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
+  // Reset booking form
+  document.getElementById('bf-nome').value = '';
+  document.getElementById('bf-email').value = '';
+  document.getElementById('bf-tel').value = '';
+  document.getElementById('bf-note').value = '';
+  // Init calendar
+  const today = new Date();
+  calYear = today.getFullYear(); calMonth = today.getMonth();
+  calCheckIn = null; calCheckOut = null;
+  renderCalendar();
   renderDetailReviews();
+  // Auto-sync iCal if URL set
+  if (p.icalUrl) {
+    syncIcalNow();
+  }
 }
 function renderDetailReviews() {
   const reviews = currentProperty.reviews || [];
@@ -1922,7 +2499,44 @@ function renderDetailReviews() {
   if (!reviews.length) { list.innerHTML = `<div style="color:var(--text-light);font-size:14px;padding:14px 0;font-weight:300">${t('reviews_none')}</div>`; return; }
   list.innerHTML = reviews.map(r => `<div class="review-item"><div class="review-top"><div class="reviewer-info"><div class="rev-avatar">${r.name[0].toUpperCase()}</div><div><div class="rev-name">${escHtml(r.name)}</div><div class="rev-date">${r.date}</div></div></div><div class="rev-stars">${'★'.repeat(r.stars)}</div></div><div class="rev-text">${escHtml(r.text)}</div></div>`).join('');
 }
-function closeDetail() { showLoader('🏡', () => { showOnly('listing-view'); currentProperty = null; }); }
+function closeDetail() { showLoader('🏡', () => { showOnly('listing-view'); currentProperty = null; calCheckIn = null; calCheckOut = null; }); }
+
+/* ==================== BOOKING FORM ==================== */
+function submitBookingForm() {
+  const nome = document.getElementById('bf-nome').value.trim();
+  const email = document.getElementById('bf-email').value.trim();
+  if (!nome || !email) { showToast(t('toast_booking_missing')); return; }
+  if (!currentProperty) return;
+  const tel = document.getElementById('bf-tel').value.trim();
+  const adults = document.getElementById('bf-adults').value;
+  const children = document.getElementById('bf-children').value;
+  const note = document.getElementById('bf-note').value.trim();
+  const p = currentProperty;
+  const recipient = p.ownerEmail || (p.casa === 'sardegna' ? 'info.sardegna@derosafacilities.it' : 'info.cogne@derosafacilities.it');
+  let dateInfo = '';
+  if (calCheckIn && calCheckOut) {
+    const months = t('months');
+    const fmt = s => { const d = strToDate(s); return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear(); };
+    const nights = Math.round((strToDate(calCheckOut) - strToDate(calCheckIn)) / 86400000);
+    dateInfo = (currentLang==='en'?'\nCheck-in':'\nCheck-in') + ': ' + fmt(calCheckIn) +
+               (currentLang==='en'?'\nCheck-out':'\nCheck-out') + ': ' + fmt(calCheckOut) +
+               '\n' + (nights===1?t('cal_nights_one',{n:nights}):t('cal_nights_multi',{n:nights}));
+  }
+  const lang = currentLang;
+  const subj = encodeURIComponent((lang==='en'?'Booking Request for ':'Richiesta di prenotazione per ') + p.name);
+  const body = encodeURIComponent(
+    (lang==='en'?'BOOKING REQUEST':'RICHIESTA DI PRENOTAZIONE') + ' – ' + p.name + '\n' +
+    '─────────────────────\n' +
+    (lang==='en'?'Name':'Nome') + ': ' + nome + '\n' +
+    'Email: ' + email + '\n' +
+    (tel ? (lang==='en'?'Phone':'Telefono') + ': ' + tel + '\n' : '') +
+    (lang==='en'?'Adults':'Adulti') + ': ' + adults + '   ' + (lang==='en'?'Children':'Bambini') + ': ' + children +
+    dateInfo + '\n' +
+    (note ? (lang==='en'?'\nNotes':'Note') + ':\n' + note : '')
+  );
+  window.location.href = `mailto:${recipient}?subject=${subj}&body=${body}`;
+  showToast(t('toast_booking_sent'));
+}
 
 /* ==================== REVIEWS ==================== */
 function setReviewStar(v) { reviewStars = v; document.querySelectorAll('.star-btn').forEach(b => b.classList.toggle('active', Number(b.dataset.v) <= v)); }
@@ -1998,17 +2612,37 @@ function closeProfileMenu() { document.getElementById('profile-menu')?.classList
 /* ==================== UTILS ==================== */
 function scrollToListings() { document.getElementById('listings-anchor')?.scrollIntoView({ behavior: 'smooth' }); }
 function navigateTo(dest) { if (dest === 'home') { showOnly('listing-view'); window.scrollTo(0,0); } }
-function saveProperties() {
-  try { localStorage.setItem('draf_properties', JSON.stringify(properties)); }
-  catch(e) { localStorage.setItem('draf_properties', JSON.stringify(properties.map(p => ({...p, photos: p.photos ? p.photos.slice(0,1) : []})))); }
-}
 function showToast(msg) {
-  const t_el = document.getElementById('toast');
-  t_el.textContent = msg; t_el.classList.add('show');
-  setTimeout(() => t_el.classList.remove('show'), 3000);
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
 }
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+/* Slideshow inner page */
+function renderCondSoggiorno() {
+  document.getElementById('inner-title').textContent = t('cond_sog_title');
+  const captions = t('cond_slide_captions');
+  const slides = [
+    { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80', cap: captions[0] },
+    { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=80', cap: captions[1] },
+    { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=80', cap: captions[2] },
+    { url: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=900&q=80', cap: captions[3] },
+    { url: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=80', cap: captions[4] },
+    { url: 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=900&q=80', cap: captions[5] },
+  ];
+  const dotsHtml = slides.map((_,i) => `<button class="slide-dot${i===0?' active':''}" onclick="goSlide(${i})"></button>`).join('');
+  const slidesHtml = slides.map((s,i) => `<div class="slide${i===0?' active':''}"><img src="${s.url}" alt="${s.cap}" loading="${i===0?'eager':'lazy'}"><div class="slide-caption">${s.cap}</div></div>`).join('');
+  const items = t('cond_items');
+  const listHtml = `<ul class="cond-list">${items.map(it=>`<li class="cond-item"><div class="cond-label">${it.label}</div><div class="cond-value">${it.value}</div>${it.sub?`<div class="cond-sub">${it.sub}</div>`:''}</li>`).join('')}</ul>`;
+  document.getElementById('inner-body').innerHTML = `
+    <div class="cond-layout">
+      <div><div class="cond-eyebrow">DRAF · De Rosa Accommodation Facilities</div><h2 class="cond-section-title">${t('cond_sog_title')}</h2>${listHtml}</div>
+      <div><div class="slideshow" id="slideshow-el">${slidesHtml}<div class="slide-dots">${dotsHtml}</div></div></div>
+    </div>`;
+  startSlideshow();
+}
 </script>
 </body>
 </html>
