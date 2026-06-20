@@ -908,6 +908,36 @@ header {
   .photo-preview-grid { grid-template-columns: repeat(3, 1fr); }
   .edit-photos-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ===== SALVATAGGIO INDICATOR ===== */
+#save-indicator {
+  position: fixed; top: 12px; left: 50%; transform: translateX(-50%) translateY(-10px);
+  z-index: 9998;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(18,18,16,0.84); backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.88);
+  padding: 7px 16px 7px 12px;
+  border-radius: 50px;
+  font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 400; letter-spacing: 0.8px;
+  box-shadow: 0 2px 14px rgba(0,0,0,0.22);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+#save-indicator.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.save-spinner {
+  width: 11px; height: 11px;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-top-color: #4db8a8;
+  border-radius: 50%;
+  animation: spinSave 0.65s linear infinite; flex-shrink: 0;
+}
+#save-indicator.saved .save-spinner { display: none; }
+#save-indicator.saved::before { content: '✓'; color: #4db8a8; font-size: 12px; font-weight: 700; }
+@keyframes spinSave { to { transform: rotate(360deg); } }
+@media (max-width: 768px) {
+  #save-indicator { top: calc(var(--header-h) + 8px); font-size: 10px; padding: 6px 13px 6px 10px; }
+}
+  
 </style>
 </head>
 <body>
@@ -1557,6 +1587,8 @@ header {
 </div>
 
 <div id="toast"></div>
+<div id="save-indicator"><div class="save-spinner"></div><span id="save-indicator-text">Salvataggio</span></div>
+  
 
 <script>
 /* ==================== TRANSLATIONS ==================== */
@@ -1861,7 +1893,9 @@ function loadProperties() {
     if (raw) properties = JSON.parse(raw);
   } catch(e) { properties = []; }
 }
+  
 function saveProperties() {
+  showSaveIndicator();
   try {
     localStorage.setItem('draf_properties', JSON.stringify(properties));
   } catch(e) {
@@ -1939,7 +1973,7 @@ function getProfile() {
   const def = { nome: '', email: '', createdAt: new Date().toLocaleDateString(currentLang === 'en' ? 'en-GB' : 'it-IT', { day:'2-digit', month:'2-digit', year:'numeric' }) };
   localStorage.setItem('draf_profile', JSON.stringify(def)); return def;
 }
-function saveProfile(data) { localStorage.setItem('draf_profile', JSON.stringify(data)); }
+function saveProfile(data) { showSaveIndicator(); localStorage.setItem('draf_profile', JSON.stringify(data)); }
 function doLogout(e) {
   if (e) e.stopPropagation();
   localStorage.removeItem('draf_logged_in'); closeProfileMenu();
@@ -2806,6 +2840,27 @@ function showToast(msg) {
 }
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+    /* ==================== SAVE INDICATOR ==================== */
+let _saveIndicatorTimer = null;
+function showSaveIndicator() {
+  const el = document.getElementById('save-indicator');
+  const txt = document.getElementById('save-indicator-text');
+  if (!el) return;
+  el.classList.remove('saved');
+  txt.textContent = currentLang === 'en' ? 'Saving' : 'Salvataggio';
+  el.classList.add('show');
+  if (_saveIndicatorTimer) clearTimeout(_saveIndicatorTimer);
+  _saveIndicatorTimer = setTimeout(() => {
+    el.classList.add('saved');
+    txt.textContent = currentLang === 'en' ? 'Saved' : 'Salvato';
+    _saveIndicatorTimer = setTimeout(() => {
+      el.classList.remove('show');
+      setTimeout(() => el.classList.remove('saved'), 250);
+    }, 1200);
+  }, 750);
+}
+  
 </script>
 </body>
 </html>
