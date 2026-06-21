@@ -1892,6 +1892,7 @@ function loadProperties() {
     const raw = localStorage.getItem('draf_properties');
     if (raw) properties = JSON.parse(raw);
   } catch(e) { properties = []; }
+}
 
   // Seed automatico Casa Sardegna se non esiste
   const hasSardegna = properties.some(p => p.casa === 'sardegna');
@@ -1997,6 +1998,39 @@ function doLogout(e) {
 }
 document.addEventListener('DOMContentLoaded', () => {
   loadProperties();
+
+  // Seed Casa Sardegna se non esiste
+  const hasSardegna = properties.some(p => p.casa === 'sardegna');
+  if (!hasSardegna) {
+    properties.push({
+      id: Date.now(),
+      name: 'Casa Sardegna',
+      desc: 'Splendida proprietà in Sardegna, ad Alghero.',
+      location: 'Sardegna',
+      type: 'casa',
+      casa: 'sardegna',
+      mapsLink: '',
+      photos: [],
+      amenities: [],
+      reviews: [],
+      price: '',
+      ownerName: 'De Rosa',
+      ownerPhone: '',
+      ownerEmail: '',
+      blockedDates: [],
+      icalUrl: 'https://api.host.holidu.com/ical/4dcm28db6041nydbupdzq.ics',
+      createdAt: Date.now()
+    });
+    saveProperties();
+  }
+
+  // Aggiungi icalUrl a Casa Cogne se manca
+  const cogneIdx = properties.findIndex(p => p.casa === 'cogne');
+  if (cogneIdx !== -1 && !properties[cogneIdx].icalUrl) {
+    properties[cogneIdx].icalUrl = 'https://api.host.holidu.com/ical/jfx8ev3643t-zbbdet5l0.ics';
+    saveProperties();
+  }
+
   localStorage.setItem('draf_logged_in', 'true');
   const profile = getProfile(); updateAvatarDisplay(profile);
   ['it','en'].forEach(l => {
@@ -2005,9 +2039,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.documentElement.lang = currentLang;
   applyTranslations(); renderListings(); startSlideshow();
-  syncAllIcalOnLoad(); // ← aggiunta questa riga
+  syncAllIcalOnLoad();
 });
-
+  
 async function syncAllIcalOnLoad() {
   const toSync = properties.filter(p => p.icalUrl);
   for (const p of toSync) {
