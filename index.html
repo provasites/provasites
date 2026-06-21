@@ -1894,6 +1894,21 @@ function loadProperties() {
   } catch(e) { properties = []; }
 }
 
+  function saveProperties() {
+  showSaveIndicator();
+  try {
+    localStorage.setItem('draf_properties', JSON.stringify(properties));
+  } catch(e) {
+    try {
+      const slim = properties.map(p => ({ ...p, photos: p.photos ? p.photos.slice(0, 1) : [] }));
+      localStorage.setItem('draf_properties', JSON.stringify(slim));
+      showToast('⚠️ Spazio limitato: solo la prima foto salvata per casa.');
+    } catch(e2) {
+      showToast('⚠️ Impossibile salvare: dati troppo grandi.');
+    }
+  }
+}
+
 /* ==================== CROSS-DEVICE SYNC (Export/Import) ==================== */
 function exportData() {
   const data = { version: 1, exportedAt: new Date().toISOString(), properties };
