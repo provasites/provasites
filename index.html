@@ -2397,34 +2397,29 @@ async function syncIcalNow() {
     showToast(t('ical_ok', { n: dates.length }));
   }
 }
+
 async function fetchIcalDates(url) {
   const proxies = [
     `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
     `https://corsproxy.io/?${encodeURIComponent(url)}`,
-    `https://thingproxy.freeboard.io/fetch/${url}`
   ];
   for (const proxy of proxies) {
     try {
-      const res = await fetch(proxy, { signal: AbortSignal.timeout(10000) });
-      if (!res.ok) {
-        console.warn('Proxy risposta non ok:', proxy, res.status);
-        continue;
+      const res = await fetch(proxy, { signal: AbortSignal.timeout(12000) });
+      if (!res.ok) continue;
+      let text = await res.text();
+      // allorigins /get restituisce JSON con il contenuto in "contents"
+      if (text.startsWith('{') && text.includes('"contents"')) {
+        text = JSON.parse(text).contents;
       }
-      const text = await res.text();
-      if (!text.includes('BEGIN:VCALENDAR')) {
-        console.warn('Risposta non è iCal valido:', proxy, text.slice(0, 100));
-        continue;
-      }
-      console.log('✓ Proxy funzionante:', proxy);
+      if (!text.includes('BEGIN:VCALENDAR')) continue;
       return parseIcalDates(text);
-    } catch(e) {
-      console.warn('Proxy fallito:', proxy, e.message);
-      continue;
-    }
+    } catch(e) { continue; }
   }
-  console.error('Tutti i proxy falliti per:', url);
   return null;
 }
+  
 function parseIcalDates(icsText) {
   const dates = new Set();
   const events = icsText.match(/BEGIN:VEVENT[\s\S]*?END:VEVENT/g) || [];
