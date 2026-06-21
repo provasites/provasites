@@ -2401,15 +2401,17 @@ async function syncIcalNow() {
 async function fetchIcalDates(url) {
   const proxies = [
     `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-    `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-    `https://corsproxy.io/?${encodeURIComponent(url)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+    `https://proxy.cors.sh/${url}`,
   ];
   for (const proxy of proxies) {
     try {
-      const res = await fetch(proxy, { signal: AbortSignal.timeout(12000) });
+      const res = await fetch(proxy, {
+        signal: AbortSignal.timeout(12000),
+        headers: { 'x-cors-api-key': 'temp_' + Math.random() }
+      });
       if (!res.ok) continue;
       let text = await res.text();
-      // allorigins /get restituisce JSON con il contenuto in "contents"
       if (text.startsWith('{') && text.includes('"contents"')) {
         text = JSON.parse(text).contents;
       }
