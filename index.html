@@ -1892,23 +1892,39 @@ function loadProperties() {
     const raw = localStorage.getItem('draf_properties');
     if (raw) properties = JSON.parse(raw);
   } catch(e) { properties = []; }
-}
-  
-function saveProperties() {
-  showSaveIndicator();
-  try {
-    localStorage.setItem('draf_properties', JSON.stringify(properties));
-  } catch(e) {
-    try {
-      const slim = properties.map(p => ({ ...p, photos: p.photos ? p.photos.slice(0, 1) : [] }));
-      localStorage.setItem('draf_properties', JSON.stringify(slim));
-      showToast('⚠️ Spazio limitato: solo la prima foto salvata per casa.');
-    } catch(e2) {
-      showToast('⚠️ Impossibile salvare: dati troppo grandi.');
-    }
+
+  // Seed automatico Casa Sardegna se non esiste
+  const hasSardegna = properties.some(p => p.casa === 'sardegna');
+  if (!hasSardegna) {
+    properties.push({
+      id: Date.now(),
+      name: 'Casa Sardegna',
+      desc: 'Splendida proprietà in Sardegna, ad Alghero.',
+      location: 'Sardegna',
+      type: 'casa',
+      casa: 'sardegna',
+      mapsLink: '',
+      photos: [],
+      amenities: [],
+      reviews: [],
+      price: '',
+      ownerName: 'De Rosa',
+      ownerPhone: '',
+      ownerEmail: '',
+      blockedDates: [],
+      icalUrl: 'https://api.host.holidu.com/ical/4dcm28db6041nydbupdzq.ics',
+      createdAt: Date.now()
+    });
+    saveProperties();
+  }
+
+  // Imposta icalUrl su Casa Cogne se non ce l'ha già
+  const cogneIdx = properties.findIndex(p => p.casa === 'cogne');
+  if (cogneIdx !== -1 && !properties[cogneIdx].icalUrl) {
+    properties[cogneIdx].icalUrl = 'https://api.host.holidu.com/ical/jfx8ev3643t-zbbdet5l0.ics';
+    saveProperties();
   }
 }
-
 /* ==================== CROSS-DEVICE SYNC (Export/Import) ==================== */
 function exportData() {
   const data = { version: 1, exportedAt: new Date().toISOString(), properties };
@@ -1989,10 +2005,28 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.documentElement.lang = currentLang;
   applyTranslations(); renderListings(); startSlideshow();
+  syncAllIcalOnLoad(); // ← aggiunta questa riga
 });
+
+async function syncAllIcalOnLoad() {
+  const toSync = properties.filter(p => p.icalUrl);
+  for (const p of toSync) {
+    const dates = await fetchIcalDates(p.icalUrl);
+    if (dates === null) continue;
+    const idx = properties.findIndex(x => x.id === p.id);
+    if (idx === -1) continue;
+    const existing = new Set(properties[idx].blockedDates || []);
+    dates.forEach(d => existing.add(d));
+    properties[idx].blockedDates = Array.from(existing).sort();
+  }
+  saveProperties();
+  renderListings();
+}
+
 function updateAvatarDisplay(profile) {
   document.getElementById('avatar-initial').textContent = profile.nome ? profile.nome.charAt(0).toUpperCase() : 'U';
 }
+  
 function openGestioneProfilo(e) {
   if (e) e.stopPropagation(); closeProfileMenu();
   const profile = getProfile();
