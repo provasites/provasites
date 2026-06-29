@@ -1283,6 +1283,22 @@ header {
           <button class="css-clear" onclick="clearCalSelection()" data-i18n="cal_clear">Cancella selezione</button>
         </div>
       </div>
+
+    <div class="cal-price-box" id="cal-price-box" style="display:none; background:white; border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; margin-bottom:14px;">
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
+    <div>
+      <div style="font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--text-light); margin-bottom:4px;">Totale stimato</div>
+      <div style="font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:400; color:var(--text);" id="cpb-total">—</div>
+      <div style="font-size:12px; color:var(--text-light); margin-top:2px;" id="cpb-detail">—</div>
+    </div>
+    <div id="cpb-tiers" style="display:flex; flex-direction:column; gap:4px; text-align:right;"></div>
+  </div>
+  <button onclick="openPaymentModal()" style="width:100%; padding:14px; background:var(--teal); color:white; border:none; border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;" onmouseover="this.style.background='var(--teal-dark)'" onmouseout="this.style.background='var(--teal)'">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+    Procedi al Pagamento
+  </button>
+</div>
+      
       <div class="section-divider"></div>
       <div class="reviews-header">
         <div class="reviews-title" data-i18n="reviews_title">Recensioni</div>
@@ -2615,11 +2631,19 @@ function calDayClick(dStr) {
 
 function clearCalSelection() {
   calCheckIn = null; calCheckOut = null;
+  const priceBox = document.getElementById('cal-price-box');
+  if (priceBox) priceBox.style.display = 'none';
   renderCalendar();
 }
+  
 function updateCalSummary() {
   const el = document.getElementById('cal-selection-summary');
-  if (!calCheckIn) { el.classList.remove('show'); return; }
+  const priceBox = document.getElementById('cal-price-box');
+  if (!calCheckIn) {
+    el.classList.remove('show');
+    if (priceBox) priceBox.style.display = 'none';
+    return;
+  }
   el.classList.add('show');
   const months = t('months');
   const fmt = s => { const d = strToDate(s); return d.getDate() + ' ' + months[d.getMonth()]; };
@@ -2628,9 +2652,28 @@ function updateCalSummary() {
     const nights = Math.round((strToDate(calCheckOut) - strToDate(calCheckIn)) / 86400000);
     datesText = fmt(calCheckIn) + ' → ' + fmt(calCheckOut);
     nightsText = nights === 1 ? t('cal_nights_one',{n:nights}) : t('cal_nights_multi',{n:nights});
+    // Mostra price box
+    if (priceBox && currentProperty) {
+      const casa = currentProperty.casa;
+      const pricePerNight = getPriceForNights(casa, nights);
+      const total = pricePerNight * nights;
+      priceBox.style.display = 'block';
+      document.getElementById('cpb-total').textContent = '€' + total.toLocaleString('it-IT');
+      document.getElementById('cpb-detail').textContent =
+        '€' + pricePerNight + ' × ' + nights + (nights === 1 ? ' notte' : ' notti');
+      // Badge scaglioni
+      const tiersEl = document.getElementById('cpb-tiers');
+      const tiers = getAllTiers(casa);
+      tiersEl.innerHTML = tiers.map(tier => {
+        const label = tier.minNights + (tier.maxNights >= 99 ? '+' : '–' + tier.maxNights) + ' notti';
+        const isActive = nights >= tier.minNights && nights <= tier.maxNights;
+        return `<span style="font-size:10px; padding:3px 9px; border-radius:50px; border:1px solid ${isActive ? 'var(--teal)' : 'var(--border)'}; color:${isActive ? 'white' : 'var(--text-light)'}; background:${isActive ? 'var(--teal)' : 'white'}; font-weight:${isActive ? '600' : '400'}; white-space:nowrap;">€${tier.pricePerNight} / ${label}</span>`;
+      }).join('');
+    }
   } else {
     datesText = t('cal_checkin') + ': ' + fmt(calCheckIn);
     nightsText = t('cal_select_prompt') + ' (check-out)';
+    if (priceBox) priceBox.style.display = 'none';
   }
   document.getElementById('css-dates').textContent = datesText;
   document.getElementById('css-nights').textContent = nightsText;
