@@ -1773,83 +1773,89 @@ header {
       </button>
     </div>
 
-    <!-- Form carta di credito -->
-    <div class="card-form-wrap" id="card-form-wrap">
-      <div class="card-field">
-        <label>Numero carta</label>
-        <div class="card-number-wrap">
-          <input type="text" id="pay-card-number" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric" oninput="formatCardNumber(this)">
-          <span class="card-brand-icon" id="card-brand-icon"></span>
-        </div>
-      </div>
-      <div class="card-form-row">
-        <div class="card-field">
-          <label>Scadenza</label>
-          <input type="text" id="pay-card-expiry" placeholder="MM/AA" maxlength="5" inputmode="numeric" oninput="formatExpiry(this)">
-        </div>
-        <div class="card-field">
-          <label>CVV</label>
-          <input type="text" id="pay-card-cvv" placeholder="123" maxlength="4" inputmode="numeric">
-        </div>
-      </div>
-      <div class="card-field">
-        <label>Titolare della carta</label>
-        <input type="text" id="pay-card-name" placeholder="Mario Rossi" autocomplete="cc-name">
-      </div>
-      <div class="card-field">
-        <label>Email di conferma</label>
-        <input type="email" id="pay-card-email" placeholder="email@esempio.it" oninput="checkCardEmail(this)">
-        <div class="card-email-hint" id="card-email-hint">
-          <div class="card-email-hint-icon">✓</div>
-          <span>La conferma verrà inviata a questo indirizzo</span>
-        </div>
-      </div>
+        <!-- Form carta di credito -->
+<div class="card-form-wrap" id="card-form-wrap">
+  <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/200px-Visa_Inc._logo.svg.png" alt="Visa" style="height:22px; object-fit:contain; filter:grayscale(0.2);">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png" alt="Mastercard" style="height:22px; object-fit:contain;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Maestro_card_logo.svg/200px-Maestro_card_logo.svg.png" alt="Maestro" style="height:22px; object-fit:contain;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/American_Express_logo.svg/200px-American_Express_logo.svg.png" alt="Amex" style="height:22px; object-fit:contain;">
+  </div>
+  <div class="card-field">
+    <label>Numero carta</label>
+    <div class="card-number-wrap">
+      <input type="text" id="pay-card-number" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric" oninput="formatCardNumber(this)">
+      <span class="card-brand-icon" id="card-brand-icon"></span>
     </div>
+  </div>
+  <div class="card-form-row">
+    <div class="card-field">
+      <label>Data di scadenza</label>
+      <input type="text" id="pay-card-expiry" placeholder="MM/AA" maxlength="5" inputmode="numeric" oninput="formatExpiry(this)">
+    </div>
+    <div class="card-field">
+      <label>Codice di sicurezza (CVV)</label>
+      <input type="text" id="pay-card-cvv" placeholder="123" maxlength="4" inputmode="numeric">
+    </div>
+  </div>
+  <div class="card-field">
+    <label>Nome sulla carta</label>
+    <input type="text" id="pay-card-name" placeholder="Mario Rossi" autocomplete="cc-name">
+  </div>
+  <div class="card-field">
+    <label>Email per la ricevuta</label>
+    <input type="email" id="pay-card-email" placeholder="email@esempio.it" oninput="checkCardEmail(this)">
+    <div class="card-email-hint" id="card-email-hint">
+      <div class="card-email-hint-icon">✓</div>
+      <span>La ricevuta verrà inviata a questo indirizzo</span>
+    </div>
+  </div>
+</div>
 
-    <!-- Panel PayPal -->
-    <div class="alt-pay-panel" id="alt-panel-paypal">
-      <div class="alt-pay-logo-big" style="font-size:22px;font-weight:900"><span style="color:#003087">Pay</span><span style="color:#009cde">Pal</span></div>
-      <div class="alt-pay-title">Paga con PayPal</div>
-      <div class="alt-pay-desc">Verrai reindirizzato su PayPal per completare il pagamento in sicurezza con il tuo account o carta.</div>
-      <div class="alt-pay-amount" id="paypal-amount">—</div>
-      <div class="alt-pay-amount-sub">importo totale</div>
-    </div>
+<!-- Panel PayPal -->
+<div class="alt-pay-panel" id="alt-panel-paypal">
+  <div class="alt-pay-logo-big" style="font-size:22px;font-weight:900"><span style="color:#003087">Pay</span><span style="color:#009cde">Pal</span></div>
+  <div class="alt-pay-title">Paga con PayPal</div>
+  <div class="alt-pay-desc">Verrai reindirizzato su PayPal per completare il pagamento in sicurezza con il tuo account o carta di credito salvata.</div>
+  <div class="alt-pay-amount" id="paypal-amount">—</div>
+  <div class="alt-pay-amount-sub">importo totale · click su "Conferma" per procedere</div>
+</div>
 
-    <!-- Panel Apple Pay -->
-    <div class="alt-pay-panel" id="alt-panel-applepay">
-      <div class="alt-pay-logo-big">🍎</div>
-      <div class="alt-pay-title">Apple Pay</div>
-      <div class="alt-pay-desc">Usa Face ID o Touch ID per pagare rapidamente. Disponibile su Safari e dispositivi Apple.</div>
-      <div class="alt-pay-amount" id="applepay-amount">—</div>
-      <div class="alt-pay-amount-sub">importo totale</div>
-    </div>
+<!-- Panel Apple Pay -->
+<div class="alt-pay-panel" id="alt-panel-applepay">
+  <div class="alt-pay-logo-big">🍎</div>
+  <div class="alt-pay-title">Apple Pay</div>
+  <div class="alt-pay-desc">Verrai reindirizzato sul portale Apple Pay. Usa Face ID, Touch ID o il codice del tuo dispositivo per autorizzare il pagamento in un click.</div>
+  <div class="alt-pay-amount" id="applepay-amount">—</div>
+  <div class="alt-pay-amount-sub">importo totale · click su "Conferma" per procedere</div>
+</div>
 
-    <!-- Panel Google Pay -->
-    <div class="alt-pay-panel" id="alt-panel-googlepay">
-      <div class="alt-pay-logo-big" style="font-size:26px;font-weight:800"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#34A853">g</span><span style="color:#4285F4">l</span><span style="color:#EA4335">e</span></div>
-      <div class="alt-pay-title">Google Pay</div>
-      <div class="alt-pay-desc">Paga con il tuo account Google. Le tue info di pagamento sono salvate in modo sicuro da Google.</div>
-      <div class="alt-pay-amount" id="googlepay-amount">—</div>
-      <div class="alt-pay-amount-sub">importo totale</div>
-    </div>
+<!-- Panel Google Pay -->
+<div class="alt-pay-panel" id="alt-panel-googlepay">
+  <div class="alt-pay-logo-big" style="font-size:26px;font-weight:800"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#34A853">g</span><span style="color:#4285F4">l</span><span style="color:#EA4335">e</span></div>
+  <div class="alt-pay-title">Google Pay</div>
+  <div class="alt-pay-desc">Verrai reindirizzato su Google Pay. Il pagamento viene autorizzato con la tua impronta digitale, sblocco del dispositivo o le carte salvate nel tuo account Google.</div>
+  <div class="alt-pay-amount" id="googlepay-amount">—</div>
+  <div class="alt-pay-amount-sub">importo totale · click su "Conferma" per procedere</div>
+</div>
 
-    <!-- Panel Klarna -->
-    <div class="alt-pay-panel" id="alt-panel-klarna">
-      <div class="alt-pay-logo-big" style="font-size:18px;background:#ff69b4;color:white;font-weight:800;padding:6px 14px;border-radius:6px;display:inline-block">klarna</div>
-      <div class="alt-pay-title" style="margin-top:14px">Paga con Klarna</div>
-      <div class="alt-pay-desc">Paga in 3 rate senza interessi o posticipa il pagamento. Verrai reindirizzato su Klarna per completare l\'acquisto.</div>
-      <div class="alt-pay-amount" id="klarna-amount">—</div>
-      <div class="alt-pay-amount-sub">oppure 3 rate da <strong id="klarna-installment">—</strong></div>
-    </div>
+<!-- Panel Klarna -->
+<div class="alt-pay-panel" id="alt-panel-klarna">
+  <div class="alt-pay-logo-big" style="font-size:18px;background:#ff69b4;color:white;font-weight:800;padding:6px 14px;border-radius:6px;display:inline-block">klarna</div>
+  <div class="alt-pay-title" style="margin-top:14px">Paga con Klarna</div>
+  <div class="alt-pay-desc">Verrai reindirizzato su Klarna dove potrai scegliere tra: pagamento immediato, pagamento in 3 rate senza interessi, o posticipato di 30 giorni.</div>
+  <div class="alt-pay-amount" id="klarna-amount">—</div>
+  <div class="alt-pay-amount-sub">oppure 3 rate da <strong id="klarna-installment">—</strong> · click su "Conferma" per procedere</div>
+</div>
 
-    <!-- Panel Paysafecard -->
-    <div class="alt-pay-panel" id="alt-panel-paysafecard">
-      <div class="alt-pay-logo-big" style="font-size:14px;background:#005ca9;color:white;font-weight:700;padding:7px 14px;border-radius:6px;display:inline-block;letter-spacing:-0.3px">paysafecard</div>
-      <div class="alt-pay-title" style="margin-top:14px">Paga con Paysafecard</div>
-      <div class="alt-pay-desc">Usa il tuo codice PIN da 16 cifre per pagare in modo anonimo e sicuro, senza carta di credito o conto bancario.</div>
-      <div class="alt-pay-amount" id="paysafe-amount">—</div>
-      <div class="alt-pay-amount-sub">importo totale</div>
-    </div>
+<!-- Panel Paysafecard -->
+<div class="alt-pay-panel" id="alt-panel-paysafecard">
+  <div class="alt-pay-logo-big" style="font-size:14px;background:#005ca9;color:white;font-weight:700;padding:7px 14px;border-radius:6px;display:inline-block;letter-spacing:-0.3px">paysafecard</div>
+  <div class="alt-pay-title" style="margin-top:14px">Paga con Paysafecard</div>
+  <div class="alt-pay-desc">Verrai reindirizzato su Paysafecard. Inserisci il tuo codice PIN da 16 cifre per completare il pagamento in modo anonimo, senza carta di credito o conto bancario.</div>
+  <div class="alt-pay-amount" id="paysafe-amount">—</div>
+  <div class="alt-pay-amount-sub">importo totale · click su "Conferma" per procedere</div>
+</div>
 
     <div class="payment-secure">🔒 <span>Pagamento sicuro — crittografia SSL 256‑bit</span></div>
 
@@ -3317,31 +3323,42 @@ function selectPayMethod(method, btn) {
   currentPayMethod = method;
   document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
- 
-  // Nascondi tutti i pannelli
   document.querySelectorAll('.card-form-wrap, .alt-pay-panel').forEach(p => p.classList.remove('show'));
- 
   const confirmBtn = document.getElementById('pay-confirm-btn');
   confirmBtn.style.display = 'flex';
- 
+
+  const nights = calCheckIn && calCheckOut
+    ? Math.round((strToDate(calCheckOut) - strToDate(calCheckIn)) / 86400000) : 0;
+  const casa = currentProperty ? currentProperty.casa : 'default';
+  const pricePerNight = nights > 0 ? getPriceForNights(casa, nights) : 0;
+  const total = pricePerNight * nights;
+  const totalFmt = '€' + total.toLocaleString('it-IT');
+  const installment = '€' + Math.ceil(total / 3).toLocaleString('it-IT');
+
   if (method === 'card') {
     document.getElementById('card-form-wrap').classList.add('show');
-    confirmBtn.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Conferma e Procedi al Pagamento`;
+    confirmBtn.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Paga ${totalFmt} con Carta`;
   } else if (method === 'paypal') {
     document.getElementById('alt-panel-paypal').classList.add('show');
-    confirmBtn.innerHTML = `<span style="font-weight:700;font-size:15px">Pay</span><span style="color:#009cde;font-weight:700;font-size:15px">Pal</span>  — Continua`;
+    document.getElementById('paypal-amount').textContent = totalFmt;
+    confirmBtn.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Vai su PayPal → ${totalFmt}`;
   } else if (method === 'applepay') {
     document.getElementById('alt-panel-applepay').classList.add('show');
-    confirmBtn.innerHTML = `🍎 Paga con Apple Pay`;
+    document.getElementById('applepay-amount').textContent = totalFmt;
+    confirmBtn.innerHTML = `🍎 Vai su Apple Pay → ${totalFmt}`;
   } else if (method === 'googlepay') {
     document.getElementById('alt-panel-googlepay').classList.add('show');
-    confirmBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 48 48"><text y="36" font-size="36">G</text></svg> Paga con Google Pay`;
+    document.getElementById('googlepay-amount').textContent = totalFmt;
+    confirmBtn.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Vai su Google Pay → ${totalFmt}`;
   } else if (method === 'klarna') {
     document.getElementById('alt-panel-klarna').classList.add('show');
-    confirmBtn.innerHTML = `🛍️ Continua con Klarna`;
+    document.getElementById('klarna-amount').textContent = totalFmt;
+    document.getElementById('klarna-installment').textContent = installment;
+    confirmBtn.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Vai su Klarna → ${totalFmt}`;
   } else if (method === 'paysafecard') {
     document.getElementById('alt-panel-paysafecard').classList.add('show');
-    confirmBtn.innerHTML = `🟩 Continua con Paysafecard`;
+    document.getElementById('paysafe-amount').textContent = totalFmt;
+    confirmBtn.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Vai su Paysafecard → ${totalFmt}`;
   }
 }
  
@@ -3374,48 +3391,39 @@ function checkCardEmail(input) {
 /* ==================== CONFIRM PAYMENT ==================== */
 function confirmPayment() {
   if (!currentPayMethod) { showToast('Seleziona un metodo di pagamento'); return; }
- 
+
   if (currentPayMethod === 'card') {
-    // Validate card fields
     const num = document.getElementById('pay-card-number').value.replace(/\s/g,'');
     const exp = document.getElementById('pay-card-expiry').value;
     const cvv = document.getElementById('pay-card-cvv').value.trim();
     const name = document.getElementById('pay-card-name').value.trim();
     const email = document.getElementById('pay-card-email').value.trim();
-    if (num.length < 16 || !exp.includes('/') || cvv.length < 3 || !name || !email) {
-      showToast(currentLang === 'en' ? 'Please fill all card fields correctly' : 'Compila tutti i campi carta correttamente');
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showToast(currentLang === 'en' ? 'Enter a valid email address' : 'Inserisci un\'email valida');
-      return;
-    }
-    // Simulate processing
+    if (num.length < 15) { showToast('Inserisci un numero di carta valido'); return; }
+    if (!exp.includes('/') || exp.length < 5) { showToast('Inserisci la data di scadenza (MM/AA)'); return; }
+    if (cvv.length < 3) { showToast('Inserisci il codice di sicurezza'); return; }
+    if (!name) { showToast('Inserisci il nome sulla carta'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Inserisci un\'email valida per la ricevuta'); return; }
     simulatePaymentProcessing();
- 
   } else if (currentPayMethod === 'paypal') {
-    window.open('https://www.paypal.com/checkoutnow', '_blank');
     closePaymentModal();
     showToast('🔄 Reindirizzamento a PayPal...');
- 
+    setTimeout(() => window.open('https://www.paypal.com/it/home', '_blank'), 600);
   } else if (currentPayMethod === 'applepay') {
-    // Apple Pay only available in Safari with proper setup
-    showToast('🍎 Apple Pay: disponibile su Safari con carta configurata');
- 
+    closePaymentModal();
+    showToast('🍎 Reindirizzamento ad Apple Pay...');
+    setTimeout(() => window.open('https://www.apple.com/it/apple-pay/', '_blank'), 600);
   } else if (currentPayMethod === 'googlepay') {
-    window.open('https://pay.google.com', '_blank');
     closePaymentModal();
     showToast('🔄 Reindirizzamento a Google Pay...');
- 
+    setTimeout(() => window.open('https://pay.google.com', '_blank'), 600);
   } else if (currentPayMethod === 'klarna') {
-    window.open('https://www.klarna.com/it/', '_blank');
     closePaymentModal();
     showToast('🛍️ Reindirizzamento a Klarna...');
- 
+    setTimeout(() => window.open('https://www.klarna.com/it/', '_blank'), 600);
   } else if (currentPayMethod === 'paysafecard') {
-    window.open('https://www.paysafecard.com/it-it/', '_blank');
     closePaymentModal();
     showToast('🟩 Reindirizzamento a Paysafecard...');
+    setTimeout(() => window.open('https://www.paysafecard.com/it-it/', '_blank'), 600);
   }
 }
  
