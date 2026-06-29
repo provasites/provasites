@@ -942,6 +942,103 @@ header {
 @media (max-width: 768px) {
   #save-indicator { top: calc(var(--header-h) + 8px); font-size: 10px; padding: 6px 13px 6px 10px; }
 }
+
+/* ===== PAYMENT MODAL ===== */
+.payment-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6); z-index: 2000;
+  justify-content: center; align-items: center;
+  padding: 16px; backdrop-filter: blur(6px); overflow-y: auto;
+}
+.payment-overlay.open { display: flex; }
+.payment-modal {
+  background: var(--cream); border-radius: var(--radius-lg);
+  max-width: 560px; width: 100%; max-height: 94vh; overflow-y: auto;
+  box-shadow: 0 32px 100px rgba(0,0,0,0.3);
+  animation: modalIn 0.28s cubic-bezier(.25,.46,.45,.94);
+}
+.payment-header {
+  padding: 22px 26px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: var(--cream); z-index: 1;
+}
+.payment-header-title { font-family:'Cormorant Garamond',serif; font-size:21px; font-weight:500; }
+.payment-summary {
+  background: var(--teal-light); border: 1px solid var(--teal);
+  border-radius: var(--radius-lg); padding: 16px 18px; margin: 20px 24px 0;
+}
+.payment-summary-prop { font-size:13px; font-weight:600; color:var(--teal-dark); margin-bottom:10px; display:flex; align-items:center; gap:7px; }
+.payment-summary-row { display:flex; justify-content:space-between; align-items:center; font-size:13px; color:var(--teal-dark); padding:4px 0; }
+.payment-summary-row.total { border-top:1px solid var(--teal); margin-top:8px; padding-top:10px; font-size:15px; font-weight:700; }
+.payment-summary-row.total .sum-val { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:500; }
+.pricing-tiers-badge { display:flex; flex-wrap:wrap; gap:6px; padding:0 24px; margin-top:10px; }
+.tier-badge { font-size:10px; padding:3px 9px; border-radius:50px; border:1px solid var(--border); color:var(--text-light); background:white; }
+.tier-badge.active-tier { background:var(--terracotta); color:white; border-color:var(--terracotta); font-weight:600; }
+.payment-methods-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-light); margin:22px 24px 12px; display:block; }
+.payment-methods-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:0 24px; }
+.pay-method-btn {
+  border:2px solid var(--border); border-radius:var(--radius-lg);
+  background:white; cursor:pointer; padding:13px 8px;
+  display:flex; flex-direction:column; align-items:center; gap:7px;
+  transition:all 0.18s; position:relative;
+}
+.pay-method-btn:hover { border-color:var(--teal); box-shadow:0 2px 10px rgba(42,124,112,0.15); }
+.pay-method-btn.active { border-color:var(--teal); background:var(--teal-light); box-shadow:0 0 0 3px rgba(42,124,112,0.12); }
+.pm-check { display:none; position:absolute; top:6px; right:7px; width:16px; height:16px; border-radius:50%; background:var(--teal); color:white; font-size:9px; font-weight:700; align-items:center; justify-content:center; }
+.pay-method-btn.active .pm-check { display:flex; }
+.pm-logo { height:28px; display:flex; align-items:center; justify-content:center; }
+.pm-label { font-size:9px; font-weight:600; letter-spacing:0.5px; color:var(--text-light); text-transform:uppercase; }
+/* Card form */
+.card-form-wrap, .alt-pay-panel {
+  display:none; margin:18px 24px 0;
+  background:white; border:1px solid var(--border);
+  border-radius:var(--radius-lg); padding:20px;
+}
+.card-form-wrap.show, .alt-pay-panel.show { display:block; }
+.card-form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+.card-field { display:flex; flex-direction:column; gap:5px; margin-bottom:12px; }
+.card-field:last-child { margin-bottom:0; }
+.card-field label { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text-light); }
+.card-field input {
+  border:1.5px solid var(--border); border-radius:var(--radius);
+  padding:11px 13px; font-family:'Jost',sans-serif; font-size:14px;
+  font-weight:300; outline:none; transition:border-color 0.2s;
+  width:100%; background:white; color:var(--text);
+}
+.card-field input:focus { border-color:var(--teal); }
+.card-number-wrap { position:relative; }
+.card-number-wrap input { padding-right:50px; letter-spacing:1.5px; }
+.card-brand-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:20px; pointer-events:none; }
+.card-email-hint { display:none; margin-top:5px; font-size:11px; color:var(--teal-dark); align-items:center; gap:5px; }
+.card-email-hint.show { display:flex; }
+.card-email-hint-icon { width:14px; height:14px; border-radius:50%; background:var(--teal); color:white; font-size:8px; font-weight:700; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+/* Alt pay panels */
+.alt-pay-panel { text-align:center; }
+.alt-pay-logo-big { font-size:46px; margin-bottom:12px; }
+.alt-pay-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:400; margin-bottom:8px; }
+.alt-pay-desc { font-size:13px; color:var(--text-light); font-weight:300; line-height:1.7; margin-bottom:16px; }
+.alt-pay-amount { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:500; color:var(--teal); margin-bottom:4px; }
+.alt-pay-amount-sub { font-size:11px; color:var(--text-light); }
+/* Secure + confirm */
+.payment-secure { display:flex; align-items:center; justify-content:center; gap:6px; margin:14px 24px 0; font-size:11px; color:var(--text-light); font-weight:300; }
+.payment-confirm-btn {
+  margin:16px 24px 24px; width:calc(100% - 48px);
+  padding:15px; background:var(--teal); color:white; border:none;
+  border-radius:var(--radius); font-family:'Jost',sans-serif; font-size:11px;
+  font-weight:700; letter-spacing:2px; text-transform:uppercase; cursor:pointer;
+  display:none; align-items:center; justify-content:center; gap:10px;
+  transition:all 0.22s; box-shadow:0 4px 16px rgba(42,124,112,0.3);
+}
+.payment-confirm-btn:hover:not(:disabled) { background:var(--teal-dark); transform:translateY(-1px); box-shadow:0 6px 20px rgba(42,124,112,0.4); }
+.payment-confirm-btn:disabled { opacity:0.6; cursor:not-allowed; }
+@media(max-width:768px){
+  .payment-methods-grid { grid-template-columns:repeat(3,1fr); gap:6px; padding:0 16px; }
+  .payment-summary,.payment-methods-label,.pricing-tiers-badge { margin-left:16px; margin-right:16px; }
+  .card-form-wrap,.alt-pay-panel { margin:14px 16px 0; }
+  .payment-secure { margin:12px 16px 0; }
+  .payment-confirm-btn { margin:14px 16px 20px; width:calc(100% - 32px); }
+  .card-form-row { grid-template-columns:1fr; }
+}
   
 </style>
 </head>
@@ -1255,7 +1352,7 @@ header {
         <label data-i18n="form_message">Note (facoltativo)</label>
         <textarea id="bf-note" data-i18n-placeholder="form_notes_ph"></textarea>
       </div>
-      <button class="contact-btn" onclick="submitBookingForm()" style="margin-top:4px">
+      <button class="contact-btn" onclick="openPaymentModal()" style="margin-top:4px">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 4H3a1 1 0 00-1 1v6a1 1 0 001 1h10a1 1 0 001-1V5a1 1 0 00-1-1z" stroke="currentColor" stroke-width="1.5"/><path d="M3 5l5 4 5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         <span data-i18n="booking_send">Invia Richiesta</span>
       </button>
@@ -2928,5 +3025,214 @@ function showSaveIndicator() {
 }
   
 </script>
+<script>
+/* ==================== PRICING TIERS ==================== */
+// Configura qui i prezzi per notte in base alla durata del soggiorno
+// La casa (sardegna/cogne) e gli scaglioni di notti
+const PRICING_TIERS = {
+  sardegna: [
+    { minNights: 5,  maxNights: 6,  pricePerNight: 160 },
+    { minNights: 7,  maxNights: 13, pricePerNight: 145 },
+    { minNights: 14, maxNights: 20, pricePerNight: 130 },
+    { minNights: 21, maxNights: 99, pricePerNight: 115 },
+  ],
+  cogne: [
+    { minNights: 3,  maxNights: 6,  pricePerNight: 120 },
+    { minNights: 7,  maxNights: 13, pricePerNight: 110 },
+    { minNights: 14, maxNights: 20, pricePerNight: 100 },
+    { minNights: 21, maxNights: 99, pricePerNight:  90 },
+  ],
+  default: [
+    { minNights: 1,  maxNights: 6,  pricePerNight: 130 },
+    { minNights: 7,  maxNights: 13, pricePerNight: 115 },
+    { minNights: 14, maxNights: 99, pricePerNight: 100 },
+  ]
+};
+ 
+function getPriceForNights(casa, nights) {
+  const tiers = PRICING_TIERS[casa] || PRICING_TIERS.default;
+  for (const tier of tiers) {
+    if (nights >= tier.minNights && nights <= tier.maxNights) {
+      return tier.pricePerNight;
+    }
+  }
+  return tiers[0].pricePerNight;
+}
+ 
+function getAllTiers(casa) {
+  return PRICING_TIERS[casa] || PRICING_TIERS.default;
+}
+ 
+/* ==================== PAYMENT STATE ==================== */
+let currentPayMethod = null; // 'card' | 'paypal' | 'applepay' | 'googlepay' | 'klarna' | 'paysafecard'
+ 
+/* ==================== OPEN PAYMENT MODAL ==================== */
+function openPaymentModal() {
+  if (!currentProperty) return;
+  if (!calCheckIn || !calCheckOut) {
+    showToast(currentLang === 'en' ? 'Please select check-in and check-out dates first' : 'Seleziona prima le date di check-in e check-out');
+    return;
+  }
+  const nome = document.getElementById('bf-nome').value.trim();
+  const email = document.getElementById('bf-email').value.trim();
+  if (!nome || !email) { showToast(t('toast_booking_missing')); return; }
+ 
+  const nights = Math.round((strToDate(calCheckOut) - strToDate(calCheckIn)) / 86400000);
+  const pricePerNight = getPriceForNights(currentProperty.casa, nights);
+  const total = pricePerNight * nights;
+  const months = t('months');
+  const fmt = s => { const d = strToDate(s); return d.getDate() + ' ' + months[d.getMonth()]; };
+ 
+  // Summary
+  const icon = currentProperty.casa === 'sardegna' ? '🏖️' : '🏔️';
+  document.getElementById('pay-prop-icon').textContent = icon;
+  document.getElementById('pay-prop-name').textContent = currentProperty.name;
+  document.getElementById('pay-dates').textContent = fmt(calCheckIn) + ' → ' + fmt(calCheckOut);
+  document.getElementById('pay-nights').textContent = nights + (nights === 1 ? ' notte' : ' notti');
+  document.getElementById('pay-pricepn').textContent = '€' + pricePerNight + ' × ' + nights;
+  document.getElementById('pay-total').textContent = '€' + total.toLocaleString('it-IT');
+ 
+  // Tiers badges
+  const tiers = getAllTiers(currentProperty.casa);
+  const tiersContainer = document.getElementById('pay-tiers');
+  tiersContainer.innerHTML = tiers.map(tier => {
+    const label = tier.minNights + (tier.maxNights >= 99 ? '+ notti' : '–' + tier.maxNights + ' notti') + ': €' + tier.pricePerNight + '/n';
+    const isActive = nights >= tier.minNights && nights <= tier.maxNights;
+    return `<span class="tier-badge${isActive ? ' active-tier' : ''}">${label}</span>`;
+  }).join('');
+ 
+  // Reset metodo
+  currentPayMethod = null;
+  document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.card-form-wrap, .alt-pay-panel').forEach(p => p.classList.remove('show'));
+  document.getElementById('pay-confirm-btn').style.display = 'none';
+ 
+  document.getElementById('payment-overlay').classList.add('open');
+}
+ 
+function closePaymentModal() {
+  document.getElementById('payment-overlay').classList.remove('open');
+}
+ 
+/* ==================== SELECT PAYMENT METHOD ==================== */
+function selectPayMethod(method, btn) {
+  currentPayMethod = method;
+  document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+ 
+  // Nascondi tutti i pannelli
+  document.querySelectorAll('.card-form-wrap, .alt-pay-panel').forEach(p => p.classList.remove('show'));
+ 
+  const confirmBtn = document.getElementById('pay-confirm-btn');
+  confirmBtn.style.display = 'flex';
+ 
+  if (method === 'card') {
+    document.getElementById('card-form-wrap').classList.add('show');
+    confirmBtn.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Conferma e Procedi al Pagamento`;
+  } else if (method === 'paypal') {
+    document.getElementById('alt-panel-paypal').classList.add('show');
+    confirmBtn.innerHTML = `<span style="font-weight:700;font-size:15px">Pay</span><span style="color:#009cde;font-weight:700;font-size:15px">Pal</span>  — Continua`;
+  } else if (method === 'applepay') {
+    document.getElementById('alt-panel-applepay').classList.add('show');
+    confirmBtn.innerHTML = `🍎 Paga con Apple Pay`;
+  } else if (method === 'googlepay') {
+    document.getElementById('alt-panel-googlepay').classList.add('show');
+    confirmBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 48 48"><text y="36" font-size="36">G</text></svg> Paga con Google Pay`;
+  } else if (method === 'klarna') {
+    document.getElementById('alt-panel-klarna').classList.add('show');
+    confirmBtn.innerHTML = `🛍️ Continua con Klarna`;
+  } else if (method === 'paysafecard') {
+    document.getElementById('alt-panel-paysafecard').classList.add('show');
+    confirmBtn.innerHTML = `🟩 Continua con Paysafecard`;
+  }
+}
+ 
+/* ==================== CARD NUMBER FORMAT ==================== */
+function formatCardNumber(input) {
+  let val = input.value.replace(/\D/g, '').slice(0, 16);
+  val = val.replace(/(.{4})/g, '$1 ').trim();
+  input.value = val;
+  // Detect brand
+  const raw = val.replace(/\s/g, '');
+  const icon = document.getElementById('card-brand-icon');
+  if (raw.startsWith('4')) icon.textContent = '💳'; // Visa proxy
+  else if (/^5[1-5]/.test(raw) || /^2[2-7]/.test(raw)) icon.textContent = '💳';
+  else if (raw.startsWith('34') || raw.startsWith('37')) icon.textContent = '💳';
+  else icon.textContent = '';
+}
+ 
+function formatExpiry(input) {
+  let val = input.value.replace(/\D/g, '').slice(0, 4);
+  if (val.length > 2) val = val.slice(0,2) + '/' + val.slice(2);
+  input.value = val;
+}
+ 
+function checkCardEmail(input) {
+  const hint = document.getElementById('card-email-hint');
+  const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+  hint.classList.toggle('show', isValid && input.value.trim().length > 0);
+}
+ 
+/* ==================== CONFIRM PAYMENT ==================== */
+function confirmPayment() {
+  if (!currentPayMethod) { showToast('Seleziona un metodo di pagamento'); return; }
+ 
+  if (currentPayMethod === 'card') {
+    // Validate card fields
+    const num = document.getElementById('pay-card-number').value.replace(/\s/g,'');
+    const exp = document.getElementById('pay-card-expiry').value;
+    const cvv = document.getElementById('pay-card-cvv').value.trim();
+    const name = document.getElementById('pay-card-name').value.trim();
+    const email = document.getElementById('pay-card-email').value.trim();
+    if (num.length < 16 || !exp.includes('/') || cvv.length < 3 || !name || !email) {
+      showToast(currentLang === 'en' ? 'Please fill all card fields correctly' : 'Compila tutti i campi carta correttamente');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showToast(currentLang === 'en' ? 'Enter a valid email address' : 'Inserisci un\'email valida');
+      return;
+    }
+    // Simulate processing
+    simulatePaymentProcessing();
+ 
+  } else if (currentPayMethod === 'paypal') {
+    window.open('https://www.paypal.com/checkoutnow', '_blank');
+    closePaymentModal();
+    showToast('🔄 Reindirizzamento a PayPal...');
+ 
+  } else if (currentPayMethod === 'applepay') {
+    // Apple Pay only available in Safari with proper setup
+    showToast('🍎 Apple Pay: disponibile su Safari con carta configurata');
+ 
+  } else if (currentPayMethod === 'googlepay') {
+    window.open('https://pay.google.com', '_blank');
+    closePaymentModal();
+    showToast('🔄 Reindirizzamento a Google Pay...');
+ 
+  } else if (currentPayMethod === 'klarna') {
+    window.open('https://www.klarna.com/it/', '_blank');
+    closePaymentModal();
+    showToast('🛍️ Reindirizzamento a Klarna...');
+ 
+  } else if (currentPayMethod === 'paysafecard') {
+    window.open('https://www.paysafecard.com/it-it/', '_blank');
+    closePaymentModal();
+    showToast('🟩 Reindirizzamento a Paysafecard...');
+  }
+}
+ 
+function simulatePaymentProcessing() {
+  const btn = document.getElementById('pay-confirm-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="save-spinner" style="border-top-color:white"></div> Elaborazione pagamento...';
+  setTimeout(() => {
+    closePaymentModal();
+    btn.disabled = false;
+    // Invia anche la mail di conferma
+    submitBookingForm();
+    showToast('✅ Pagamento confermato! Riceverai una conferma via email.');
+  }, 2200);
+}
+    </script> 
 </body>
 </html>
