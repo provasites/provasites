@@ -1185,6 +1185,9 @@ header {
     <div class="listings-grid" id="listings-grid"></div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
   <footer class="site-footer">
     <div class="footer-inner">
       <div>
@@ -2113,6 +2116,17 @@ const TRANSLATIONS = {
   }
 };
 
+const firebaseConfig = {
+  apiKey: "AIzaSyAg_I_IhnjN_da0KdOdOdXQ7oVPpsNVuvY",
+  authDomain: "draf-2026.firebaseapp.com",
+  projectId: "draf-2026",
+  storageBucket: "draf-2026.firebasestorage.app",
+  messagingSenderId: "966206081060",
+  appId: "1:966206081060:web:945261073ac9252f21f0b1"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+  
 /* ==================== MIN DAYS CONFIG ==================== */
 const MIN_DAYS_CONFIG = {
   sardegna: 5,
@@ -2166,25 +2180,50 @@ let calYear, calMonth, calCheckIn = null, calCheckOut = null;
 let editBlockedDates = [];
 
 /* ==================== STORAGE ==================== */
-function loadProperties() {
-  try {
-    const raw = localStorage.getItem('draf_properties');
-    if (raw) properties = JSON.parse(raw);
-  } catch(e) { properties = []; }
+let propertiesUnsubscribe = null;
+
+function listenProperties(onFirstLoad) {
+  propertiesUnsubscribe = db.collection('properties').onSnapshot(
+    snapshot => {
+      properties = snapshot.docs.map(doc => ({ id: Number(doc.id), ...doc.data() }));
+      renderListings();
+      if (currentProperty) {
+        const updated = properties.find(p => p.id === currentProperty.id);
+        if (updated) {
+          currentProperty = updated;
+          renderCalendar();
+          renderDetailReviews();
+        }
+      }
+      if (onFirstLoad) { onFirstLoad(); onFirstLoad = null; }
+    },
+    err => {
+      console.error('Errore Firestore:', err);
+      showToast('⚠️ Errore di sincronizzazione dati');
+    }
+  );
 }
 
-  function saveProperties() {
+async function savePropertyDoc(prop) {
   showSaveIndicator();
   try {
-    localStorage.setItem('draf_properties', JSON.stringify(properties));
-  } catch(e) {
-    try {
-      const slim = properties.map(p => ({ ...p, photos: p.photos ? p.photos.slice(0, 1) : [] }));
-      localStorage.setItem('draf_properties', JSON.stringify(slim));
-      showToast('⚠️ Spazio limitato: solo la prima foto salvata per casa.');
-    } catch(e2) {
-      showToast('⚠️ Impossibile salvare: dati troppo grandi.');
-    }
+    await db.collection('properties').doc(String(prop.id)).set(prop);
+    return true;
+  } catch (e) {
+    console.error(e);
+    showToast('⚠️ Errore di salvataggio. Riprova.');
+    return false;
+  }
+}
+
+async function deletePropertyDoc(id) {
+  try {
+    await db.collection('properties').doc(String(id)).delete();
+    return true;
+  } catch (e) {
+    console.error(e);
+    showToast('⚠️ Errore durante la rimozione. Riprova.');
+    return false;
   }
 }
 
@@ -2258,40 +2297,40 @@ function doLogout(e) {
   localStorage.removeItem('draf_logged_in'); closeProfileMenu();
   showToast(t('toast_logout')); setTimeout(() => location.reload(), 800);
 }
-document.addEventListener('DOMContentLoaded', () => {
-  loadProperties();
 
-  // Seed Casa Sardegna se non esiste
-  const hasSardegna = properties.some(p => p.casa === 'sardegna');
-  if (!hasSardegna) {
-    properties.push({
-      id: Date.now(),
-      name: 'Casa Sardegna',
-      desc: 'Splendida proprietà in Sardegna, ad Alghero.',
-      location: 'Sardegna',
-      type: 'casa',
-      casa: 'sardegna',
-      mapsLink: '',
-      photos: [],
-      amenities: [],
-      reviews: [],
-      price: '',
-      ownerName: 'De Rosa',
-      ownerPhone: '',
-      ownerEmail: '',
-      blockedDates: [],
-      icalUrl: 'https://api.host.holidu.com/ical/4dcm28db6041nydbupdzq.ics',
-      createdAt: Date.now()
-    });
-    saveProperties();
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+  listenProperties(async () => {
+    const hasSardegna = properties.some(p => p.casa === 'sardegna');
+    if (!hasSardegna) {
+      await savePropertyDoc({
+        id: Date.now(),
+        name: 'Casa Sardegna',
+        desc: 'Splendida proprietà in Sardegna, ad Alghero.',
+        location: 'Sardegna',
+        type: 'casa',
+        casa: 'sardegna',
+        mapsLink: '',
+        photos: [],
+        amenities: [],
+        reviews: [],
+        price: '',
+        ownerName: 'De Rosa',
+        ownerPhone: '',
+        ownerEmail: '',
+        blockedDates: [],
+        icalUrl: 'https://api.host.holidu.com/ical/4dcm28db6041nydbupdzq.ics',
+        createdAt: Date.now()
+      });
+    }
 
-  // Aggiungi icalUrl a Casa Cogne se manca
-  const cogneIdx = properties.findIndex(p => p.casa === 'cogne');
-  if (cogneIdx !== -1 && !properties[cogneIdx].icalUrl) {
-    properties[cogneIdx].icalUrl = 'https://api.host.holidu.com/ical/jfx8ev3643t-zbbdet5l0.ics';
-    saveProperties();
-  }
+    const cogne = properties.find(p => p.casa === 'cogne');
+    if (cogne && !cogne.icalUrl) {
+      cogne.icalUrl = 'https://api.host.holidu.com/ical/jfx8ev3643t-zbbdet5l0.ics';
+      await savePropertyDoc(cogne);
+    }
+
+    syncAllIcalOnLoad();
+  });
 
   localStorage.setItem('draf_logged_in', 'true');
   const profile = getProfile(); updateAvatarDisplay(profile);
@@ -2300,23 +2339,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('mlang-'+l).classList.toggle('active', currentLang===l);
   });
   document.documentElement.lang = currentLang;
-  applyTranslations(); renderListings(); startSlideshow();
-  syncAllIcalOnLoad();
+  applyTranslations(); startSlideshow();
 });
   
-async function syncAllIcalOnLoad() {
+aasync function syncAllIcalOnLoad() {
   const toSync = properties.filter(p => p.icalUrl);
   for (const p of toSync) {
     const dates = await fetchIcalDates(p.icalUrl);
     if (dates === null) continue;
-    const idx = properties.findIndex(x => x.id === p.id);
-    if (idx === -1) continue;
-    const existing = new Set(properties[idx].blockedDates || []);
+    const existing = new Set(p.blockedDates || []);
     dates.forEach(d => existing.add(d));
-    properties[idx].blockedDates = Array.from(existing).sort();
+    const updated = { ...p, blockedDates: Array.from(existing).sort() };
+    await savePropertyDoc(updated);
   }
-  saveProperties();
-  renderListings();
 }
 
 function updateAvatarDisplay(profile) {
@@ -2693,13 +2728,13 @@ async function syncIcalNow() {
   const dates = await fetchIcalDates(currentProperty.icalUrl);
   if (btn) { btn.textContent = t('ical_sync_now'); btn.disabled = false; }
   if (dates === null) { showToast(t('ical_err')); return; }
-  const idx = properties.findIndex(p => p.id === currentProperty.id);
-  if (idx !== -1) {
-    const existing = new Set(properties[idx].blockedDates || []);
-    dates.forEach(d => existing.add(d));
-    properties[idx].blockedDates = Array.from(existing).sort();
-    currentProperty = properties[idx];
-    saveProperties(); renderCalendar();
+  const existing = new Set(currentProperty.blockedDates || []);
+  dates.forEach(d => existing.add(d));
+  const updated = { ...currentProperty, blockedDates: Array.from(existing).sort() };
+  const ok = await savePropertyDoc(updated);
+  if (ok) {
+    currentProperty = updated;
+    renderCalendar();
     showToast(t('ical_ok', { n: dates.length }));
   }
 }
@@ -2805,7 +2840,7 @@ function submitPubblicaCasa() {
     price: '', ownerName: 'De Rosa', ownerPhone: '', ownerEmail: '',
     blockedDates: [], icalUrl: '', createdAt: Date.now()
   };
-  properties.push(newProp); saveProperties();
+  await savePropertyDoc(newProp);
   showLoader(casa === 'sardegna' ? '🏖️' : '🏔️', () => { renderListings(); showOnly('listing-view'); scrollToListings(); showToast(t('toast_casa_published')); });
 }
 
@@ -2910,13 +2945,12 @@ function editAddPhotos(e) {
   if (files.length > remaining) showToast(t('toast_photos_limit', { n: files.length - remaining }));
   e.target.value = '';
 }
-function salvaCasaModifiche() {
+
+async function salvaCasaModifiche() {
   const nome = document.getElementById('ef-nome').value.trim();
   if (!nome) { showToast(t('toast_name_required')); return; }
-  const idx = properties.findIndex(p => p.id === currentProperty.id);
-  if (idx === -1) return;
-  properties[idx] = {
-    ...properties[idx],
+  const updated = {
+    ...currentProperty,
     name: nome,
     desc: document.getElementById('ef-desc').value.trim(),
     price: document.getElementById('ef-price').value.trim(),
@@ -2932,24 +2966,27 @@ function salvaCasaModifiche() {
     blockedDates: [...editBlockedDates],
     icalUrl: document.getElementById('ef-ical-url').value.trim(),
   };
-  currentProperty = properties[idx];
-  saveProperties();
+  const ok = await savePropertyDoc(updated);
+  if (!ok) return;
+  currentProperty = updated;
   closeOverlay('modifica-casa-overlay');
   showToast(t('toast_casa_saved'));
   const icon = currentProperty.location.toLowerCase().includes('sardegna') ? '🏖️' : '🏔️';
   showLoader(icon, () => openDetailDirect(currentProperty.id));
 }
-function rimuoviCasa() {
+  
+async function rimuoviCasa() {
   if (!currentProperty) return;
   const nome = currentProperty.name;
   const confirmMsg = currentLang === 'en' ? `Remove "${nome}"? This cannot be undone.` : `Rimuovere "${nome}"? Questa azione non può essere annullata.`;
   if (!confirm(confirmMsg)) return;
-  properties = properties.filter(p => p.id !== currentProperty.id);
-  saveProperties(); currentProperty = null;
+  await deletePropertyDoc(currentProperty.id);
+  currentProperty = null;
   closeOverlay('modifica-casa-overlay');
   showToast(t('toast_casa_removed'));
-  showLoader('🏡', () => { renderListings(); showOnly('listing-view'); });
+  showLoader('🏡', () => showOnly('listing-view'));
 }
+  
 function openDetailDirect(id) {
   currentProperty = properties.find(p => p.id === id);
   if (!currentProperty) return;
@@ -3127,18 +3164,17 @@ function submitBookingForm() {
 }
 
 /* ==================== REVIEWS ==================== */
-function setReviewStar(v) { reviewStars = v; document.querySelectorAll('.star-btn').forEach(b => b.classList.toggle('active', Number(b.dataset.v) <= v)); }
-function submitReview() {
+async function submitReview() {
   const name = document.getElementById('rev-name').value.trim();
   const text = document.getElementById('rev-text').value.trim();
   if (!name || !text) { showToast(t('toast_review_missing')); return; }
   if (!reviewStars) { showToast(t('toast_review_stars')); return; }
   const review = { name, text, stars: reviewStars, date: new Date().toLocaleDateString(currentLang === 'en' ? 'en-GB' : 'it-IT', { year:'numeric', month:'long', day:'numeric' }) };
-  const idx = properties.findIndex(p => p.id === currentProperty.id);
-  if (!properties[idx].reviews) properties[idx].reviews = [];
-  properties[idx].reviews.push(review);
-  currentProperty = properties[idx];
-  saveProperties(); renderDetailReviews();
+  const updatedReviews = [...(currentProperty.reviews || []), review];
+  const updated = { ...currentProperty, reviews: updatedReviews };
+  await savePropertyDoc(updated);
+  currentProperty = updated;
+  renderDetailReviews();
   const reviews = currentProperty.reviews;
   const avg = (reviews.reduce((a,r) => a+r.stars, 0) / reviews.length).toFixed(1);
   document.getElementById('d-avg-score').textContent = avg;
