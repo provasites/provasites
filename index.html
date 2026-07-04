@@ -2342,7 +2342,7 @@ function doLogout(e) {
   applyTranslations(); startSlideshow();
 });
   
-aasync function syncAllIcalOnLoad() {
+async function syncAllIcalOnLoad() {
   const toSync = properties.filter(p => p.icalUrl);
   for (const p of toSync) {
     const dates = await fetchIcalDates(p.icalUrl);
@@ -2827,7 +2827,8 @@ function renderPhotoPreviews() {
     `<div class="photo-preview-item"><img src="${src}" alt="Photo ${i+1}"><button class="photo-preview-remove" onclick="removePhoto(${i})">✕</button></div>`).join('');
 }
 function removePhoto(idx) { uploadedPhotos.splice(idx, 1); renderPhotoPreviews(); }
-function submitPubblicaCasa() {
+
+async function submitPubblicaCasa() { 
   const nome = document.getElementById('pf-nome').value.trim();
   const desc = document.getElementById('pf-desc').value.trim();
   const maps = document.getElementById('pf-maps').value.trim();
