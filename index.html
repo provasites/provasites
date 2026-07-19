@@ -2211,7 +2211,7 @@ async function savePropertyDoc(prop) {
     return true;
   } catch (e) {
     console.error(e);
-    showToast('⚠️ Errore di salvataggio. Riprova.');
+    showToast('⚠️ Errore: ' + (e.code || e.message || 'sconosciuto'));
     return false;
   }
 }
