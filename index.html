@@ -3308,7 +3308,9 @@ function getAllTiers(casa) {
 let currentPayMethod = null; // 'card' | 'paypal' | 'applepay' | 'googlepay' | 'klarna' | 'paysafecard'
  
 /* ==================== OPEN PAYMENT MODAL ==================== */
-function openPaymentModal() {
+const CHECKOUT_FUNCTION_URL = 'https://createcheckoutsession-j7qtvls6va-ew.a.run.app';
+
+async function openPaymentModal() {
   if (!currentProperty) return;
   if (!calCheckIn || !calCheckOut) {
     showToast(currentLang === 'en' ? 'Please select check-in and check-out dates first' : 'Seleziona prima le date di check-in e check-out');
@@ -3317,42 +3319,32 @@ function openPaymentModal() {
   const nome = document.getElementById('bf-nome').value.trim();
   const email = document.getElementById('bf-email').value.trim();
   if (!nome || !email) { showToast(t('toast_booking_missing')); return; }
- 
-  const nights = Math.round((strToDate(calCheckOut) - strToDate(calCheckIn)) / 86400000);
-  const pricePerNight = getPriceForNights(currentProperty.casa, nights);
-  const total = pricePerNight * nights;
-  const months = t('months');
-  const fmt = s => { const d = strToDate(s); return d.getDate() + ' ' + months[d.getMonth()]; };
- 
-  // Summary
-  const icon = currentProperty.casa === 'sardegna' ? '🏖️' : '🏔️';
-  document.getElementById('pay-prop-icon').textContent = icon;
-  document.getElementById('pay-prop-name').textContent = currentProperty.name;
-  document.getElementById('pay-dates').textContent = fmt(calCheckIn) + ' → ' + fmt(calCheckOut);
-  document.getElementById('pay-nights').textContent = nights + (nights === 1 ? ' notte' : ' notti');
-  document.getElementById('pay-pricepn').textContent = '€' + pricePerNight + ' × ' + nights;
-  document.getElementById('pay-total').textContent = '€' + total.toLocaleString('it-IT');
- 
-  // Tiers badges
-  const tiers = getAllTiers(currentProperty.casa);
-  const tiersContainer = document.getElementById('pay-tiers');
-  tiersContainer.innerHTML = tiers.map(tier => {
-    const label = tier.minNights + (tier.maxNights >= 99 ? '+ notti' : '–' + tier.maxNights + ' notti') + ': €' + tier.pricePerNight + '/n';
-    const isActive = nights >= tier.minNights && nights <= tier.maxNights;
-    return `<span class="tier-badge${isActive ? ' active-tier' : ''}">${label}</span>`;
-  }).join('');
- 
-  // Reset metodo
-  currentPayMethod = null;
-  document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.card-form-wrap, .alt-pay-panel').forEach(p => p.classList.remove('show'));
-  document.getElementById('pay-confirm-btn').style.display = 'none';
- 
-  document.getElementById('payment-overlay').classList.add('open');
-}
- 
-function closePaymentModal() {
-  document.getElementById('payment-overlay').classList.remove('open');
+
+  showToast(currentLang === 'en' ? '🔄 Preparing secure payment...' : '🔄 Preparazione pagamento sicuro...');
+
+  try {
+    const res = await fetch(CHECKOUT_FUNCTION_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        propertyId: currentProperty.id,
+        casa: currentProperty.casa,
+        checkIn: calCheckIn,
+        checkOut: calCheckOut,
+        name: nome,
+        email: email
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      showToast('⚠️ ' + (data.error || (currentLang === 'en' ? 'Payment setup failed' : 'Errore durante la creazione del pagamento')));
+      return;
+    }
+    window.location.href = data.url; // reindirizza a Stripe Checkout (pagina ospitata da Stripe)
+  } catch (err) {
+    console.error(err);
+    showToast(currentLang === 'en' ? '⚠️ Connection error. Please try again.' : '⚠️ Errore di connessione. Riprova.');
+  }
 }
  
 /* ==================== SELECT PAYMENT METHOD ==================== */
